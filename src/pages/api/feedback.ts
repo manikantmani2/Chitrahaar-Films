@@ -12,6 +12,7 @@ type FeedbackItem = {
   eventType?: string | null;
   message: string;
   createdAt: string;
+  status?: 'public' | 'hold';
 };
 
 type FeedbackMeta = {
@@ -162,6 +163,31 @@ export default async function handler(
     }
   }
 
+  if (req.method === 'PATCH') {
+    try {
+      if (!(await hasAdminAccess(req, res))) {
+        return res.status(401).json({ error: 'Unauthorized' });
+      }
+
+      const id = typeof req.query.id === 'string' ? req.query.id : '';
+      const status = req.body?.status === 'public' ? 'public' : req.body?.status === 'hold' ? 'hold' : '';
+      if (!id || !status) {
+        return res.status(400).json({ error: 'Missing feedback id or status' });
+      }
+
+      const raw = await fs.readFile(FEEDBACK_FILE, 'utf8');
+      const items = JSON.parse(raw || '[]') as FeedbackItem[];
+      const nextItems = items.map((item) => (item.id === id ? { ...item, status } : item));
+
+      await fs.writeFile(FEEDBACK_FILE, JSON.stringify(nextItems, null, 2), 'utf8');
+
+      return res.status(200).json({ success: true, message: `Feedback marked ${status}` });
+    } catch (err) {
+      console.error('Update feedback error:', err);
+      return res.status(500).json({ error: 'Failed to update feedback' });
+    }
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -174,7 +200,7 @@ export default async function handler(
     }
 
     const timestamp = new Date().toISOString();
-    const entry = { id: timestamp, name, email, rating: rating || null, eventType: eventType || null, message, createdAt: timestamp };
+    const entry = { id: timestamp, name, email, rating: rating || null, eventType: eventType || null, message, createdAt: timestamp, status: 'hold' as const };
 
     // Persist feedback to file
     try {
@@ -233,3 +259,4 @@ export default async function handler(
     return res.status(500).json({ error: 'Failed to submit feedback' });
   }
 }
+

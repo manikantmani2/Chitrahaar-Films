@@ -73,3 +73,4 @@ export interface AnimationVariant {
   hidden: Record<string, any>;
   visible: Record<string, any>;
 }
+

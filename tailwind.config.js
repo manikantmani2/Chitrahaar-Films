@@ -8,15 +8,15 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'primary': '#0B0B0B', // matte black
-        'secondary': '#0f1419',
-        'accent': '#D4AF37', // luxury gold as main accent
-        'accent-light': '#e6c66a',
-        'gold': '#D4AF37',
-        'text-primary': '#F5F5F5', // soft white
-        'text-secondary': '#bdbdbd',
-        'border': '#141414',
-        'charcoal': '#222222',
+        'primary': 'rgb(var(--color-primary-rgb) / <alpha-value>)',
+        'secondary': 'rgb(var(--color-secondary-rgb) / <alpha-value>)',
+        'accent': 'rgb(var(--color-accent-rgb) / <alpha-value>)',
+        'accent-light': 'rgb(var(--color-accent-light-rgb) / <alpha-value>)',
+        'gold': 'rgb(var(--color-gold-rgb) / <alpha-value>)',
+        'text-primary': 'rgb(var(--color-text-rgb) / <alpha-value>)',
+        'text-secondary': 'rgb(var(--color-muted-rgb) / <alpha-value>)',
+        'border': 'rgb(var(--color-border-rgb) / <alpha-value>)',
+        'charcoal': 'rgb(34 34 34 / <alpha-value>)',
       },
       fontFamily: {
         'sans': ['Inter', 'sans-serif'],

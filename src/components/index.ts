@@ -15,3 +15,4 @@ export { default as Pricing } from '@/components/Pricing';
 export { default as MediaLibrary } from '@/components/MediaLibrary';
 export { default as PhotoLibrary } from '@/components/PhotoLibrary';
 export { default as VideoLibrary } from '@/components/VideoLibrary';
+

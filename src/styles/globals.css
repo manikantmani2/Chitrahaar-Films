@@ -6,11 +6,57 @@
 
 :root {
   --color-primary: #0B0B0B;
+  --color-primary-rgb: 11 11 11;
   --color-secondary: #0f1419;
+  --color-secondary-rgb: 15 20 25;
+  --color-surface: #121821;
+  --color-surface-rgb: 18 24 33;
   --color-gold: #D4AF37;
+  --color-gold-rgb: 212 175 55;
   --color-gold-2: #e6c66a;
+  --color-gold-2-rgb: 230 198 106;
   --color-text: #F5F5F5;
+  --color-text-rgb: 245 245 245;
   --color-muted: #bdbdbd;
+  --color-muted-rgb: 189 189 189;
+  --color-border: #1a1a1a;
+  --color-border-rgb: 26 26 26;
+  --color-accent: #D4AF37;
+  --color-accent-rgb: 212 175 55;
+  --color-accent-light: #e6c66a;
+  --color-accent-light-rgb: 230 198 106;
+}
+
+:root[data-theme='light'] {
+  --color-primary: #f8fafc;
+  --color-primary-rgb: 248 250 252;
+  --color-secondary: #ffffff;
+  --color-secondary-rgb: 255 255 255;
+  --color-surface: #f1f5f9;
+  --color-surface-rgb: 241 245 249;
+  --color-gold: #b8860b;
+  --color-gold-rgb: 184 134 11;
+  --color-gold-2: #d39b20;
+  --color-gold-2-rgb: 211 155 32;
+  --color-text: #0f172a;
+  --color-text-rgb: 15 23 42;
+  --color-muted: #64748b;
+  --color-muted-rgb: 100 116 139;
+  --color-border: #dbe4ee;
+  --color-border-rgb: 219 228 238;
+  --color-accent: #b8860b;
+  --color-accent-rgb: 184 134 11;
+  --color-accent-light: #d39b20;
+  --color-accent-light-rgb: 211 155 32;
+}
+
+:root,
+:root[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
 }
 
 * {
@@ -30,6 +76,10 @@ body {
   overflow-x: hidden;
 }
 
+body[data-theme='light'] {
+  background: linear-gradient(180deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
@@ -37,16 +87,16 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #0f1419;
+  background: var(--color-secondary);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #ff6b35;
+  background: var(--color-accent);
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #ff8c5a;
+  background: var(--color-accent-light);
 }
 
 /* Smooth transitions */
@@ -56,7 +106,7 @@ a, button {
 
 /* Text gradients */
 .gradient-text {
-  background: linear-gradient(90deg, rgba(212,175,55,1), rgba(230,198,106,0.95));
+  background: linear-gradient(90deg, var(--color-accent), var(--color-accent-light));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -67,6 +117,11 @@ a, button {
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(6px) saturate(120%);
   border: 1px solid rgba(212,175,55,0.06);
+}
+
+:root[data-theme='light'] .glass-effect {
+  background: rgba(255, 255, 255, 0.72);
+  border-color: rgba(184, 134, 11, 0.12);
 }
 
 /* Glow effect */
@@ -174,9 +229,17 @@ a, button {
   backdrop-filter: blur(6px) saturate(120%);
 }
 
+:root[data-theme='light'] .sticky-navbar {
+  background: rgba(255, 255, 255, 0.72);
+}
+
 /* Hero overlay gradient */
 .hero-overlay {
   background: linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.8));
+}
+
+:root[data-theme='light'] .hero-overlay {
+  background: linear-gradient(180deg, rgba(255,255,255,0.1), rgba(255,255,255,0.22));
 }
 
 /* WhatsApp floating button */
@@ -212,6 +275,41 @@ a, button {
 .btn:focus-visible, button:focus-visible {
   box-shadow: 0 0 0 4px rgba(212,175,55,0.12), 0 0 0 2px rgba(212,175,55,0.24) inset;
   border-color: rgba(212,175,55,0.6);
+}
+
+.theme-toggle {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 70;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid rgba(212, 175, 55, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-text);
+  backdrop-filter: blur(14px) saturate(140%);
+  padding: 0.8rem 1rem;
+  border-radius: 999px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.22);
+}
+
+:root[data-theme='light'] .theme-toggle {
+  background: rgba(255, 255, 255, 0.86);
+  border-color: rgba(184, 134, 11, 0.2);
+  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
+}
+
+.theme-toggle__icon {
+  display: inline-flex;
+  height: 1.75rem;
+  width: 1.75rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-light));
+  color: #0b0b0b;
+  font-size: 0.95rem;
 }
 
 .sr-only {

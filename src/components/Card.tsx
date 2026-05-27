@@ -35,3 +35,4 @@ const Card: React.FC<CardProps> = ({ children, className = '', variant = 'defaul
 };
 
 export default Card;
+

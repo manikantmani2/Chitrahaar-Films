@@ -1,0 +1,12 @@
+[
+  {
+    "id": "2026-05-26T15:54:04.149Z",
+    "name": "Test Client",
+    "email": "test@example.com",
+    "rating": 5,
+    "eventType": "Wedding",
+    "message": "Smoke test",
+    "createdAt": "2026-05-26T15:54:04.149Z",
+    "status": "public"
+  }
+]

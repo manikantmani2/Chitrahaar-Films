@@ -24,10 +24,10 @@ export default function BackgroundShowcase({
   imageDuration = 5000,
 }: BackgroundShowcaseProps) {
   const defaultItems: MediaItem[] = [
-    { type: 'video', src: 'https://videos.pexels.com/video-files/4476151/4476151-sd_640_360_30fps.mp4' },
+    // Prefer local fallbacks to avoid blocked cross-origin video requests in headless environments
     { type: 'image', src: '/portfolio/project-1.svg' },
     { type: 'image', src: '/portfolio/wedding-coverage.svg' },
-    { type: 'video', src: 'https://videos.pexels.com/video-files/854608/854608-480p.mp4' },
+    { type: 'image', src: '/gallery/hero1.svg' },
     { type: 'image', src: '/gallery/hero1.svg' },
     { type: 'image', src: '/gallery/hero2.svg' },
     { type: 'image', src: '/gallery/hero3.svg' },
@@ -101,8 +101,11 @@ export default function BackgroundShowcase({
               muted
               playsInline
               onEnded={handleVideoEnded}
+              onError={() => {
+                // if a remote video fails to load, advance to the next item to avoid console spam
+                handleVideoEnded();
+              }}
               className={commonClass + ' object-cover bg-showcase-video'}
-              // keep controls off; videos advance programmatically
             />
           );
         }
@@ -131,3 +134,4 @@ export default function BackgroundShowcase({
     </div>
   );
 }
+

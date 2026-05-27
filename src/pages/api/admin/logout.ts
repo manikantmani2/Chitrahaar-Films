@@ -11,3 +11,4 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Respon
   res.setHeader('Set-Cookie', clearAdminSessionCookie());
   return res.status(200).json({ success: true });
 }
+

@@ -1,30 +1,18 @@
-﻿import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { FaChevronLeft, FaChevronRight, FaImage, FaInstagram, FaPlayCircle, FaVideo, FaYoutube } from 'react-icons/fa';
-import { containerVariants, imageHover, itemVariants } from '@/utils/animations';
+import { containerVariants, itemVariants } from '@/utils/animations';
 import Section from './Section';
 import Card from './Card';
+import MediaDetailModal from './MediaDetailModal';
+import type { PortfolioContentItem } from '@/types/content';
 
 type EventType = 'All' | 'Wedding' | 'Clubs' | 'Events' | 'Food & Beverages' | 'Short Films';
 type MediaType = 'all' | 'photo' | 'video';
 
-interface WorkItem {
-  id: number;
-  title: string;
-  eventType: Exclude<EventType, 'All'>;
-  mediaType: Exclude<MediaType, 'all'>;
-  thumb: string;
-  description: string;
-  duration?: string;
-  videoUrl?: string;
-  instagramUrl: string;
-  youtubeUrl: string;
-}
+const sampleVideoUrl = '/videos/intro.mp4';
 
-const sampleVideoUrl = 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4';
-
-const WORK_ITEMS: WorkItem[] = [
+const FALLBACK_WORK_ITEMS: PortfolioContentItem[] = [
   {
     id: 1,
     title: 'Wedding Highlights Photos',
@@ -129,130 +117,338 @@ const WORK_ITEMS: WorkItem[] = [
 
 const eventTypes: EventType[] = ['All', 'Wedding', 'Clubs', 'Events', 'Food & Beverages', 'Short Films'];
 
+type RunningStripProps = {
+  title: string;
+  items: PortfolioContentItem[];
+  onOpenItem: (item: PortfolioContentItem) => void;
+};
+
+const RunningStrip: React.FC<RunningStripProps> = ({ title, items, onOpenItem }) => {
+  const stripRef = useRef<HTMLDivElement | null>(null);
+  const [cardWidth, setCardWidth] = useState<number | null>(null);
+  const currentIndexRef = useRef(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    currentIndexRef.current = 0;
+    setCurrentIndex(0);
+  }, [items]);
+
+  useEffect(() => {
+    const strip = stripRef.current;
+    if (!strip) return;
+
+    const onScroll = () => {
+      const track = strip.querySelector(':scope > div');
+      if (!track) return;
+      const cards = Array.from(track.children) as HTMLElement[];
+      if (!cards.length) return;
+
+      const center = strip.scrollLeft + strip.clientWidth / 2;
+      let closest = 0;
+      let minDist = Infinity;
+
+      cards.forEach((child, idx) => {
+        const childCenter = child.offsetLeft + child.clientWidth / 2;
+        const dist = Math.abs(center - childCenter);
+        if (dist < minDist) {
+          minDist = dist;
+          closest = idx;
+        }
+      });
+
+      currentIndexRef.current = closest;
+      setCurrentIndex(closest);
+    };
+
+    strip.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => strip.removeEventListener('scroll', onScroll);
+  }, [items]);
+
+  // compute a card width so each card takes a single frame in the carousel
+  useEffect(() => {
+    const strip = stripRef.current;
+    if (!strip) return;
+
+    const compute = () => {
+      const w = strip.clientWidth;
+      let ratio = 0.85;
+      if (w >= 1280) ratio = 0.72;
+      else if (w >= 1024) ratio = 0.78;
+      else if (w >= 768) ratio = 0.86;
+      else ratio = 0.95;
+      setCardWidth(Math.max(260, Math.floor(w * ratio)));
+    };
+
+    compute();
+    window.addEventListener('resize', compute);
+    return () => window.removeEventListener('resize', compute);
+  }, [items]);
+
+  useEffect(() => {
+    const strip = stripRef.current;
+    if (!strip) return;
+    const track = strip.querySelector(':scope > div');
+    if (!track) return;
+
+    const cards = Array.from(track.children) as HTMLElement[];
+    if (!cards.length) return;
+
+    const index = Math.min(currentIndexRef.current, cards.length - 1);
+    const target = cards[index];
+    const left = target.offsetLeft - (strip.clientWidth - target.clientWidth) / 2;
+    strip.scrollTo({ left: Math.max(0, left), behavior: 'auto' });
+  }, [items]);
+
+  useEffect(() => {
+    let cancelled = false;
+    let timeoutId: number | null = null;
+    let userInteracted = false;
+
+    const clear = () => {
+      if (timeoutId) {
+        window.clearTimeout(timeoutId);
+        timeoutId = null;
+      }
+    };
+
+    const parseDuration = (dur?: string) => {
+      if (!dur) return null;
+      const parts = dur.split(':').map(Number).reverse();
+      let seconds = 0;
+      if (parts.length >= 1) seconds += parts[0];
+      if (parts.length >= 2) seconds += parts[1] * 60;
+      if (parts.length >= 3) seconds += parts[2] * 3600;
+      return seconds;
+    };
+
+    const scheduleNext = (localStrip: HTMLDivElement) => {
+      clear();
+      const track = localStrip.querySelector(':scope > div');
+      if (!track) return;
+      const cards = Array.from(track.children) as HTMLElement[];
+      if (!cards.length) return;
+
+      const idx = currentIndexRef.current;
+      const currentItem = items[idx];
+      const parsed = parseDuration(currentItem?.duration || undefined);
+      const isVideo = currentItem?.mediaType === 'video' || !!currentItem?.videoUrl;
+      const dwell = parsed ? Math.min(Math.max(parsed * 1000, 3000), 20000) : (isVideo ? 9000 : 5000);
+
+      timeoutId = window.setTimeout(() => {
+        if (cancelled) return;
+        if (userInteracted) {
+          userInteracted = false;
+          scheduleNext(localStrip);
+          return;
+        }
+
+        const nextIndex = (currentIndexRef.current + 1) % cards.length;
+        const target = cards[nextIndex];
+        const left = target.offsetLeft - (localStrip.clientWidth - target.clientWidth) / 2;
+        localStrip.scrollTo({ left: Math.max(0, left), behavior: 'smooth' });
+        currentIndexRef.current = nextIndex;
+        setCurrentIndex(nextIndex);
+        scheduleNext(localStrip);
+      }, dwell);
+    };
+
+    const localStrip = stripRef.current;
+    if (!localStrip || items.length <= 1) return;
+
+    const onUserScroll = () => {
+      userInteracted = true;
+      clear();
+      timeoutId = window.setTimeout(() => {
+        userInteracted = false;
+        if (!cancelled && localStrip) scheduleNext(localStrip);
+      }, 1200);
+    };
+
+    localStrip.addEventListener('scroll', onUserScroll, { passive: true });
+    scheduleNext(localStrip);
+
+    return () => {
+      cancelled = true;
+      clear();
+      if (localStrip) localStrip.removeEventListener('scroll', onUserScroll);
+    };
+  }, [items]);
+
+  return (
+    <div className="mb-10">
+        <div className="mb-4 flex items-end justify-between gap-4">
+        <div>
+          <p className="text-xs uppercase tracking-[0.3em] text-[rgba(212,175,55,0.9)]">Running Strip</p>
+          <h3 className="mt-2 text-2xl font-semibold text-white">{title}</h3>
+        </div>
+      </div>
+
+      <motion.div
+        ref={stripRef}
+        className="overflow-x-auto -mx-4 py-4 px-4 scrollbar-hide snap-carousel"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={containerVariants}
+        role="region"
+        aria-label={title}
+      >
+          <div className="flex gap-6 items-stretch">
+          {items.map((item, idx) => (
+            <motion.div
+              key={item.id}
+              variants={itemVariants}
+              custom={idx * 0.05}
+              className={`snap-item transition-all duration-500 ease-out ${idx === currentIndex ? 'scale-[1.18] md:scale-[1.22] opacity-100 z-40 shadow-[0_18px_50px_rgba(0,0,0,0.32)]' : 'scale-[0.78] md:scale-[0.84] opacity-50 z-10'}`} 
+              style={cardWidth ? { width: cardWidth } : undefined}
+            >
+              <Card variant="hover" className="overflow-hidden rounded-[20px] glass-effect hover-lift p-0">
+                <button
+                  type="button"
+                  onClick={() => onOpenItem(item)}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault();
+                      onOpenItem(item);
+                    }
+                  }}
+                  className="relative block w-full text-left"
+                >
+                    <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[20px]">
+                    <Image
+                      src={item.thumb}
+                      alt={item.title}
+                      fill
+                      sizes={item.mediaType === 'video' ? '(min-width:1280px) 840px, (min-width:768px) 680px, 420px' : '(min-width:1024px) 680px, (min-width:768px) 560px, 380px'}
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      loading="lazy"
+                      placeholder="blur"
+                      blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMB/0rXyQAAAABJRU5ErkJggg=="
+                    />
+
+                    {item.mediaType === 'video' && idx === currentIndex ? (
+                      <video
+                        src={item.videoUrl || sampleVideoUrl}
+                        muted
+                        autoPlay
+                        loop
+                        playsInline
+                        className="absolute inset-0 w-full h-full object-cover opacity-90"
+                      />
+                    ) : null}
+
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent opacity-90" />
+                    <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between gap-4">
+                      <div className="min-w-0">
+                        <h3 className="truncate text-lg md:text-xl font-display text-text-primary">{item.title}</h3>
+                        <p className="mt-1 text-xs uppercase tracking-[0.26em] text-text-secondary">{item.eventType}</p>
+                      </div>
+                      <span className="shrink-0 rounded-full border border-[rgba(212,175,55,0.18)] bg-black/30 px-3 py-1 text-[10px] uppercase tracking-[0.3em] text-[rgba(212,175,55,0.95)] backdrop-blur-sm">
+                        {item.duration || item.mediaType}
+                      </span>
+                    </div>
+                  </div>
+                </button>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
 const MediaLibrary: React.FC = () => {
   const [eventType, setEventType] = useState<EventType>('All');
-  const [mediaType, setMediaType] = useState<MediaType>('all');
-  const [activeItem, setActiveItem] = useState<WorkItem | null>(null);
-  const [hoverPreviewId, setHoverPreviewId] = useState<number | null>(null);
-  const [isAutoScrolling, setIsAutoScrolling] = useState(false);
-  const filterStripRef = useRef<HTMLDivElement | null>(null);
-  const galleryStripRef = useRef<HTMLDivElement | null>(null);
-  const autoScrollTimerRef = useRef<number | null>(null);
-  const galleryAutoScrollTimerRef = useRef<number | null>(null);
-  const autoScrollIndexRef = useRef(0);
-  const galleryAutoScrollIndexRef = useRef(0);
+  const [items, setItems] = useState<PortfolioContentItem[]>(FALLBACK_WORK_ITEMS);
+  const [activeItem, setActiveItem] = useState<PortfolioContentItem | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadPortfolio = async () => {
+      try {
+        const response = await fetch('/api/content');
+        if (!response.ok) {
+          return;
+        }
+
+        const data = await response.json();
+        const nextItems = Array.isArray(data?.portfolio) ? data.portfolio : [];
+        if (!cancelled && nextItems.length > 0) {
+          setItems(nextItems);
+        }
+      } catch {
+        // fall back to static content
+      }
+    };
+
+    void loadPortfolio();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const filteredItems = useMemo(() => {
-    return WORK_ITEMS.filter((item) => {
+    return items.filter((item) => {
       const eventOk = eventType === 'All' || item.eventType === eventType;
-      const mediaOk = mediaType === 'all' || item.mediaType === mediaType;
-      return eventOk && mediaOk;
+      return eventOk;
     });
-  }, [eventType, mediaType]);
+  }, [eventType, items]);
 
-  const handleFilterClick = (type: EventType | MediaType, kind: 'event' | 'media') => {
-    if (kind === 'event') {
-      setEventType(type as EventType);
-    } else {
-      setMediaType(type as MediaType);
-    }
-  };
-
-  const openItem = (item: WorkItem) => {
-    setIsAutoScrolling(false);
+  const openItem = (item: PortfolioContentItem) => {
     setActiveItem(item);
   };
 
-  useEffect(() => {
-    const strip = filterStripRef.current;
-    if (!strip || !isAutoScrolling) {
-      return;
-    }
+  const relatedSuggestions = useMemo(() => {
+    if (!activeItem) return [];
 
-    const scrollStep = () => {
-      const items = Array.from(strip.querySelectorAll<HTMLElement>('[data-strip-item="true"]'));
-      if (items.length === 0) {
-        return;
-      }
+    const sameEvent = items.filter(
+      (item) => item.id !== activeItem.id && item.eventType === activeItem.eventType,
+    );
 
-      const currentIndex = autoScrollIndexRef.current % items.length;
-      const nextIndex = (currentIndex + 1) % items.length;
-      autoScrollIndexRef.current = nextIndex;
+    const sameTypeOtherEvent = items.filter(
+      (item) => item.id !== activeItem.id && item.mediaType === activeItem.mediaType && item.eventType !== activeItem.eventType,
+    );
 
-      const target = items[nextIndex];
-      const targetLeft = target.offsetLeft - strip.clientWidth / 2 + target.clientWidth / 2;
+    const oppositeTypeSameEvent = items.filter(
+      (item) => item.id !== activeItem.id && item.mediaType !== activeItem.mediaType && item.eventType === activeItem.eventType,
+    );
 
-      strip.scrollTo({ left: Math.max(0, targetLeft), behavior: 'smooth' });
-    };
+    const oppositeTypeOtherEvent = items.filter(
+      (item) => item.id !== activeItem.id && item.mediaType !== activeItem.mediaType && item.eventType !== activeItem.eventType,
+    );
 
-    autoScrollTimerRef.current = window.setInterval(scrollStep, 2000);
+    const seen = new Set<number>();
 
-    return () => {
-      if (autoScrollTimerRef.current) {
-        window.clearInterval(autoScrollTimerRef.current);
-        autoScrollTimerRef.current = null;
-      }
-    };
-  }, [isAutoScrolling]);
+    return [...sameEvent, ...sameTypeOtherEvent, ...oppositeTypeSameEvent, ...oppositeTypeOtherEvent]
+      .filter((item) => {
+        if (seen.has(item.id)) return false;
+        seen.add(item.id);
+        return true;
+      })
+      .slice(0, 6)
+      .map((item) => ({
+        id: item.id,
+        title: item.title,
+        description: item.description,
+        mediaType: item.mediaType,
+        thumb: item.thumb,
+        duration: item.duration,
+      }));
+  }, [activeItem, items]);
 
-  useEffect(() => {
-    const strip = galleryStripRef.current;
-    if (!strip || !isAutoScrolling) {
-      return;
-    }
+  const photoItems = useMemo(
+    () => filteredItems.filter((item) => item.mediaType === 'photo'),
+    [filteredItems],
+  );
 
-    const scrollStep = () => {
-      const items = Array.from(strip.querySelectorAll<HTMLElement>('[data-gallery-item="true"]'));
-      if (items.length === 0) {
-        return;
-      }
-
-      let nextIndex = galleryAutoScrollIndexRef.current + 1;
-
-      // If we've reached the end, reset to beginning and scroll there instantly
-      if (nextIndex >= items.length) {
-        nextIndex = 0;
-        strip.scrollTo({ left: 0, behavior: 'auto' });
-        galleryAutoScrollIndexRef.current = 0;
-        // Scroll to first item smoothly after reset
-        setTimeout(() => {
-          const firstTarget = items[0];
-          const firstTargetLeft = firstTarget.offsetLeft - strip.clientWidth / 2 + firstTarget.clientWidth / 2;
-          strip.scrollTo({ left: Math.max(0, firstTargetLeft), behavior: 'smooth' });
-        }, 100);
-      } else {
-        galleryAutoScrollIndexRef.current = nextIndex;
-        const target = items[nextIndex];
-        const targetLeft = target.offsetLeft - strip.clientWidth / 2 + target.clientWidth / 2;
-        strip.scrollTo({ left: Math.max(0, targetLeft), behavior: 'smooth' });
-      }
-    };
-
-    galleryAutoScrollTimerRef.current = window.setInterval(scrollStep, 3000);
-
-    return () => {
-      if (galleryAutoScrollTimerRef.current) {
-        window.clearInterval(galleryAutoScrollTimerRef.current);
-        galleryAutoScrollTimerRef.current = null;
-      }
-    };
-  }, [isAutoScrolling]);
-
-  useEffect(() => {
-    const filterStrip = filterStripRef.current;
-    const galleryStrip = galleryStripRef.current;
-    
-    if (isAutoScrolling) {
-      return;
-    }
-
-    if (filterStrip) {
-      filterStrip.scrollTo({ left: filterStrip.scrollLeft, behavior: 'auto' });
-    }
-    if (galleryStrip) {
-      galleryStrip.scrollTo({ left: galleryStrip.scrollLeft, behavior: 'auto' });
-    }
-  }, [isAutoScrolling]);
+  const videoItems = useMemo(
+    () => filteredItems.filter((item) => item.mediaType === 'video'),
+    [filteredItems],
+  );
 
   return (
     <Section
@@ -261,164 +457,47 @@ const MediaLibrary: React.FC = () => {
       subtitle="Browse photos and videos by event type: Wedding, Clubs, Events, Food & Beverages, and Short Films"
       background="gradient"
     >
-      {/* Filters strip */}
-      <div ref={filterStripRef} className="flex w-full gap-3 overflow-x-auto whitespace-nowrap rounded-2xl border border-[rgba(255,255,255,0.03)] bg-[rgba(255,255,255,0.02)] px-3 py-3 scrollbar-hide mb-8">
+      <div className="flex w-full gap-3 overflow-x-auto whitespace-nowrap rounded-2xl border border-[rgba(255,255,255,0.03)] bg-[rgba(255,255,255,0.02)] px-3 py-3 scrollbar-hide mb-8">
         <span className="shrink-0 rounded-full border border-[rgba(212,175,55,0.08)] bg-[rgba(212,175,55,0.03)] px-3 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-[rgba(212,175,55,0.9)]">Filters</span>
         {eventTypes.map((et) => (
           <button
             key={et}
-            onClick={() => handleFilterClick(et, 'event')}
+            onClick={() => setEventType(et)}
             className={`shrink-0 px-4 py-2 rounded-full text-sm font-semibold border transition-all duration-300 ${eventType === et ? 'bg-[rgba(212,175,55,0.12)] text-[var(--color-text)] border-[rgba(212,175,55,0.12)]' : 'border-[rgba(255,255,255,0.03)] text-[var(--color-muted)] hover:border-[rgba(212,175,55,0.08)]'}`}
           >
             {et}
           </button>
         ))}
 
-        <span className="shrink-0 rounded-full border border-[rgba(212,175,55,0.08)] bg-[rgba(212,175,55,0.03)] px-3 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-[rgba(212,175,55,0.9)] ml-4">Media</span>
-        {(['all', 'photo', 'video'] as MediaType[]).map((mt) => (
-          <button
-            key={mt}
-            onClick={() => handleFilterClick(mt, 'media')}
-            className={`shrink-0 px-4 py-2 rounded-lg text-sm font-semibold border transition-all duration-300 ${mediaType === mt ? 'bg-[rgba(212,175,55,0.12)] text-[var(--color-text)] border-[rgba(212,175,55,0.12)]' : 'border-[rgba(255,255,255,0.03)] text-[var(--color-muted)] hover:border-[rgba(212,175,55,0.08)]'}`}
-          >
-            {mt === 'all' ? 'All' : mt === 'photo' ? 'Photos' : 'Videos'}
-          </button>
-        ))}
       </div>
 
-      <motion.div
-        ref={galleryStripRef}
-        className="media-masonry"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        variants={containerVariants}
-      >
-        {filteredItems.map((item, idx) => (
-          <motion.div key={item.id} variants={itemVariants} custom={idx * 0.05} className="mb-6 break-inside">
-            <Card variant="hover" className="overflow-hidden rounded-[20px] glass-effect hover-lift">
-              <div
-                onMouseEnter={() => setHoverPreviewId(item.id)}
-                onMouseLeave={() => setHoverPreviewId((id) => (id === item.id ? null : id))}
-                className="relative w-full"
-              >
-                <div className="relative w-full h-64 md:h-72 lg:h-80">
-                  <Image src={item.thumb} alt={item.title} fill sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw" className="object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" placeholder="blur" blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMB/0rXyQAAAABJRU5ErkJggg==" />
+      <RunningStrip title="Photo Strip" items={photoItems} onOpenItem={openItem} />
+      <RunningStrip title="Video Strip" items={videoItems} onOpenItem={openItem} />
 
-                  {item.mediaType === 'video' && hoverPreviewId === item.id && (
-                    <video
-                      src={item.videoUrl || sampleVideoUrl}
-                      muted
-                      autoPlay
-                      loop
-                      playsInline
-                      className="absolute inset-0 w-full h-full object-cover opacity-90"
-                    />
-                  )}
-
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-70"></div>
-                  <div className="absolute bottom-4 left-4 right-4">
-                    <h3 className="text-lg md:text-xl font-display text-text-primary">{item.title}</h3>
-                    <p className="text-sm text-text-secondary mt-1">{item.eventType} • {item.duration || 'Gallery Item'}</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="text-heading-2 font-bold">{item.title}</h3>
-                <span className="text-xs px-2 py-1 rounded-full border border-accent/40 text-accent">
-                  {item.eventType}
-                </span>
-              </div>
-
-              <p className="text-text-secondary text-sm mb-4 flex-grow">{item.description}</p>
-
-              <div className="text-xs text-text-secondary border-t border-border pt-3 flex justify-between items-center">
-                <span className="uppercase tracking-wide">{item.mediaType}</span>
-                <span>{item.duration || 'Gallery Item'}</span>
-              </div>
-
-              <div className="mt-4 flex gap-3">
-                <a
-                  href={item.instagramUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`text-sm px-3 py-2 rounded-lg border border-border text-text-secondary hover:border-accent hover:text-accent transition-all duration-300 flex items-center justify-center gap-2 ${
-                    item.mediaType === 'photo' ? 'w-full' : 'flex-1'
-                  }`}
-                >
-                  <FaInstagram />
-                  Instagram
-                </a>
-                {item.mediaType === 'video' && (
-                  <a
-                    href={item.youtubeUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1 text-sm px-3 py-2 rounded-lg border border-border text-text-secondary hover:border-accent hover:text-accent transition-all duration-300 flex items-center justify-center gap-2"
-                  >
-                    <FaYoutube />
-                    YouTube
-                  </a>
-                )}
-              </div>
-            </Card>
-          </motion.div>
-        ))}
-      </motion.div>
-
-      {activeItem && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 px-4 py-6" onClick={() => setActiveItem(null)}>
-          <div className="w-full max-w-5xl overflow-hidden rounded-3xl border border-white/10 bg-[#0c1119] shadow-2xl" onClick={(event) => event.stopPropagation()}>
-            <div className="flex items-center justify-between border-b border-white/10 px-5 py-4">
-              <div>
-                <h3 className="text-xl font-semibold text-white">{activeItem.title}</h3>
-                <p className="text-sm text-white/55">{activeItem.eventType} • {activeItem.mediaType}</p>
-              </div>
-              <button onClick={() => setActiveItem(null)} className="rounded-full border border-white/10 px-4 py-2 text-sm text-white/80 hover:bg-white/10 transition">
-                Close
-              </button>
-            </div>
-
-            <div className="grid gap-0 lg:grid-cols-[1.5fr_0.9fr]">
-              <div className="relative min-h-[320px] bg-black">
-                {activeItem.mediaType === 'photo' ? (
-                  <Image src={activeItem.thumb} alt={activeItem.title} fill sizes="100vw" className="object-contain" priority />
-                ) : (
-                  <video controls autoPlay playsInline poster={activeItem.thumb} className="h-full w-full bg-black object-contain">
-                    <source src={activeItem.videoUrl || sampleVideoUrl} type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                )}
-              </div>
-
-              <div className="space-y-4 p-5 md:p-6">
-                <p className="text-sm leading-relaxed text-white/70">{activeItem.description}</p>
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                  <p className="text-xs uppercase tracking-[0.3em] text-white/40">Event</p>
-                  <p className="mt-2 text-lg font-medium">{activeItem.eventType}</p>
-                </div>
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                  <p className="text-xs uppercase tracking-[0.3em] text-white/40">Media type</p>
-                  <p className="mt-2 text-lg font-medium capitalize">{activeItem.mediaType}</p>
-                </div>
-                <div className="flex flex-col gap-3">
-                  <a href={activeItem.instagramUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-2xl bg-accent px-4 py-3 font-semibold text-primary transition hover:opacity-90">
-                    <FaInstagram /> Open Instagram
-                  </a>
-                  {activeItem.mediaType === 'video' && (
-                    <a href={activeItem.youtubeUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 font-semibold text-white transition hover:bg-white/10">
-                      <FaYoutube /> Open YouTube
-                    </a>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      <MediaDetailModal
+        open={!!activeItem}
+        title={activeItem?.title || ''}
+        description={activeItem?.description || ''}
+        kind={activeItem?.mediaType === 'video' ? 'video' : 'photo'}
+        src={activeItem?.mediaType === 'video' ? (activeItem?.videoUrl || sampleVideoUrl) : (activeItem?.thumb || '')}
+        poster={activeItem?.thumb}
+        metaLabel={activeItem?.eventType}
+        metaValue={activeItem?.duration || activeItem?.mediaType || ''}
+                      sourceLinks={activeItem ? [
+            { label: 'Instagram', href: activeItem.instagramUrl },
+            ...(activeItem.mediaType === 'video' ? [{ label: 'YouTube', href: activeItem.youtubeUrl }] : []),
+          ] : []}
+        suggestions={relatedSuggestions}
+        onSelectSuggestion={(suggestionId) => {
+          const nextItem = items.find((item) => item.id === suggestionId) || null;
+          setActiveItem(nextItem);
+        }}
+        storageKey={activeItem ? `portfolio:${activeItem.id}` : 'portfolio:unknown'}
+        onClose={() => setActiveItem(null)}
+      />
     </Section>
   );
 };
 
 export default MediaLibrary;
+

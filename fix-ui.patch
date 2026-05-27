@@ -1,0 +1,20 @@
+diff --git a/src/components/Header.tsx b/src/components/Header.tsx
+--- a/src/components/Header.tsx
++++ b/src/components/Header.tsx
+@@
+-            <Button href="/#contact" variant="primary" size="md" className="btn-primary">`r`n              Get in Touch`r`n            </Button>
++            <Button href="/#contact" variant="primary" size="md" className="btn-primary">
++              Get in Touch
++            </Button>
+@@
+-            <Button href="/#contact" variant="primary" size="md" className="w-full mt-4">`r`n              Get in Touch`r`n            </Button>
++            <Button href="/#contact" variant="primary" size="md" className="w-full mt-4">
++              Get in Touch
++            </Button>
+
+diff --git a/src/pages/_app.tsx b/src/pages/_app.tsx
+--- a/src/pages/_app.tsx
++++ b/src/pages/_app.tsx
+@@
+-          {theme === 'dark' ? 'Gÿ+' : 'Gÿ+'}
++          {theme === 'dark' ? '?' : '¤'}

@@ -1,43 +1,162 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import Section from './Section';
 import { containerVariants, itemVariants } from '@/utils/animations';
 import Card from './Card';
+import MediaDetailModal from './MediaDetailModal';
+import type { FeaturedContentItem } from '@/types/content';
 
-const FEATURED = [
-  { id: 1, title: 'The Forever Moments', thumb: '/gallery/featured1.jpg', duration: '03:12', video: '/gallery/featured1.mp4' },
-  { id: 2, title: 'Golden Vows', thumb: '/gallery/featured2.jpg', duration: '02:45', video: '/gallery/featured2.mp4' },
-  { id: 3, title: 'Midnight Revels', thumb: '/gallery/featured3.jpg', duration: '01:58', video: '/gallery/featured3.mp4' },
+const FALLBACK_FEATURED: FeaturedContentItem[] = [
+  { id: 1, title: 'The Forever Moments', thumb: '/gallery/featured1.jpg', duration: '03:12', video: '/videos/intro.mp4' },
+  { id: 2, title: 'Golden Vows', thumb: '/gallery/featured2.jpg', duration: '02:45', video: '/videos/intro.mp4' },
+  { id: 3, title: 'Midnight Revels', thumb: '/gallery/featured3.jpg', duration: '01:58', video: '/videos/intro.mp4' },
 ];
 
 const FeaturedFilms: React.FC = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const [hovered, setHovered] = useState<number | null>(null);
+  const [cardWidth, setCardWidth] = useState<number | null>(null);
+  const [featured, setFeatured] = useState<FeaturedContentItem[]>(FALLBACK_FEATURED);
+  const [activeItem, setActiveItem] = useState<FeaturedContentItem | null>(null);
   const [current, setCurrent] = useState(0);
+  const currentIndexRef = useRef(0);
 
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (!containerRef.current) return;
-      if (e.key === 'ArrowRight') scrollNext();
-      if (e.key === 'ArrowLeft') scrollPrev();
+    let cancelled = false;
+    let timeoutId: number | null = null;
+    let userInteracted = false;
+
+    const clear = () => {
+      if (timeoutId) {
+        window.clearTimeout(timeoutId);
+        timeoutId = null;
+      }
     };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, []);
+
+    const parseDuration = (dur?: string) => {
+      if (!dur) return null;
+      const parts = dur.split(':').map(Number).reverse();
+      let seconds = 0;
+      if (parts.length >= 1) seconds += parts[0];
+      if (parts.length >= 2) seconds += parts[1] * 60;
+      if (parts.length >= 3) seconds += parts[2] * 3600;
+      return seconds;
+    };
+
+    const scheduleNext = () => {
+      clear();
+      const el = containerRef.current;
+      if (!el) return;
+      const track = el.querySelector(':scope > div');
+      if (!track) return;
+      const items = Array.from(track.children) as HTMLElement[];
+      if (!items.length) return;
+
+      const idx = currentIndexRef.current;
+      const currentItem = featured[idx];
+      const parsed = parseDuration(currentItem?.duration || undefined);
+      const isVideo = !!currentItem?.video;
+      const dwell = parsed ? Math.min(Math.max(parsed * 1000, 3000), 20000) : (isVideo ? 9000 : 5000);
+
+      timeoutId = window.setTimeout(() => {
+        if (userInteracted) {
+          userInteracted = false;
+          scheduleNext();
+          return;
+        }
+
+        const nextIndex = (currentIndexRef.current + 1) % items.length;
+        const target = items[nextIndex];
+        const left = target.offsetLeft - (el.clientWidth - target.clientWidth) / 2;
+        el.scrollTo({ left: Math.max(0, left), behavior: 'smooth' });
+        currentIndexRef.current = nextIndex;
+        setCurrent(nextIndex);
+        scheduleNext();
+      }, dwell);
+    };
+
+    const onUserScroll = () => {
+      userInteracted = true;
+      clear();
+      timeoutId = window.setTimeout(() => {
+        userInteracted = false;
+        scheduleNext();
+      }, 1200);
+    };
+
+    const loadFeatured = async () => {
+      try {
+        const response = await fetch('/api/content');
+        if (!response.ok) return;
+        const data = await response.json();
+        const items = Array.isArray(data?.featured) ? data.featured : [];
+        if (!cancelled && items.length > 0) setFeatured(items);
+      } catch {
+        // fall back to static content
+      }
+    };
+
+    void loadFeatured();
+
+    const localEl = containerRef.current;
+    if (localEl) {
+      const track = localEl.querySelector(':scope > div');
+      if (track) {
+        const children = Array.from(track.children) as HTMLElement[];
+        if (children.length) {
+          const firstTarget = children[0];
+          const firstLeft = firstTarget.offsetLeft - (localEl.clientWidth - firstTarget.clientWidth) / 2;
+          localEl.scrollTo({ left: Math.max(0, firstLeft), behavior: 'auto' });
+        }
+      }
+
+      localEl.addEventListener('scroll', onUserScroll, { passive: true });
+    }
+
+    scheduleNext();
+
+    return () => {
+      clear();
+      if (localEl) localEl.removeEventListener('scroll', onUserScroll);
+      cancelled = true;
+    };
+  }, [featured]);
+
+  // compute a card width so each featured card fills the visible frame
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const compute = () => {
+      const w = el.clientWidth;
+      let ratio = 0.78;
+      if (w >= 1280) ratio = 0.7;
+      else if (w >= 1024) ratio = 0.76;
+      else if (w >= 768) ratio = 0.84;
+      else ratio = 0.95;
+      setCardWidth(Math.max(300, Math.floor(w * ratio)));
+    };
+
+    compute();
+    window.addEventListener('resize', compute);
+    return () => window.removeEventListener('resize', compute);
+  }, [featured.length]);
 
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
-    const track = el.querySelector(':scope > div');
-    if (!track) return;
 
     const onScroll = () => {
-      const children = Array.from(track.children) as HTMLElement[];
+      const track = el.querySelector(':scope > div');
+      if (!track) return;
+      const cards = Array.from(track.children) as HTMLElement[];
+      if (!cards.length) return;
+
       const center = el.scrollLeft + el.clientWidth / 2;
       let closest = 0;
       let minDist = Infinity;
-      children.forEach((child, idx) => {
+
+      cards.forEach((child, idx) => {
         const childCenter = child.offsetLeft + child.clientWidth / 2;
         const dist = Math.abs(center - childCenter);
         if (dist < minDist) {
@@ -45,25 +164,15 @@ const FeaturedFilms: React.FC = () => {
           closest = idx;
         }
       });
+
       setCurrent(closest);
+      currentIndexRef.current = closest;
     };
 
     el.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
     return () => el.removeEventListener('scroll', onScroll);
-  }, []);
-
-  const scrollNext = () => {
-    if (!containerRef.current) return;
-    const w = containerRef.current.clientWidth;
-    containerRef.current.scrollBy({ left: w * 0.7, behavior: 'smooth' });
-  };
-
-  const scrollPrev = () => {
-    if (!containerRef.current) return;
-    const w = containerRef.current.clientWidth;
-    containerRef.current.scrollBy({ left: -w * 0.7, behavior: 'smooth' });
-  };
+  }, [featured]);
 
   return (
     <Section id="featured" title="Featured Films" subtitle="Curated cinematic stories" background="default">
@@ -74,80 +183,87 @@ const FeaturedFilms: React.FC = () => {
         viewport={{ once: true }}
         variants={containerVariants}
       >
-        <div className="absolute right-4 top-2 z-20 flex gap-2">
-          <button aria-label="Previous" onClick={scrollPrev} className="btn rounded-full bg-black/50 border border-gold/20 text-gold p-2">
-            ‹
-          </button>
-          <button aria-label="Next" onClick={scrollNext} className="btn rounded-full bg-black/50 border border-gold/20 text-gold p-2">
-            ›
-          </button>
-        </div>
-
         <div ref={containerRef} className="overflow-x-auto -mx-4 py-6 scrollbar-hide px-4 snap-carousel" role="region" aria-label="Featured films carousel">
           <div className="flex gap-6">
-            {FEATURED.map((f) => (
-              <motion.div key={f.id} className="min-w-[320px] md:min-w-[420px] snap-item" variants={itemVariants} role="listitem" tabIndex={0}>
+            {featured.map((f, idx) => (
+              <motion.div
+                key={f.id}
+                className={`snap-item transition-all duration-500 ease-out ${idx === current ? 'scale-[1.15] md:scale-[1.2] opacity-100 z-30 shadow-[0_18px_50px_rgba(0,0,0,0.3)]' : 'scale-[0.82] md:scale-[0.86] opacity-55 z-10'}`}
+                style={cardWidth ? { width: cardWidth } : undefined}
+                variants={itemVariants}
+                role="listitem"
+                tabIndex={0}
+              >
                 <Card variant="hover" className="p-0 overflow-hidden rounded-2xl">
-                  <div
-                    className="relative w-full h-64 md:h-80"
-                    onMouseEnter={() => setHovered(f.id)}
-                    onMouseLeave={() => setHovered((s) => (s === f.id ? null : s))}
+                  <button
+                    type="button"
+                    className="relative w-full text-left"
+                    onClick={() => setActiveItem(f)}
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        setActiveItem(f);
+                      }
+                    }}
                   >
-                    <Image src={f.thumb} alt={f.title} fill sizes="(min-width:1024px) 420px, 320px" className="object-cover transition-transform duration-500 hover:scale-105" loading="lazy" placeholder="blur" blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMB/0rXyQAAAABJRU5ErkJggg==" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                    <div className="absolute left-4 bottom-4">
-                      <h3 className="text-xl font-display text-text-primary">{f.title}</h3>
-                      <p className="text-sm text-text-secondary mt-1">{f.duration}</p>
-                    </div>
-                    <div className="absolute right-4 top-4 bg-[rgba(212,175,55,0.12)] text-gold rounded-full p-3">
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 3v18l15-9L5 3z" fill="#D4AF37"/></svg>
-                    </div>
-
-                    {/* Hover teaser video (if available) */}
-                    {hovered === f.id && f.video ? (
-                      <video
-                        src={f.video}
-                        poster={f.thumb}
-                        preload="metadata"
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                        className="absolute inset-0 w-full h-full object-cover"
+                    <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl">
+                      <Image
+                        src={f.thumb}
+                        alt={f.title}
+                        fill
+                        sizes={f.video ? '(min-width:1280px) 860px, (min-width:768px) 720px, 420px' : '(min-width:1024px) 660px, 360px'}
+                        className="object-cover transition-transform duration-500 hover:scale-105"
+                        loading="lazy"
+                        placeholder="blur"
+                        blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMB/0rXyQAAAABJRU5ErkJggg=="
                       />
-                    ) : null}
-                  </div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                      <div className="absolute left-4 bottom-4">
+                        <h3 className="text-xl font-display text-text-primary">{f.title}</h3>
+                        <p className="text-sm text-text-secondary mt-1">{f.duration}</p>
+                      </div>
+                      <div className="absolute right-4 top-4 bg-[rgba(212,175,55,0.12)] text-gold rounded-full p-3">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 3v18l15-9L5 3z" fill="#D4AF37"/></svg>
+                      </div>
+
+                      {/* Only the centered item plays; the rest stay as still frames */}
+                      {f.video && idx === current ? (
+                        <video
+                          src={f.video}
+                          poster={f.thumb}
+                          preload="metadata"
+                          autoPlay
+                          muted
+                          loop
+                          playsInline
+                          className="absolute inset-0 w-full h-full object-cover"
+                        />
+                      ) : null}
+                    </div>
+                  </button>
                 </Card>
               </motion.div>
             ))}
           </div>
         </div>
 
-        {/* Dots / progress indicators */}
-        <div className="flex items-center justify-center gap-3 mt-4" aria-hidden={false}>
-          {FEATURED.map((_, i) => (
-            <button
-              key={i}
-              aria-label={`Go to slide ${i + 1}`}
-              aria-current={i === current}
-              className={`w-3 h-3 rounded-full focus-visible:outline-none ${i === current ? 'bg-gold' : 'bg-accent/30'}`}
-              onClick={() => {
-                const el = containerRef.current;
-                if (!el) return;
-                const track = el.querySelector(':scope > div');
-                if (!track) return;
-                const child = (track.children[i] as HTMLElement);
-                if (!child) return;
-                const left = child.offsetLeft - (el.clientWidth - child.clientWidth) / 2;
-                el.scrollTo({ left, behavior: 'smooth' });
-              }}
-            />
-          ))}
-        </div>
-        <div className="sr-only" aria-live="polite">Slide {current + 1} of {FEATURED.length}</div>
+        
+        <MediaDetailModal
+          open={!!activeItem}
+          title={activeItem?.title || ''}
+          description={activeItem ? `Featured film • ${activeItem.duration}` : ''}
+          kind="video"
+          src={activeItem?.video || '/videos/intro.mp4'}
+          poster={activeItem?.thumb}
+          metaLabel="Featured film"
+          metaValue={activeItem?.duration}
+          storageKey={activeItem ? `featured:${activeItem.id}` : 'featured:unknown'}
+          onClose={() => setActiveItem(null)}
+        />
       </motion.div>
     </Section>
   );
 };
 
 export default FeaturedFilms;
+
