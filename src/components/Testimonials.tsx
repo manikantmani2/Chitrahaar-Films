@@ -8,7 +8,24 @@ import Card from './Card';
 import { FaStar } from 'react-icons/fa';
 import { apiMethods } from '@/api/client';
 
+type PublicTestimonial = {
+  id: string;
+  name: string;
+  company: string;
+  quote: string;
+  image: string;
+};
+
 const Testimonials: React.FC = () => {
+  const fallbackTestimonials: PublicTestimonial[] = TESTIMONIALS.map((testimonial) => ({
+    id: String(testimonial.id),
+    name: testimonial.name,
+    company: testimonial.company,
+    quote: testimonial.quote,
+    image: testimonial.image,
+  }));
+
+  const [testimonials, setTestimonials] = useState<PublicTestimonial[]>(fallbackTestimonials);
   const [showForm, setShowForm] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [name, setName] = useState('');
@@ -18,6 +35,31 @@ const Testimonials: React.FC = () => {
   const [message, setMessage] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
+
+  React.useEffect(() => {
+    let cancelled = false;
+
+    const loadTestimonials = async () => {
+      try {
+        const response = await fetch('/api/public-feedback');
+        if (!response.ok) {
+          return;
+        }
+
+        const data = await response.json();
+        if (!cancelled && Array.isArray(data?.items) && data.items.length > 0) {
+          setTestimonials(data.items);
+        }
+      } catch {
+        // use static testimonials if API unavailable
+      }
+    };
+
+    void loadTestimonials();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -60,7 +102,7 @@ const Testimonials: React.FC = () => {
         viewport={{ once: true }}
         variants={containerVariants}
       >
-        {TESTIMONIALS.map((testimonial) => (
+        {testimonials.map((testimonial) => (
           <motion.div key={testimonial.id} variants={itemVariants}>
             <Card variant="glass" className="h-full flex flex-col">
               {/* Stars */}
@@ -205,3 +247,4 @@ const Testimonials: React.FC = () => {
 };
 
 export default Testimonials;
+

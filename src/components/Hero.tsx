@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { FaPlay } from 'react-icons/fa';
@@ -14,6 +14,7 @@ interface HeroProps {
   cta2?: { text: string; onClick?: () => void };
   backgroundImage?: string;
   hasVideo?: boolean;
+  hideForegroundContent?: boolean;
 }
 
 const Hero: React.FC<HeroProps> = ({
@@ -24,8 +25,15 @@ const Hero: React.FC<HeroProps> = ({
   cta2,
   backgroundImage,
   hasVideo = false,
+  hideForegroundContent = false,
 }) => {
+  const [showIntro, setShowIntro] = useState(true);
+
   useEffect(() => {
+    const introTimer = window.setTimeout(() => {
+      setShowIntro(false);
+    }, 5000);
+
     try {
       const raw = localStorage.getItem('bg-audio-muted');
       const mutedPref = raw ? JSON.parse(raw) : true;
@@ -36,6 +44,10 @@ const Hero: React.FC<HeroProps> = ({
     } catch (e) {
       // ignore
     }
+
+    return () => {
+      window.clearTimeout(introTimer);
+    };
   }, []);
 
   return (
@@ -45,15 +57,28 @@ const Hero: React.FC<HeroProps> = ({
     >
       {/* Background */}
       <div className="absolute inset-0 -z-10">
-        {/* rotating background videos / images - desktop only */}
-        <div className="hidden md:block">
-          <BackgroundShowcase items={undefined} />
-        </div>
-        {/* Mobile fallback: single optimized image */}
-        <div className="md:hidden absolute inset-0 -z-20">
-          <Image src="/gallery/hero1.svg" alt="Hero Background" fill sizes="100vw" className="object-cover opacity-90" priority />
+        <div
+          data-hero-intro
+          className={`absolute inset-0 transition-opacity duration-1000 ${showIntro ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+        >
+          <Image
+            src={backgroundImage || '/gallery/hero1.svg'}
+            alt="Hero Background"
+            fill
+            sizes="100vw"
+            className="object-cover opacity-90"
+            priority
+          />
           <div className="absolute inset-0 bg-black/20" />
         </div>
+
+        <div
+          data-hero-showcase
+          className={`absolute inset-0 transition-opacity duration-1000 ${showIntro ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+        >
+          <BackgroundShowcase items={undefined} />
+        </div>
+
         <div className="absolute inset-0 hero-overlay"></div>
         {backgroundImage && (
           <Image
@@ -72,7 +97,8 @@ const Hero: React.FC<HeroProps> = ({
       </div>
 
       {/* Content */}
-        <div className="container-custom relative z-10">
+      {!hideForegroundContent && (
+      <div className="container-custom relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
           <motion.div
@@ -142,7 +168,7 @@ const Hero: React.FC<HeroProps> = ({
             custom={0.4}
           >
             <div className="relative w-full aspect-video rounded-xl overflow-hidden border border-border glass-effect group glow-effect-lg">
-              {hasVideo ? (
+              {hasVideo && !showIntro ? (
                 <>
                   <video
                     src="https://videos.pexels.com/video-files/4476151/4476151-sd_640_360_30fps.mp4"
@@ -163,7 +189,7 @@ const Hero: React.FC<HeroProps> = ({
                 </>
               ) : (
                 <Image
-                  src="/placeholder-hero.jpg"
+                  src="/gallery/hero1.svg"
                   alt="Hero Visual"
                   fill
                   sizes="(min-width: 768px) 50vw, 100vw"
@@ -178,13 +204,14 @@ const Hero: React.FC<HeroProps> = ({
           </motion.div>
         </div>
       </div>
+      )}
 
       {/* Sound toggle for background videos */}
       <div className="absolute top-6 right-6 z-30">
         <button
           aria-label="Toggle background audio"
           id="bg-audio-toggle"
-          className="w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center text-white"
+          className="w-10 h-10 rounded-full bg-secondary/70 backdrop-blur-sm flex items-center justify-center text-text-primary border border-border"
           onClick={() => {
             try {
               const raw = localStorage.getItem('bg-audio-muted');
@@ -207,20 +234,23 @@ const Hero: React.FC<HeroProps> = ({
       
 
       {/* Scroll indicator */}
-      <motion.div
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 2, repeat: Infinity }}
-      >
-        <div className="flex flex-col items-center gap-2 text-accent">
-          <span className="text-xs uppercase tracking-widest">Scroll to explore</span>
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-          </svg>
-        </div>
-      </motion.div>
+      {!hideForegroundContent && (
+        <motion.div
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+        >
+          <div className="flex flex-col items-center gap-2 text-accent">
+            <span className="text-xs uppercase tracking-widest">Scroll to explore</span>
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+            </svg>
+          </div>
+        </motion.div>
+      )}
     </section>
   );
 };
 
 export default Hero;
+

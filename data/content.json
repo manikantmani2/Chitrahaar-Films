@@ -1,0 +1,139 @@
+{
+  "featured": [
+    {
+      "id": 1,
+      "title": "The Forever Moments",
+      "thumb": "/gallery/featured1.jpg",
+      "duration": "03:12",
+      "video": "/videos/intro.mp4",
+      "visible": true
+    },
+    {
+      "id": 2,
+      "title": "Golden Vows",
+      "thumb": "/gallery/featured2.jpg",
+      "duration": "02:45",
+      "video": "/videos/intro.mp4",
+      "visible": true
+    },
+    {
+      "id": 3,
+      "title": "Midnight Revels",
+      "thumb": "/gallery/featured3.jpg",
+      "duration": "01:58",
+      "video": "/videos/intro.mp4",
+      "visible": true
+    }
+  ],
+  "portfolio": [
+    {
+      "id": 1,
+      "title": "Wedding Highlights Photos",
+      "eventType": "Wedding",
+      "mediaType": "photo",
+      "thumb": "/gallery/wedding-photo.svg",
+      "description": "Candid portraits, rituals, and cinematic wedding moments.",
+      "instagramUrl": "https://instagram.com/chitrahaarfilms",
+      "youtubeUrl": "https://youtube.com/@chitrahaarfilms",
+      "visible": true
+    },
+    {
+      "id": 2,
+      "title": "Wedding Reel Video",
+      "eventType": "Wedding",
+      "mediaType": "video",
+      "thumb": "/gallery/wedding-video.svg",
+      "description": "A premium wedding teaser with emotional storytelling.",
+      "duration": "01:12",
+      "videoUrl": "/videos/intro.mp4",
+      "instagramUrl": "https://instagram.com/chitrahaarfilms",
+      "youtubeUrl": "https://youtube.com/@chitrahaarfilms",
+      "visible": true
+    },
+    {
+      "id": 3,
+      "title": "Clubs Night Photos",
+      "eventType": "Clubs",
+      "mediaType": "photo",
+      "thumb": "/gallery/clubs-photo.svg",
+      "description": "Energetic nightlife captures for artists and venues.",
+      "instagramUrl": "https://instagram.com/chitrahaarfilms",
+      "youtubeUrl": "https://youtube.com/@chitrahaarfilms",
+      "visible": true
+    },
+    {
+      "id": 4,
+      "title": "Clubs Promo Video",
+      "eventType": "Clubs",
+      "mediaType": "video",
+      "thumb": "/gallery/clubs-video.svg",
+      "description": "Fast-paced vertical and cinematic edits for club promotion.",
+      "duration": "00:42",
+      "videoUrl": "/videos/intro.mp4",
+      "instagramUrl": "https://instagram.com/chitrahaarfilms",
+      "youtubeUrl": "https://youtube.com/@chitrahaarfilms",
+      "visible": true
+    },
+    {
+      "id": 5,
+      "title": "Event Coverage Photos",
+      "eventType": "Events",
+      "mediaType": "photo",
+      "thumb": "/gallery/events-photo.svg",
+      "description": "Launches, conferences, and social event captures.",
+      "instagramUrl": "https://instagram.com/chitrahaarfilms",
+      "youtubeUrl": "https://youtube.com/@chitrahaarfilms",
+      "visible": true
+    },
+    {
+      "id": 6,
+      "title": "Event Aftermovie",
+      "eventType": "Events",
+      "mediaType": "video",
+      "thumb": "/gallery/events-video.svg",
+      "description": "Complete event story with highlights and keynote moments.",
+      "duration": "01:35",
+      "videoUrl": "/videos/intro.mp4",
+      "instagramUrl": "https://instagram.com/chitrahaarfilms",
+      "youtubeUrl": "https://youtube.com/@chitrahaarfilms",
+      "visible": true
+    },
+    {
+      "id": 7,
+      "title": "Food & Beverages Photos",
+      "eventType": "Food & Beverages",
+      "mediaType": "photo",
+      "thumb": "/gallery/food-beverages-photo.svg",
+      "description": "Menu showcases, plating, ambience, and signature dishes.",
+      "instagramUrl": "https://instagram.com/chitrahaarfilms",
+      "youtubeUrl": "https://youtube.com/@chitrahaarfilms",
+      "visible": true
+    },
+    {
+      "id": 8,
+      "title": "Food & Beverages Promo Video",
+      "eventType": "Food & Beverages",
+      "mediaType": "video",
+      "thumb": "/gallery/food-beverages-video.svg",
+      "description": "Recipe reels and cinematic food promos for brands.",
+      "duration": "00:58",
+      "videoUrl": "/videos/intro.mp4",
+      "instagramUrl": "https://instagram.com/chitrahaarfilms",
+      "youtubeUrl": "https://youtube.com/@chitrahaarfilms",
+      "visible": true
+    },
+    {
+      "id": 9,
+      "title": "Short Films Showcase",
+      "eventType": "Short Films",
+      "mediaType": "video",
+      "thumb": "/gallery/short-films-video.svg",
+      "description": "Narrative films and dramatic cinematic sequences.",
+      "duration": "02:08",
+      "videoUrl": "/videos/intro.mp4",
+      "instagramUrl": "https://instagram.com/chitrahaarfilms",
+      "youtubeUrl": "https://youtube.com/@chitrahaarfilms",
+      "visible": true
+    }
+  ]
+}

@@ -170,8 +170,8 @@ export const STATS = [
 
 // Contact Info
 export const CONTACT_INFO = {
-  email: 'hello@chitrahaarfilms.com',
-  phone: '+91 98765 43210',
+  email: 'chitahaarfilms@gmail.com',
+  phone: '8860171546',
   address: 'Mumbai, India',
   hours: 'Mon - Fri, 10 AM - 6 PM IST',
 };
@@ -248,3 +248,4 @@ export const MEDIA_LIBRARY = [
     description: 'Cinematic videos and short films',
   },
 ];
+

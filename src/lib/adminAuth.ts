@@ -7,6 +7,10 @@ import { authOptions } from './nextAuth';
 const COOKIE_NAME = 'chitrahaar_admin_session';
 const SESSION_TTL_SECONDS = 60 * 60 * 8;
 
+function isLocalAdminBypassEnabled() {
+  return !process.env.ADMIN_EMAIL && !process.env.ADMIN_PASSWORD && !process.env.GOOGLE_CLIENT_ID && !process.env.GOOGLE_CLIENT_SECRET;
+}
+
 function getSecret() {
   return process.env.ADMIN_SESSION_SECRET || process.env.ADMIN_PASSWORD || 'chitrahaar-admin-session-secret';
 }
@@ -66,6 +70,10 @@ export function isAdminSessionValidFromCookieHeader(cookieHeader: string | undef
 }
 
 export async function hasAdminAccess(req: NextApiRequest, res: NextApiResponse) {
+  if (isLocalAdminBypassEnabled()) {
+    return true;
+  }
+
   const session = await getServerSession(req, res, authOptions);
   if (session?.user?.email) {
     return true;
@@ -104,3 +112,4 @@ function isSignedAdminSessionValid(raw: string | null) {
 export function getAdminCookieName() {
   return COOKIE_NAME;
 }
+

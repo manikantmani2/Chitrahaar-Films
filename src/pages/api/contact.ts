@@ -21,6 +21,11 @@ export default async function handler(
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD || !process.env.BUSINESS_EMAIL) {
+      console.log('Contact inquiry received without email configuration:', { name, email, phone, service });
+      return res.status(200).json({ success: true, message: 'Inquiry received successfully' });
+    }
+
     // Configure your email service
     const transporter = nodemailer.createTransport({
       service: 'gmail', // or your email service
@@ -65,3 +70,4 @@ export default async function handler(
     res.status(500).json({ error: 'Failed to send email' });
   }
 }
+

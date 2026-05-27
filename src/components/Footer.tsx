@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter, FaArrowUp } from 'react-icons/fa';
+import Logo from './Logo';
 import { CONTACT_INFO } from '@/constants';
 import { scrollToSection } from '@/utils/helpers';
 import { fadeInVariants, containerVariants, itemVariants } from '@/utils/animations';
@@ -39,14 +40,8 @@ const Footer: React.FC = () => {
         >
           {/* Brand */}
           <motion.div variants={itemVariants}>
-            <div className="flex items-center gap-2 mb-6">
-              <div className="w-10 h-10 bg-gradient-to-r from-accent to-gold rounded-lg flex items-center justify-center font-bold text-primary">
-                CF
-              </div>
-              <div>
-                <p className="text-base font-bold">Chitrahaar</p>
-                <p className="text-xs text-accent -mt-1">Films</p>
-              </div>
+            <div className="flex items-center gap-3 mb-6">
+              <Logo size={40} />
             </div>
             <p className="text-text-secondary text-sm leading-relaxed">
               Premium production house creating cinematic experiences that inspire and engage audiences worldwide.
@@ -155,3 +150,4 @@ const Footer: React.FC = () => {
 };
 
 export default Footer;
+
