@@ -417,7 +417,7 @@ const MediaLibrary: React.FC = () => {
   );
 };
 
-export default MediaLibrary;
+    // Removed stray code and duplicate export
             onClick={() => setEventType(et)}
             className={`shrink-0 px-4 py-2 rounded-full text-sm font-semibold border transition-all duration-300 ${eventType === et ? 'bg-[rgba(212,175,55,0.12)] text-[var(--color-text)] border-[rgba(212,175,55,0.12)]' : 'border-[rgba(255,255,255,0.03)] text-[var(--color-muted)] hover:border-[rgba(212,175,55,0.08)]'}`}
           >
