@@ -417,5 +417,7 @@ const MediaLibrary: React.FC = () => {
   );
 };
 
-    
+export default MediaLibrary;
+
+
 
