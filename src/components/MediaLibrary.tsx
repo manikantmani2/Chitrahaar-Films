@@ -417,43 +417,5 @@ const MediaLibrary: React.FC = () => {
   );
 };
 
-    // Removed stray code and duplicate export
-            onClick={() => setEventType(et)}
-            className={`shrink-0 px-4 py-2 rounded-full text-sm font-semibold border transition-all duration-300 ${eventType === et ? 'bg-[rgba(212,175,55,0.12)] text-[var(--color-text)] border-[rgba(212,175,55,0.12)]' : 'border-[rgba(255,255,255,0.03)] text-[var(--color-muted)] hover:border-[rgba(212,175,55,0.08)]'}`}
-          >
-            {et}
-          </button>
-        ))}
-
-      </div>
-
-      <RunningStrip title="Photo Strip" items={photoItems} onOpenItem={openItem} />
-      <RunningStrip title="Video Strip" items={videoItems} onOpenItem={openItem} />
-
-      <MediaDetailModal
-        open={!!activeItem}
-        title={activeItem?.title || ''}
-        description={activeItem?.description || ''}
-        kind={activeItem?.mediaType === 'video' ? 'video' : 'photo'}
-        src={activeItem?.mediaType === 'video' ? (activeItem?.videoUrl || sampleVideoUrl) : (activeItem?.thumb || '')}
-        poster={activeItem?.thumb}
-        metaLabel={activeItem?.eventType}
-        metaValue={activeItem?.duration || activeItem?.mediaType || ''}
-                      sourceLinks={activeItem ? [
-            { label: 'Instagram', href: activeItem.instagramUrl },
-            ...(activeItem.mediaType === 'video' ? [{ label: 'YouTube', href: activeItem.youtubeUrl }] : []),
-          ] : []}
-        suggestions={relatedSuggestions}
-        onSelectSuggestion={(suggestionId) => {
-          const nextItem = items.find((item) => item.id === suggestionId) || null;
-          setActiveItem(nextItem);
-        }}
-        storageKey={activeItem ? `portfolio:${activeItem.id}` : 'portfolio:unknown'}
-        onClose={() => setActiveItem(null)}
-      />
-    </Section>
-  );
-};
-
-export default MediaLibrary;
+    
 
