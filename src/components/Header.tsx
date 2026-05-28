@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Logo from './Logo';
+import Button from './Button';
 import { NAV_LINKS } from '@/constants';
 import { useScrollPosition, useIsMobile } from '@/hooks';
 import { FaBars, FaTimes } from 'react-icons/fa';
@@ -69,10 +71,8 @@ const Header: React.FC = () => {
             transition={{ duration: 0.5 }}
           >
             <Link href="/" className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-[linear-gradient(90deg,#D4AF37,#e6c66a)] rounded-lg flex items-center justify-center font-bold text-primary group-hover:shadow-lg transition-all duration-300">
-                CF
-              </div>
-              <div>
+              <Logo size={40} />
+              <div className="hidden sm:block">
                 <p className="text-base font-bold text-text-primary">Chitrahaar</p>
                 <p className="text-xs text-accent -mt-1">Films</p>
               </div>
@@ -95,19 +95,9 @@ const Header: React.FC = () => {
                   <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-accent to-gold group-hover:w-full transition-all duration-300"></span>
                 </motion.a>
               ))}
-            </nav>
-          )}
 
-          {!isMobile && (
-            <button
-              type="button"
-              onClick={() => setTheme((currentTheme) => (currentTheme === 'dark' ? 'light' : 'dark'))}
-              className="ml-3 inline-flex h-11 w-11 items-center justify-center rounded-full border border-transparent bg-white/5 text-lg text-accent transition-colors hover:bg-white/10"
-              aria-label={themeLabel}
-              title={themeLabel}
-            >
-              <span aria-hidden="true">{themeText}</span>
-            </button>
+              {/* Desktop CTA removed per user request */}
+            </nav>
           )}
 
           {isMobile && (
