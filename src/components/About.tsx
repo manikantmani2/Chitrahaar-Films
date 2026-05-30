@@ -97,13 +97,13 @@ const About: React.FC = () => {
           {TEAM_MEMBERS.map((member, index) => (
             <motion.div key={member.id} variants={itemVariants} custom={index * 0.1}>
               <Card variant="glass" className="text-center group">
-                <div className="relative mb-4 overflow-hidden rounded-lg">
+                <div className="relative mb-4 overflow-hidden rounded-lg bg-black/20 aspect-[4/5]">
                   <Image
                     src={member.image}
                     alt={member.name}
-                    width={600}
-                    height={600}
-                    className="w-full aspect-square object-cover group-hover:scale-110 transition-transform duration-500"
+                    fill
+                    sizes="(min-width: 1024px) 25vw, (min-width: 768px) 50vw, 100vw"
+                    className="object-cover object-center group-hover:scale-110 transition-transform duration-500"
                   />
                 </div>
                 <h4 className="text-heading-2 font-bold mb-1">{member.name}</h4>

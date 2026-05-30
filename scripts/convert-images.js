@@ -5,6 +5,7 @@ const sharp = require('sharp');
 const srcDirs = [
   path.join(__dirname, '..', 'public', 'gallery'),
   path.join(__dirname, '..', 'public', 'portfolio'),
+  path.join(__dirname, '..', 'public', 'our-works-gallery'),
 ];
 
 async function convertFile(filePath) {

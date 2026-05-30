@@ -4,9 +4,9 @@ import type { FeaturedContentItem, PortfolioContentItem, SiteContentData } from 
 const createFeaturedItem = (): FeaturedContentItem => ({
   id: Date.now(),
   title: 'New Featured Film',
-  thumb: '/gallery/featured1.jpg',
+  thumb: '/our-works-gallery/Wedding/0U8A4857.jpg',
   duration: '00:00',
-  video: '/videos/intro.mp4',
+  video: '/our-works-gallery/Wedding/WEDDING.mp4',
   visible: true,
 });
 
@@ -15,10 +15,10 @@ const createPortfolioItem = (): PortfolioContentItem => ({
   title: 'New Portfolio Item',
   eventType: 'Wedding',
   mediaType: 'photo',
-  thumb: '/gallery/wedding-photo.svg',
+  thumb: '/our-works-gallery/Wedding/0U8A4373.jpg',
   description: 'Describe the project here.',
   duration: '',
-  videoUrl: '/videos/intro.mp4',
+  videoUrl: '/our-works-gallery/Wedding/WEDDING.mp4',
   instagramUrl: 'https://instagram.com/chitrahaarfilms',
   youtubeUrl: 'https://youtube.com/@chitrahaarfilms',
   visible: true,
@@ -186,7 +186,7 @@ export default function AdminContentManager() {
                 <div className="grid gap-3 md:grid-cols-2">
                   <input value={item.title} onChange={(event) => updatePortfolio(index, { title: event.target.value })} className="rounded-2xl border border-white/10 bg-black/25 px-4 py-3 outline-none md:col-span-2" placeholder="Title" />
                   <select value={item.eventType} onChange={(event) => updatePortfolio(index, { eventType: event.target.value as PortfolioContentItem['eventType'] })} className="rounded-2xl border border-white/10 bg-black/25 px-4 py-3 outline-none">
-                    {['Wedding', 'Clubs', 'Events', 'Food & Beverages', 'Short Films'].map((option) => (
+                    {['Wedding', 'Artist', 'Corporate & Events', 'Food & Beverages', 'Short Films', 'Fashion'].map((option) => (
                       <option key={option} value={option}>{option}</option>
                     ))}
                   </select>

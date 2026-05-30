@@ -42,7 +42,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         name: item.name,
         company: item.eventType || 'Client',
         quote: item.message,
-        image: '/testimonials/testimonial-1.jpg',
+        image: '/team/raj.png',
       }));
 
     return res.status(200).json({ success: true, items });

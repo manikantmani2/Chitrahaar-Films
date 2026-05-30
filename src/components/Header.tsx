@@ -1,33 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Logo from './Logo';
-import Button from './Button';
 import { NAV_LINKS } from '@/constants';
 import { useScrollPosition, useIsMobile } from '@/hooks';
 import { FaBars, FaTimes } from 'react-icons/fa';
-
-type ThemeMode = 'dark' | 'light';
-
-const THEME_STORAGE_KEY = 'chitrahaar-theme';
-
-const getInitialTheme = (): ThemeMode => {
-  if (typeof window === 'undefined') {
-    return 'dark';
-  }
-
-  const savedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
-  if (savedTheme === 'dark' || savedTheme === 'light') {
-    return savedTheme;
-  }
-
-  return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-};
+import { useTheme } from '@/hooks/useTheme';
+import ThemeToggleButton from './ThemeToggleButton';
 
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [theme, setTheme] = useState<ThemeMode>('dark');
+  const headerRef = useRef<HTMLElement | null>(null);
+  const { theme, toggleTheme } = useTheme();
   const scrollPosition = useScrollPosition();
   const isMobile = useIsMobile();
 
@@ -35,16 +20,30 @@ const Header: React.FC = () => {
     setIsScrolled(scrollPosition > 50);
   }, [scrollPosition]);
 
+  // Keep CSS variable --site-header-height in sync with actual header height.
   useEffect(() => {
-    setTheme(getInitialTheme());
+    const updateHeaderHeight = () => {
+      const el = headerRef.current || document.querySelector('header');
+      if (!el) return;
+      const h = Math.ceil((el as HTMLElement).getBoundingClientRect().height);
+      document.documentElement.style.setProperty('--site-header-height', `${h}px`);
+    };
+
+    updateHeaderHeight();
+    window.addEventListener('resize', updateHeaderHeight);
+
+    return () => {
+      window.removeEventListener('resize', updateHeaderHeight);
+    };
   }, []);
 
+  // Recalculate when mobile menu toggles (height may change)
   useEffect(() => {
-    const root = document.documentElement;
-    root.dataset.theme = theme;
-    root.style.colorScheme = theme;
-    window.localStorage.setItem(THEME_STORAGE_KEY, theme);
-  }, [theme]);
+    const el = headerRef.current || document.querySelector('header');
+    if (!el) return;
+    const h = Math.ceil((el as HTMLElement).getBoundingClientRect().height);
+    document.documentElement.style.setProperty('--site-header-height', `${h}px`);
+  }, [isMobileMenuOpen, isScrolled]);
 
   const headerClasses = `fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
     isScrolled ? 'bg-[rgba(11,11,11,0.75)] backdrop-blur-lg border-b border-transparent shadow-lg' : 'sticky-navbar'
@@ -57,11 +56,10 @@ const Header: React.FC = () => {
       y: 0,
       transition: { delay: i * 0.1, duration: 0.5 },
     }),
-  };  const themeText = theme === 'dark' ? 'Dark' : 'Light';
-  const themeLabel = theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
+  };
 
   return (
-    <header className={headerClasses}>
+    <header ref={headerRef} className={headerClasses}>
       <div className="container-custom py-4">
         <div className="flex items-center justify-between">
           <motion.div
@@ -96,17 +94,22 @@ const Header: React.FC = () => {
                 </motion.a>
               ))}
 
+              <ThemeToggleButton theme={theme} onToggle={toggleTheme} />
+
               {/* Desktop CTA removed per user request */}
             </nav>
           )}
 
           {isMobile && (
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="ml-2 inline-flex h-11 w-11 items-center justify-center rounded-full border border-transparent bg-white/5 text-accent text-2xl"
-            >
-              {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
-            </button>
+            <div className="ml-2 flex items-center gap-2">
+              <ThemeToggleButton theme={theme} onToggle={toggleTheme} compact />
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-transparent bg-white/5 text-accent text-2xl"
+              >
+                {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
+              </button>
+            </div>
           )}
         </div>
 
@@ -127,6 +130,8 @@ const Header: React.FC = () => {
                 {link.name}
               </a>
             ))}
+
+            <ThemeToggleButton theme={theme} onToggle={toggleTheme} className="w-full justify-center" />
           </motion.nav>
         )}
       </div>

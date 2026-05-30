@@ -176,10 +176,11 @@ const Testimonials: React.FC = () => {
                 </select>
                 <select value={eventType} onChange={(e) => setEventType(e.target.value)} className="input">
                   <option>Wedding</option>
-                  <option>Clubs</option>
-                  <option>Events</option>
+                  <option>Artist</option>
+                  <option>Corporate & Events</option>
                   <option>Food & Beverages</option>
                   <option>Short Films</option>
+                  <option>Fashion</option>
                   <option>Other</option>
                 </select>
                 <textarea
@@ -220,10 +221,11 @@ const Testimonials: React.FC = () => {
               </select>
               <select value={eventType} onChange={(e) => setEventType(e.target.value)} className="input">
                 <option>Wedding</option>
-                <option>Clubs</option>
-                <option>Events</option>
+                <option>Artist</option>
+                <option>Corporate & Events</option>
                 <option>Food & Beverages</option>
                 <option>Short Films</option>
+                <option>Fashion</option>
                 <option>Other</option>
               </select>
               <textarea required placeholder="Your feedback" value={message} onChange={(e) => setMessage(e.target.value)} className="input h-28" />
