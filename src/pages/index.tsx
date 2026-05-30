@@ -4,9 +4,12 @@ import Logo from '@/components/Logo';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import ThemeToggleButton from '@/components/ThemeToggleButton';
+import { useTheme } from '@/hooks/useTheme';
 
 export default function LandingPage() {
   const [videoFailed, setVideoFailed] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <>
@@ -27,9 +30,26 @@ export default function LandingPage() {
         <link rel="alternate icon" href="/favicon.png" />
       </PageHead>
 
-      <main className="relative min-h-screen overflow-hidden">
-        <div className="absolute inset-0" style={{ background: 'radial-gradient(circle at top, rgba(var(--color-accent-rgb), 0.16), transparent 30%), radial-gradient(circle at bottom right, rgba(255,255,255,0.06), transparent 28%), linear-gradient(180deg, var(--color-primary) 0%, var(--color-secondary) 100%)' }} />
-        <div className="absolute inset-0 opacity-30" style={{ background: 'linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)', backgroundSize: '84px 84px' }} />
+      <main className="relative min-h-screen overflow-hidden bg-primary text-text-primary">
+        <div className="absolute right-4 top-4 z-30 sm:right-6 sm:top-6">
+          <ThemeToggleButton theme={theme} onToggle={toggleTheme} />
+        </div>
+
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              'radial-gradient(circle at top, rgba(var(--color-accent-rgb), 0.16), transparent 30%), radial-gradient(circle at bottom right, rgba(var(--color-secondary-rgb), 0.28), transparent 28%), linear-gradient(180deg, var(--color-primary) 0%, var(--color-secondary) 100%)',
+          }}
+        />
+        <div
+          className="absolute inset-0 opacity-30"
+          style={{
+            background:
+              'linear-gradient(rgba(var(--color-border-rgb), 0.22) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--color-border-rgb), 0.22) 1px, transparent 1px)',
+            backgroundSize: '84px 84px',
+          }}
+        />
 
         <section className="relative z-10 flex min-h-screen items-center justify-center px-6 py-16">
           <div className="grid w-full max-w-7xl items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
@@ -47,7 +67,7 @@ export default function LandingPage() {
                   <p className="text-xs uppercase tracking-[0.45em] text-[rgba(212,175,55,0.95)]">
                     Chitrahaar Films
                   </p>
-                    <p className="mt-1 text-sm text-white/60">Har Nazariya Ek Kahaani</p>
+                    <p className="mt-1 text-sm text-text-secondary">Har Nazariya Ek Kahaani</p>
                 </div>
               </motion.div>
 
@@ -55,7 +75,7 @@ export default function LandingPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.1 }}
-                className="font-display text-4xl leading-none tracking-tight text-white sm:text-5xl lg:text-6xl"
+                className="font-display text-4xl leading-none tracking-tight text-text-primary sm:text-5xl lg:text-6xl"
                 style={{ fontFamily: 'Playfair Display, serif' }}
               >
                 Welcome to Chitrahaar Films
@@ -65,7 +85,7 @@ export default function LandingPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.7, delay: 0.2 }}
-                  className="mt-6 max-w-xl text-sm sm:text-base leading-relaxed text-white/75"
+                  className="mt-6 max-w-xl text-sm sm:text-base leading-relaxed text-text-secondary"
                   style={{ fontFamily: 'Montserrat, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif' }}
                 >
                   At Chitrahaar Films, we don’t just record moments — we turn emotions, celebrations, and stories into timeless cinematic experiences that live forever.
@@ -85,7 +105,7 @@ export default function LandingPage() {
                 </Link>
                 <a
                   href="#intro-video"
-                  className="inline-flex items-center justify-center rounded-full border border-white/12 bg-white/5 px-8 py-4 text-base font-semibold text-white/90 backdrop-blur-sm transition-colors duration-300 hover:bg-white/10"
+                  className="inline-flex items-center justify-center rounded-full border border-border bg-secondary/70 px-8 py-4 text-base font-semibold text-text-primary backdrop-blur-sm transition-colors duration-300 hover:bg-secondary"
                 >
                   Watch Intro
                 </a>
@@ -100,11 +120,11 @@ export default function LandingPage() {
               className="relative"
             >
               <div className="absolute -inset-4 rounded-[2rem] bg-[radial-gradient(circle,rgba(212,175,55,0.2),transparent_70%)] blur-2xl" />
-              <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-black/40 shadow-[0_30px_80px_rgba(0,0,0,0.55)] backdrop-blur-sm">
+                <div className="relative overflow-hidden rounded-[2rem] border border-border bg-secondary/70 shadow-[0_30px_80px_rgba(0,0,0,0.32)] backdrop-blur-sm">
                 <div className="aspect-[16/9] md:aspect-[16/9]">
                   {videoFailed ? (
                     <Image
-                      src="/gallery/hero1.svg"
+                      src="/our-works-gallery/Artist/Worldclass-379.jpg"
                       alt="Chitrahaar Films intro still"
                       fill
                       priority
@@ -118,24 +138,24 @@ export default function LandingPage() {
                       loop
                       playsInline
                       preload="metadata"
-                      poster="/gallery/hero1.svg"
+                      poster="/our-works-gallery/Artist/Worldclass-379.jpg"
                       className="h-full w-full object-cover"
                       onError={() => setVideoFailed(true)}
                     >
-                      <source src="/videos/intro.mp4" type="video/mp4" />
+                      <source src="/our-works-gallery/Wedding/WEDDING.mp4" type="video/mp4" />
                     </video>
                   )}
                 </div>
-                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.05),rgba(0,0,0,0.55))]" />
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(var(--color-secondary-rgb),0.06),rgba(var(--color-primary-rgb),0.6))]" />
                 <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
                   <div className="flex items-end justify-between gap-6">
                     <div>
                         <p className="text-xs uppercase tracking-[0.35em] text-[rgba(212,175,55,0.95)]">Local intro video</p>
-                      <p className="mt-2 max-w-xs text-sm leading-6 text-white/75">
+                      <p className="mt-2 max-w-xs text-sm leading-6 text-text-secondary">
                           A self-hosted cinematic opener before the full experience loads.
                       </p>
                     </div>
-                    <div className="rounded-full border border-white/10 bg-black/30 px-4 py-2 text-xs uppercase tracking-[0.35em] text-white/70 backdrop-blur-sm">
+                    <div className="rounded-full border border-border bg-secondary/70 px-4 py-2 text-xs uppercase tracking-[0.35em] text-text-secondary backdrop-blur-sm">
                       00:05
                     </div>
                   </div>

@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { FaPlay } from 'react-icons/fa';
 import { slideUpVariants, slideLeftVariants, slideRightVariants } from '@/utils/animations';
+import { getGalleryThumbAvif, getGalleryThumbWebp } from '@/utils/imagePaths';
 import Button from './Button';
 import BackgroundShowcase from './BackgroundShowcase';
 
@@ -52,8 +53,9 @@ const Hero: React.FC<HeroProps> = ({
 
   return (
     <section
-      className="relative min-h-[80vh] md:min-h-screen flex items-center justify-center overflow-hidden pt-20"
+      className="relative min-h-[80vh] md:min-h-screen flex items-center justify-center overflow-hidden pt-[var(--site-header-height)]"
       id="home"
+      style={{ transition: 'padding-top 220ms ease' }}
     >
       {/* Background */}
       <div className="absolute inset-0 -z-10">
@@ -61,14 +63,20 @@ const Hero: React.FC<HeroProps> = ({
           data-hero-intro
           className={`absolute inset-0 transition-opacity duration-1000 ${showIntro ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         >
-          <Image
-            src={backgroundImage || '/gallery/hero1.svg'}
-            alt="Hero Background"
-            fill
-            sizes="100vw"
-            className="object-cover opacity-90"
-            priority
-          />
+          <div className="relative h-full w-full">
+            <picture className="relative block h-full w-full">
+              <source srcSet={backgroundImage ? getGalleryThumbAvif(backgroundImage, 'large') : getGalleryThumbAvif('/our-works-gallery/Artist/Worldclass-379.jpg', 'large')} type="image/avif" />
+              <source srcSet={backgroundImage ? getGalleryThumbWebp(backgroundImage, 'large') : getGalleryThumbWebp('/our-works-gallery/Artist/Worldclass-379.jpg', 'large')} type="image/webp" />
+              <Image
+                src={backgroundImage || '/our-works-gallery/Artist/Worldclass-379.jpg'}
+                alt="Hero Background"
+                fill
+                sizes="100vw"
+                className="object-cover opacity-90"
+                priority
+              />
+            </picture>
+          </div>
           <div className="absolute inset-0 bg-black/20" />
         </div>
 
@@ -188,13 +196,17 @@ const Hero: React.FC<HeroProps> = ({
                   </div>
                 </>
               ) : (
-                <Image
-                  src="/gallery/hero1.svg"
-                  alt="Hero Visual"
-                  fill
-                  sizes="(min-width: 768px) 50vw, 100vw"
-                  className="w-full h-full object-cover"
-                />
+                <picture className="relative block h-full w-full">
+                  <source srcSet="/our-works-gallery/thumbs/Corporate_and_Events_Worldclass-174.avif" type="image/avif" />
+                  <source srcSet="/our-works-gallery/thumbs/Corporate_and_Events_Worldclass-174.webp" type="image/webp" />
+                  <Image
+                    src="/our-works-gallery/Corporate & Events/Worldclass-174.jpg"
+                    alt="Hero Visual"
+                    fill
+                    sizes="(min-width: 768px) 50vw, 100vw"
+                    className="w-full h-full object-cover"
+                  />
+                </picture>
               )}
             </div>
 

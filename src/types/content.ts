@@ -12,7 +12,7 @@ export interface FeaturedContentItem {
 export interface PortfolioContentItem {
   id: number;
   title: string;
-  eventType: 'Wedding' | 'Clubs' | 'Events' | 'Food & Beverages' | 'Short Films';
+  eventType: 'Wedding' | 'Artist' | 'Corporate & Events' | 'Food & Beverages' | 'Short Films' | 'Fashion';
   mediaType: 'photo' | 'video';
   thumb: string;
   description: string;

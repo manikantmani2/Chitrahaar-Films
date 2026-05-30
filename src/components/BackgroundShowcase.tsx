@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import { getGalleryThumbAvif, getGalleryThumbWebp } from '@/utils/imagePaths';
 
 type MediaItem =
   | { type: 'video'; src: string; poster?: string }
@@ -25,12 +26,12 @@ export default function BackgroundShowcase({
 }: BackgroundShowcaseProps) {
   const defaultItems: MediaItem[] = [
     // Prefer local fallbacks to avoid blocked cross-origin video requests in headless environments
-    { type: 'image', src: '/portfolio/project-1.svg' },
-    { type: 'image', src: '/portfolio/wedding-coverage.svg' },
-    { type: 'image', src: '/gallery/hero1.svg' },
-    { type: 'image', src: '/gallery/hero1.svg' },
-    { type: 'image', src: '/gallery/hero2.svg' },
-    { type: 'image', src: '/gallery/hero3.svg' },
+    { type: 'image', src: '/featured1.jpg' },
+    { type: 'image', src: '/featured2.jpg' },
+    { type: 'image', src: '/our-works-gallery/Artist/Worldclass-374.jpg' },
+    { type: 'image', src: '/our-works-gallery/Corporate & Events/Worldclass-349.jpg' },
+    { type: 'image', src: '/our-works-gallery/Fashion/cf-5.jpg' },
+    { type: 'image', src: '/our-works-gallery/Wedding/DSC04511.jpg' },
   ];
 
   const playlist = items && items.length > 0 ? items : defaultItems;
@@ -113,20 +114,38 @@ export default function BackgroundShowcase({
         return (
           <div key={i} className={commonClass + ' bg-black'}>
             {/* Subtle Ken Burns: scale+translate via CSS */}
-            <div className={`absolute inset-0 transform-gpu transition-transform duration-12000 ${
+              <div className={`absolute inset-0 transform-gpu transition-transform duration-12000 ${
               active ? 'scale-105 translate-y-0' : 'scale-100'
-            }`}
+            }
+            `}
             >
-              <Image
-                src={item.src}
-                alt="Background"
-                fill
-                sizes="100vw"
-                className="object-cover"
-                priority={i === 0}
-              />
+              {/* Prefer AVIF/WebP for local gallery images */}
+              {item.src.startsWith('/our-works-gallery') ? (
+                <div className="relative h-full w-full">
+                  <picture className="relative block h-full w-full">
+                    <source srcSet={getGalleryThumbAvif(item.src, 'large')} type="image/avif" />
+                    <source srcSet={getGalleryThumbWebp(item.src, 'large')} type="image/webp" />
+                    <Image
+                      src={item.src}
+                      alt="Background"
+                      fill
+                      sizes="100vw"
+                      className="object-cover"
+                      priority={i === 0}
+                    />
+                  </picture>
+                </div>
+              ) : (
+                <Image
+                  src={item.src}
+                  alt="Background"
+                  fill
+                  sizes="100vw"
+                  className="object-cover"
+                  priority={i === 0}
+                />
+              )}
             </div>
-            {/* gentle overlay to keep text legible */}
             <div className="absolute inset-0 bg-black/30" />
           </div>
         );

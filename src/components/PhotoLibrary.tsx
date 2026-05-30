@@ -15,8 +15,17 @@ const PhotoLibrary: React.FC = () => {
         {photos.map((p) => (
           <Card key={p.id} variant="hover" className="h-full">
               <motion.div className="relative w-full h-48 rounded-lg overflow-hidden mb-4 bg-secondary border border-border" whileHover="hover" initial="rest" variants={imageHover}>
-              <Image src={p.image || '/portfolio/project-1.svg'} alt={p.title} fill sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw" className="object-cover" loading="lazy" placeholder="blur" blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMB/0rXyQAAAABJRU5ErkJggg==" />
-            </motion.div>
+                <Image
+                  src={p.image || '/featured1.jpg'}
+                  alt={p.title}
+                  fill
+                  sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                  className="object-cover"
+                  loading="lazy"
+                  placeholder="blur"
+                  blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMB/0rXyQAAAABJRU5ErkJggg=="
+                />
+              </motion.div>
             <h3 className="text-heading-2 font-bold mb-2">{p.title}</h3>
             <p className="text-text-secondary text-sm mb-4">{p.description}</p>
           </Card>

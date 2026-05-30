@@ -6,18 +6,60 @@ import { containerVariants, itemVariants } from '@/utils/animations';
 import Card from './Card';
 import MediaDetailModal from './MediaDetailModal';
 import type { FeaturedContentItem } from '@/types/content';
+import {
+  getGalleryPosterWebp,
+  getGalleryThumbAvif,
+  getGalleryThumbWebp,
+} from '@/utils/imagePaths';
+import { getRelatedGallerySuggestions, normalizeGalleryGroup, type GallerySuggestionItem } from '@/utils/gallerySuggestions';
+
+type ViewerItem = GallerySuggestionItem & {
+  kind: 'photo' | 'video';
+  src: string;
+  poster?: string;
+  storageKey: string;
+};
 
 const FALLBACK_FEATURED: FeaturedContentItem[] = [
-  { id: 1, title: 'The Forever Moments', thumb: '/gallery/featured1.jpg', duration: '03:12', video: '/videos/intro.mp4' },
-  { id: 2, title: 'Golden Vows', thumb: '/gallery/featured2.jpg', duration: '02:45', video: '/videos/intro.mp4' },
-  { id: 3, title: 'Midnight Revels', thumb: '/gallery/featured3.jpg', duration: '01:58', video: '/videos/intro.mp4' },
+  { id: 1, title: 'The Forever Moments', thumb: '/our-works-gallery/Wedding/0U8A4857.jpg', duration: '03:12', video: '/our-works-gallery/Wedding/WEDDING.mp4' },
+  { id: 2, title: 'Golden Vows', thumb: '/our-works-gallery/Artist/Worldclass-357.jpg', duration: '02:45', video: '/our-works-gallery/Corporate & Events/CORPRATE.mp4' },
+  { id: 3, title: 'Midnight Revels', thumb: '/our-works-gallery/Fashion/cf-4.jpg', duration: '01:58', video: '/our-works-gallery/Fashion/fashion-video.mp4' },
 ];
+
+const createFeaturedViewerItem = (item: FeaturedContentItem): ViewerItem => ({
+  id: `featured:${item.id}`,
+  title: item.title,
+  description: item.duration ? `Featured film • ${item.duration}` : 'Featured film',
+  mediaType: 'video',
+  thumb: item.thumb,
+  duration: item.duration,
+  group: normalizeGalleryGroup(item.thumb.split('/').slice(-2, -1)[0] || 'featured') || 'featured',
+  kind: 'video',
+  src: item.video || '/our-works-gallery/Wedding/WEDDING.mp4',
+  poster: item.video ? getGalleryPosterWebp(item.video, 'large') : item.thumb,
+  storageKey: `featured:${item.id}`,
+});
+
+const createPortfolioViewerItem = (item: { id: number; title: string; eventType: string; mediaType: 'photo' | 'video'; thumb: string; description: string; duration?: string; videoUrl?: string; }) => ({
+  id: `portfolio:${item.id}`,
+  title: item.title,
+  description: item.description,
+  mediaType: item.mediaType,
+  thumb: item.thumb,
+  duration: item.duration,
+  group: normalizeGalleryGroup(item.eventType),
+  kind: item.mediaType,
+  src: item.mediaType === 'video' ? (item.videoUrl || item.thumb) : item.thumb,
+  poster: item.mediaType === 'video' ? getGalleryPosterWebp(item.videoUrl || item.thumb, 'large') : undefined,
+  storageKey: `portfolio:${item.id}`,
+});
 
 const FeaturedFilms: React.FC = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [cardWidth, setCardWidth] = useState<number | null>(null);
   const [featured, setFeatured] = useState<FeaturedContentItem[]>(FALLBACK_FEATURED);
-  const [activeItem, setActiveItem] = useState<FeaturedContentItem | null>(null);
+  const [catalog, setCatalog] = useState<ViewerItem[]>(FALLBACK_FEATURED.map(createFeaturedViewerItem));
+  const [activeItem, setActiveItem] = useState<ViewerItem | null>(null);
   const [current, setCurrent] = useState(0);
   const currentIndexRef = useRef(0);
 
@@ -90,7 +132,17 @@ const FeaturedFilms: React.FC = () => {
         if (!response.ok) return;
         const data = await response.json();
         const items = Array.isArray(data?.featured) ? data.featured : [];
-        if (!cancelled && items.length > 0) setFeatured(items);
+        const portfolio = Array.isArray(data?.portfolio)
+          ? data.portfolio.filter((item: { eventType?: string }) => normalizeGalleryGroup(item.eventType) !== null)
+          : [];
+        if (!cancelled) {
+          if (items.length > 0) setFeatured(items);
+          const nextCatalog = [
+            ...items.map(createFeaturedViewerItem),
+            ...portfolio.map(createPortfolioViewerItem),
+          ];
+          if (nextCatalog.length > 0) setCatalog(nextCatalog);
+        }
       } catch {
         // fall back to static content
       }
@@ -198,25 +250,29 @@ const FeaturedFilms: React.FC = () => {
                   <button
                     type="button"
                     className="relative w-full text-left"
-                    onClick={() => setActiveItem(f)}
+                    onClick={() => setActiveItem(createFeaturedViewerItem(f))}
                     onKeyDown={(event) => {
                       if (event.key === 'Enter' || event.key === ' ') {
                         event.preventDefault();
-                        setActiveItem(f);
+                        setActiveItem(createFeaturedViewerItem(f));
                       }
                     }}
                   >
                     <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl">
-                      <Image
-                        src={f.thumb}
-                        alt={f.title}
-                        fill
-                        sizes={f.video ? '(min-width:1280px) 860px, (min-width:768px) 720px, 420px' : '(min-width:1024px) 660px, 360px'}
-                        className="object-cover transition-transform duration-500 hover:scale-105"
-                        loading="lazy"
-                        placeholder="blur"
-                        blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMB/0rXyQAAAABJRU5ErkJggg=="
-                      />
+                      <picture className="relative block h-full w-full">
+                        <source srcSet={getGalleryThumbAvif(f.thumb, 'large')} type="image/avif" />
+                        <source srcSet={getGalleryThumbWebp(f.thumb, 'large')} type="image/webp" />
+                        <Image
+                          src={f.thumb}
+                          alt={f.title}
+                          fill
+                          sizes={f.video ? '(min-width:1280px) 860px, (min-width:768px) 720px, 420px' : '(min-width:1024px) 660px, 360px'}
+                          className="object-cover object-center transition-transform duration-500 hover:scale-105"
+                          loading="lazy"
+                          placeholder="blur"
+                          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMB/0rXyQAAAABJRU5ErkJggg=="
+                        />
+                      </picture>
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
                       <div className="absolute left-4 bottom-4">
                         <h3 className="text-xl font-display text-text-primary">{f.title}</h3>
@@ -230,7 +286,7 @@ const FeaturedFilms: React.FC = () => {
                       {f.video && idx === current ? (
                         <video
                           src={f.video}
-                          poster={f.thumb}
+                          poster={getGalleryPosterWebp(f.video, 'large')}
                           preload="metadata"
                           autoPlay
                           muted
@@ -251,13 +307,20 @@ const FeaturedFilms: React.FC = () => {
         <MediaDetailModal
           open={!!activeItem}
           title={activeItem?.title || ''}
-          description={activeItem ? `Featured film • ${activeItem.duration}` : ''}
-          kind="video"
-          src={activeItem?.video || '/videos/intro.mp4'}
-          poster={activeItem?.thumb}
-          metaLabel="Featured film"
+          description={activeItem?.description || ''}
+          kind={activeItem?.kind || 'video'}
+          src={activeItem?.src || '/our-works-gallery/Wedding/WEDDING.mp4'}
+          poster={activeItem?.poster}
+          metaLabel={activeItem?.group === 'featured' ? 'Featured film' : activeItem?.group || 'Portfolio item'}
           metaValue={activeItem?.duration}
-          storageKey={activeItem ? `featured:${activeItem.id}` : 'featured:unknown'}
+          suggestions={getRelatedGallerySuggestions(catalog, { activeId: activeItem?.id, activeGroup: activeItem?.group, activeMediaType: activeItem?.kind }, 8)}
+          activeSuggestionId={activeItem?.id}
+          activeSuggestionGroup={activeItem?.group || null}
+          onSelectSuggestion={(suggestionId) => {
+            const nextItem = catalog.find((item) => item.id === suggestionId);
+            if (nextItem) setActiveItem(nextItem);
+          }}
+          storageKey={activeItem ? activeItem.storageKey : 'featured:unknown'}
           onClose={() => setActiveItem(null)}
         />
       </motion.div>

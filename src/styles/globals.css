@@ -5,6 +5,8 @@
 @tailwind utilities;
 
 :root {
+  /* Height to offset the fixed header to avoid overlap with anchored/hero sections. Default is conservative; JS will sync actual header height at runtime. */
+  --site-header-height: 64px;
   --color-primary: #0B0B0B;
   --color-primary-rgb: 11 11 11;
   --color-secondary: #0f1419;
@@ -74,6 +76,11 @@ body {
   color: var(--color-text);
   background: linear-gradient(180deg, var(--color-primary) 0%, var(--color-secondary) 100%);
   overflow-x: hidden;
+}
+
+/* Ensure page content starts below a fixed header (keeps header permanent like MS Word) */
+body {
+  padding-top: var(--site-header-height);
 }
 
 body[data-theme='light'] {

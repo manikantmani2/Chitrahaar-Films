@@ -29,9 +29,9 @@ export default function Studio() {
         <link rel="icon" href="/favicon-16.png" sizes="16x16" />
         <link rel="apple-touch-icon" href="/favicon-180.png" />
         <link rel="alternate icon" href="/favicon.png" />
-        <link rel="preload" as="image" href="/gallery/featured1.jpg" />
-        <link rel="preload" as="image" href="/gallery/featured2.jpg" />
-        <link rel="preload" as="image" href="/gallery/featured3.jpg" />
+        <link rel="preload" as="image" href="/our-works-gallery/Wedding/0U8A4857.jpg" />
+        <link rel="preload" as="image" href="/our-works-gallery/Artist/Worldclass-357.jpg" />
+        <link rel="preload" as="image" href="/our-works-gallery/Fashion/cf-4.jpg" />
       </PageHead>
 
       <Header />

@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "next lint",
     "export": "next export",
-    "convert-images": "node scripts/convert-images.js"
+    "convert-images": "node scripts/convert-images.js",
+    "generate-posters": "node scripts/generate-video-posters.js"
   },
   "dependencies": {
     "@heroicons/react": "^2.0.0",
