@@ -16,7 +16,7 @@ const PhotoLibrary: React.FC = () => {
           <Card key={p.id} variant="hover" className="h-full">
               <motion.div className="relative w-full h-48 rounded-lg overflow-hidden mb-4 bg-secondary border border-border" whileHover="hover" initial="rest" variants={imageHover}>
                 <Image
-                  src={p.image || '/featured1.jpg'}
+                  src={p.image || '/company-image.jpg'}
                   alt={p.title}
                   fill
                   sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"

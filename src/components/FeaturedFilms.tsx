@@ -20,11 +20,7 @@ type ViewerItem = GallerySuggestionItem & {
   storageKey: string;
 };
 
-const FALLBACK_FEATURED: FeaturedContentItem[] = [
-  { id: 1, title: 'The Forever Moments', thumb: '/our-works-gallery/Wedding/0U8A4857.jpg', duration: '03:12', video: '/our-works-gallery/Wedding/WEDDING.mp4' },
-  { id: 2, title: 'Golden Vows', thumb: '/our-works-gallery/Artist/Worldclass-357.jpg', duration: '02:45', video: '/our-works-gallery/Corporate & Events/CORPRATE.mp4' },
-  { id: 3, title: 'Midnight Revels', thumb: '/our-works-gallery/Fashion/cf-4.jpg', duration: '01:58', video: '/our-works-gallery/Fashion/fashion-video.mp4' },
-];
+const FALLBACK_FEATURED: FeaturedContentItem[] = [];
 
 const createFeaturedViewerItem = (item: FeaturedContentItem): ViewerItem => ({
   id: `featured:${item.id}`,
@@ -33,9 +29,9 @@ const createFeaturedViewerItem = (item: FeaturedContentItem): ViewerItem => ({
   mediaType: 'video',
   thumb: item.thumb,
   duration: item.duration,
-  group: normalizeGalleryGroup(item.thumb.split('/').slice(-2, -1)[0] || 'featured') || 'featured',
+  group: normalizeGalleryGroup(item.eventType || 'featured') || 'featured',
   kind: 'video',
-  src: item.video || '/our-works-gallery/Wedding/WEDDING.mp4',
+  src: item.video || '',
   poster: item.video ? getGalleryPosterWebp(item.video, 'large') : item.thumb,
   storageKey: `featured:${item.id}`,
 });
@@ -309,7 +305,7 @@ const FeaturedFilms: React.FC = () => {
           title={activeItem?.title || ''}
           description={activeItem?.description || ''}
           kind={activeItem?.kind || 'video'}
-          src={activeItem?.src || '/our-works-gallery/Wedding/WEDDING.mp4'}
+          src={activeItem?.src || ''}
           poster={activeItem?.poster}
           metaLabel={activeItem?.group === 'featured' ? 'Featured film' : activeItem?.group || 'Portfolio item'}
           metaValue={activeItem?.duration}

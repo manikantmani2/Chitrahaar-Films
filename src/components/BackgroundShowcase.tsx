@@ -25,13 +25,8 @@ export default function BackgroundShowcase({
   imageDuration = 5000,
 }: BackgroundShowcaseProps) {
   const defaultItems: MediaItem[] = [
-    // Prefer local fallbacks to avoid blocked cross-origin video requests in headless environments
-    { type: 'image', src: '/featured1.jpg' },
-    { type: 'image', src: '/featured2.jpg' },
-    { type: 'image', src: '/our-works-gallery/Artist/Worldclass-374.jpg' },
-    { type: 'image', src: '/our-works-gallery/Corporate & Events/Worldclass-349.jpg' },
-    { type: 'image', src: '/our-works-gallery/Fashion/cf-5.jpg' },
-    { type: 'image', src: '/our-works-gallery/Wedding/DSC04511.jpg' },
+    // Use the current studio hero asset until custom gallery media is uploaded.
+    { type: 'image', src: '/company-image.jpg' },
   ];
 
   const playlist = items && items.length > 0 ? items : defaultItems;
@@ -120,7 +115,7 @@ export default function BackgroundShowcase({
             `}
             >
               {/* Prefer AVIF/WebP for local gallery images */}
-              {item.src.startsWith('/our-works-gallery') ? (
+              {item.src.startsWith('/gallery') ? (
                 <div className="relative h-full w-full">
                   <picture className="relative block h-full w-full">
                     <source srcSet={getGalleryThumbAvif(item.src, 'large')} type="image/avif" />

@@ -65,10 +65,10 @@ const Hero: React.FC<HeroProps> = ({
         >
           <div className="relative h-full w-full">
             <picture className="relative block h-full w-full">
-              <source srcSet={backgroundImage ? getGalleryThumbAvif(backgroundImage, 'large') : getGalleryThumbAvif('/our-works-gallery/Artist/Worldclass-379.jpg', 'large')} type="image/avif" />
-              <source srcSet={backgroundImage ? getGalleryThumbWebp(backgroundImage, 'large') : getGalleryThumbWebp('/our-works-gallery/Artist/Worldclass-379.jpg', 'large')} type="image/webp" />
+              <source srcSet={backgroundImage ? getGalleryThumbAvif(backgroundImage, 'large') : getGalleryThumbAvif('/company-image.jpg', 'large')} type="image/avif" />
+              <source srcSet={backgroundImage ? getGalleryThumbWebp(backgroundImage, 'large') : getGalleryThumbWebp('/company-image.jpg', 'large')} type="image/webp" />
               <Image
-                src={backgroundImage || '/our-works-gallery/Artist/Worldclass-379.jpg'}
+                src={backgroundImage || '/company-image.jpg'}
                 alt="Hero Background"
                 fill
                 sizes="100vw"
@@ -197,10 +197,10 @@ const Hero: React.FC<HeroProps> = ({
                 </>
               ) : (
                 <picture className="relative block h-full w-full">
-                  <source srcSet="/our-works-gallery/thumbs/Corporate_and_Events_Worldclass-174.avif" type="image/avif" />
-                  <source srcSet="/our-works-gallery/thumbs/Corporate_and_Events_Worldclass-174.webp" type="image/webp" />
+                  <source srcSet="/company-image.jpg" type="image/avif" />
+                  <source srcSet="/company-image.jpg" type="image/webp" />
                   <Image
-                    src="/our-works-gallery/Corporate & Events/Worldclass-174.jpg"
+                    src="/company-image.jpg"
                     alt="Hero Visual"
                     fill
                     sizes="(min-width: 768px) 50vw, 100vw"

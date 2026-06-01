@@ -1,5 +1,5 @@
-const GALLERY_ROOT = '/our-works-gallery';
-const GALLERY_THUMBS_ROOT = '/our-works-gallery/thumbs';
+const GALLERY_ROOT = '/gallery';
+const GALLERY_THUMBS_ROOT = '/gallery/thumbs';
 
 const MEDIA_EXTENSIONS = /\.(mp4|m4v|mov|webm|mkv)$/i;
 

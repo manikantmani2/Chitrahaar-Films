@@ -23,14 +23,10 @@ export default function Studio() {
         <meta property="og:title" content="Chitrahaar Films - Studio" />
         <meta property="og:description" content="Cinematic production services for brands and creators" />
         <meta property="og:type" content="website" />
-        <link rel="icon" href="/chitrahaar-logo.png" type="image/svg+xml" />
-        <link rel="icon" href="/favicon-32.png" sizes="32x32" />
-        <link rel="icon" href="/favicon-16.png" sizes="16x16" />
-        <link rel="apple-touch-icon" href="/favicon-180.png" />
-        <link rel="alternate icon" href="/favicon.png" />
-        <link rel="preload" as="image" href="/our-works-gallery/Wedding/0U8A4857.jpg" />
-        <link rel="preload" as="image" href="/our-works-gallery/Artist/Worldclass-357.jpg" />
-        <link rel="preload" as="image" href="/our-works-gallery/Fashion/cf-4.jpg" />
+        <link rel="icon" href="/favicon.png" />
+        <link rel="apple-touch-icon" href="/favicon.png" />
+        <link rel="mask-icon" href="/favicon.png" color="#d4af37" />
+        <link rel="shortcut icon" href="/favicon.png" />
       </PageHead>
 
       <Header />

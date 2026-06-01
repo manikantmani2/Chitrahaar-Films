@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import PageHead from 'next/head';
 import Logo from '@/components/Logo';
 import Image from 'next/image';
@@ -8,7 +7,6 @@ import ThemeToggleButton from '@/components/ThemeToggleButton';
 import { useTheme } from '@/hooks/useTheme';
 
 export default function LandingPage() {
-  const [videoFailed, setVideoFailed] = useState(false);
   const { theme, toggleTheme } = useTheme();
 
   return (
@@ -23,11 +21,10 @@ export default function LandingPage() {
         <meta property="og:title" content="Chitrahaar Films" />
         <meta property="og:description" content="Intro landing page for Chitrahaar Films" />
         <meta property="og:type" content="website" />
-        <link rel="icon" href="/chitrahaar-logo.png" type="image/svg+xml" />
-        <link rel="icon" href="/favicon-32.png" sizes="32x32" />
-        <link rel="icon" href="/favicon-16.png" sizes="16x16" />
-        <link rel="apple-touch-icon" href="/favicon-180.png" />
-        <link rel="alternate icon" href="/favicon.png" />
+        <link rel="icon" href="/favicon.png" />
+        <link rel="apple-touch-icon" href="/favicon.png" />
+        <link rel="mask-icon" href="/favicon.png" color="#d4af37" />
+        <link rel="shortcut icon" href="/favicon.png" />
       </PageHead>
 
       <main className="relative min-h-screen overflow-hidden bg-primary text-text-primary">
@@ -122,29 +119,14 @@ export default function LandingPage() {
               <div className="absolute -inset-4 rounded-[2rem] bg-[radial-gradient(circle,rgba(212,175,55,0.2),transparent_70%)] blur-2xl" />
                 <div className="relative overflow-hidden rounded-[2rem] border border-border bg-secondary/70 shadow-[0_30px_80px_rgba(0,0,0,0.32)] backdrop-blur-sm">
                 <div className="aspect-[16/9] md:aspect-[16/9]">
-                  {videoFailed ? (
-                    <Image
-                      src="/our-works-gallery/Artist/Worldclass-379.jpg"
-                      alt="Chitrahaar Films intro still"
-                      fill
-                      priority
-                      sizes="(min-width: 768px) 50vw, 100vw"
-                      className="object-cover"
-                    />
-                  ) : (
-                    <video
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                      preload="metadata"
-                      poster="/our-works-gallery/Artist/Worldclass-379.jpg"
-                      className="h-full w-full object-cover"
-                      onError={() => setVideoFailed(true)}
-                    >
-                      <source src="/our-works-gallery/Wedding/WEDDING.mp4" type="video/mp4" />
-                    </video>
-                  )}
+                  <Image
+                    src="/company-image.jpg"
+                    alt="Chitrahaar Films intro still"
+                    fill
+                    priority
+                    sizes="(min-width: 768px) 50vw, 100vw"
+                    className="object-cover"
+                  />
                 </div>
                 <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(var(--color-secondary-rgb),0.06),rgba(var(--color-primary-rgb),0.6))]" />
                 <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
