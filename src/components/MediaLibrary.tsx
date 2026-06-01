@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { FaInstagram, FaYoutube, FaHeart, FaShareAlt } from 'react-icons/fa';
 import { containerVariants, itemVariants } from '@/utils/animations';
 import { getGalleryPosterWebp } from '@/utils/imagePaths';
-import GalleryImage from './GalleryImage';
 import { getRelatedGallerySuggestions, normalizeGalleryGroup, ALLOWED_GALLERY_GROUPS, type GallerySuggestionItem } from '@/utils/gallerySuggestions';
 import Section from './Section';
 import Card from './Card';
@@ -822,7 +821,7 @@ const MediaLibrary: React.FC = () => {
                         <div key={item.id} className={`shrink-0 w-64`}>
                           <Card variant="hover" className={`overflow-hidden rounded-[12px] hover-lift`}>
                             <div className="relative h-40 cursor-pointer" onClick={() => openItem(item)} role="button" tabIndex={0}>
-                                <GalleryImage src={item.thumb} alt={item.title} size="small" />
+                                <Image src={item.thumb} alt={item.title} fill className="object-cover" priority={groupPhotoItems.length <= 2} />
                             </div>
                             <div className="p-3">
                               <h5 className="text-sm font-semibold">{item.title}</h5>
@@ -843,7 +842,14 @@ const MediaLibrary: React.FC = () => {
                         <div key={item.id} className={`shrink-0 w-64`}>
                           <Card variant="hover" className={`overflow-hidden rounded-[12px] hover-lift`}>
                             <div className="relative h-40 bg-black cursor-pointer" onClick={() => openItem(item)} role="button" tabIndex={0}>
-                              <GalleryImage src={item.thumb} alt={item.title} size="small" />
+                              <video
+                                src={item.videoUrl || sampleVideoUrl}
+                                muted
+                                playsInline
+                                preload="metadata"
+                                className="h-full w-full object-cover"
+                                aria-label={item.title}
+                              />
                               <div className="absolute inset-0 flex items-center justify-center">
                                 <div className="rounded-full bg-black/60 p-3 text-white/90">▶</div>
                               </div>
@@ -873,7 +879,7 @@ const MediaLibrary: React.FC = () => {
                   <div key={item.id} data-photo-item="true" className={`shrink-0 w-64 transition-all duration-500 ${idx === photoActiveIndex ? 'scale-[1.14] z-10' : 'scale-[0.9] opacity-65'}`}>
                     <Card variant="hover" className={`overflow-hidden rounded-[12px] hover-lift transition-all duration-500 ${idx === photoActiveIndex ? 'shadow-[0_22px_55px_rgba(0,0,0,0.35)]' : ''}`}>
                       <div className="relative h-40 cursor-pointer" onClick={() => openItem(item)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openItem(item); } }} role="button" tabIndex={0}>
-                        <GalleryImage src={item.thumb} alt={item.title} size="small" />
+                        <Image src={item.thumb} alt={item.title} fill className="object-cover" priority={idx === photoActiveIndex && idx < 2} />
                           <div className="absolute top-2 right-2 flex gap-2">
                             <button
                               onClick={(e) => { e.stopPropagation(); toggleLike(item.id); }}
@@ -906,7 +912,14 @@ const MediaLibrary: React.FC = () => {
                   <div key={item.id} data-video-item="true" className={`shrink-0 w-64 transition-all duration-500 ${idx === videoActiveIndex ? 'scale-[1.14] z-10' : 'scale-[0.9] opacity-65'}`}>
                     <Card variant="hover" className={`overflow-hidden rounded-[12px] hover-lift transition-all duration-500 ${idx === videoActiveIndex ? 'shadow-[0_22px_55px_rgba(0,0,0,0.35)]' : ''}`}>
                       <div className="relative h-40 bg-black cursor-pointer" onClick={() => openItem(item)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openItem(item); } }} role="button" tabIndex={0}>
-                        <GalleryImage src={item.thumb} alt={item.title} size="small" />
+                        <video
+                          src={item.videoUrl || sampleVideoUrl}
+                          muted
+                          playsInline
+                          preload="metadata"
+                          className="h-full w-full object-cover"
+                          aria-label={item.title}
+                        />
                         <div className="absolute inset-0 flex items-center justify-center">
                           <div className="rounded-full bg-black/60 p-3 text-white/90">▶</div>
                         </div>
@@ -953,9 +966,9 @@ const MediaLibrary: React.FC = () => {
             <div className="grid gap-0 lg:grid-cols-[1.6fr_0.9fr]">
                           <div className="relative min-h-[420px] bg-black flex items-center justify-center">
                 {activeItem.mediaType === 'photo' ? (
-                  <Image src={getGalleryPosterWebp(activeItem.thumb, 'large')} alt={activeItem.title} fill sizes="100vw" className="object-contain" priority />
+                  <Image src={activeItem.thumb} alt={activeItem.title} fill sizes="100vw" className="object-contain" priority />
                 ) : (
-                  <video controls autoPlay playsInline poster={getGalleryPosterWebp(activeItem.videoUrl || activeItem.thumb, 'large')} className="h-full w-full bg-black object-contain">
+                  <video controls autoPlay playsInline className="h-full w-full bg-black object-contain">
                     <source src={activeItem.videoUrl || sampleVideoUrl} type="video/mp4" />
                     Your browser does not support the video tag.
                   </video>
@@ -991,7 +1004,7 @@ const MediaLibrary: React.FC = () => {
                                 {relatedItems.map((suggestion) => (
                                   <button key={suggestion.id} aria-label={`Open ${suggestion.title}`} onClick={() => setActiveItem(WORK_ITEMS.find((item) => item.id === suggestion.id) || activeItem)} className="shrink-0 w-32 rounded-xl overflow-hidden border border-white/6 bg-black/20 snap-center">
                             <div className="relative h-20 w-full">
-                              <GalleryImage src={suggestion.thumb} alt={suggestion.title} size="small" />
+                              <Image src={suggestion.thumb} alt={suggestion.title} fill className="object-cover" loading="lazy" />
                             </div>
                             <div className="p-2 text-xs text-white/80">{suggestion.title}</div>
                           </button>
