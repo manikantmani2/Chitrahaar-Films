@@ -1,5 +1,3 @@
-export type FeedbackStatus = 'public' | 'hold';
-
 export interface FeaturedContentItem {
   id: number;
   title: string;

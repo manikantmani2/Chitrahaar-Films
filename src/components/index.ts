@@ -6,7 +6,6 @@ export { default as Hero } from '@/components/Hero';
 export { default as Section } from '@/components/Section';
 export { default as Button } from '@/components/Button';
 export { default as Card } from '@/components/Card';
-export { default as Testimonials } from '@/components/Testimonials';
 export { default as About } from '@/components/About';
 export { default as Contact } from '@/components/Contact';
 export { default as Stats } from '@/components/Stats';

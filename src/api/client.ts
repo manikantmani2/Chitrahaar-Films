@@ -78,22 +78,6 @@ export const apiMethods = {
     return apiClient.get('/services');
   },
 
-  // Get testimonials
-  getTestimonials: async () => {
-    return apiClient.get('/testimonials');
-  },
-
-  // Submit feedback
-  submitFeedback: async (data: {
-    name: string;
-    email: string;
-    rating: number;
-    eventType: string;
-    message: string;
-  }) => {
-    return apiClient.post('/feedback', data);
-  },
-
   // Search
   search: async (query: string) => {
     return apiClient.get('/search', { params: { q: query } });
