@@ -4,9 +4,9 @@ import type { FeaturedContentItem, PortfolioContentItem, SiteContentData } from 
 const createFeaturedItem = (): FeaturedContentItem => ({
   id: Date.now(),
   title: 'New Featured Film',
-  thumb: '/our-works-gallery/Wedding/0U8A4857.jpg',
+  thumb: '/company-image.jpg',
   duration: '00:00',
-  video: '/our-works-gallery/Wedding/WEDDING.mp4',
+  video: '',
   visible: true,
 });
 
@@ -15,10 +15,10 @@ const createPortfolioItem = (): PortfolioContentItem => ({
   title: 'New Portfolio Item',
   eventType: 'Wedding',
   mediaType: 'photo',
-  thumb: '/our-works-gallery/Wedding/0U8A4373.jpg',
+  thumb: '/company-image.jpg',
   description: 'Describe the project here.',
   duration: '',
-  videoUrl: '/our-works-gallery/Wedding/WEDDING.mp4',
+  videoUrl: '',
   instagramUrl: 'https://instagram.com/chitrahaarfilms',
   youtubeUrl: 'https://youtube.com/@chitrahaarfilms',
   visible: true,
