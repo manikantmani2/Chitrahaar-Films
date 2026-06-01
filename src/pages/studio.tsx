@@ -4,7 +4,6 @@ import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import MediaLibrary from '@/components/MediaLibrary';
 import FeaturedFilms from '@/components/FeaturedFilms';
-import Testimonials from '@/components/Testimonials';
 import Stats from '@/components/Stats';
 import About from '@/components/About';
 import Contact from '@/components/Contact';
@@ -89,8 +88,6 @@ export default function Studio() {
           </div>
         </section>
         <Stats />
-
-        <Testimonials />
 
         <About />
 

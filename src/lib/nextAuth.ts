@@ -27,7 +27,7 @@ export const authOptions: NextAuthOptions = {
     },
   },
   pages: {
-    signIn: '/admin/feedback',
+    signIn: '/admin/login',
   },
 };
 

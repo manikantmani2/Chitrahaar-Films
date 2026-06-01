@@ -100,7 +100,7 @@ chitrahaar-website/
 - Fade-in and slide animations on scroll
 - Smooth hover transitions
 - Loading states
-- Interactive button feedback
+- Interactive button states
 
 ### 2. **Responsive Design**
 - Mobile-first approach

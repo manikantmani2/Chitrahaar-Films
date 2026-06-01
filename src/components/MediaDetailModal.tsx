@@ -445,10 +445,6 @@ const MediaDetailModal: React.FC<MediaDetailModalProps> = ({
               </div>
             </div>
 
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-white/65 shadow-[0_10px_28px_rgba(0,0,0,0.14)]">
-              Fully view the media here, then leave feedback directly on the item.
-            </div>
-
             {filteredSuggestions.length > 0 && (
               <div className="space-y-4 rounded-2xl border border-[rgba(212,175,55,0.18)] bg-[rgba(212,175,55,0.06)] p-4 shadow-[0_10px_28px_rgba(0,0,0,0.14)]">
                 <div>
