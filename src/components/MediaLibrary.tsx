@@ -625,14 +625,27 @@ const MediaLibrary: React.FC = () => {
                         Similar picks
                       </p>
                       <div className="flex gap-3 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-1">
-                                {relatedItems.map((suggestion) => (
-                                  <button key={suggestion.id} aria-label={`Open ${suggestion.title}`} onClick={() => setActiveItem(WORK_ITEMS.find((item) => item.id === suggestion.id) || activeItem)} className="shrink-0 w-32 rounded-xl overflow-hidden border border-white/6 bg-black/20 snap-center">
-                            <div className="relative h-20 w-full">
-                              <Image src={encodeURI(suggestion.thumb)} alt={suggestion.title} fill className="object-cover" loading="lazy" />
-                            </div>
-                            <div className="p-2 text-xs text-white/80">{suggestion.title}</div>
-                          </button>
-                        ))}
+                                {relatedItems.map((suggestion) => {
+                                  const full = WORK_ITEMS.find((it) => it.id === suggestion.id);
+                                  const mediaSrc = full?.mediaType === 'video' ? (full?.videoUrl || full?.thumb) : full?.thumb;
+                                  return (
+                                    <button
+                                      key={suggestion.id}
+                                      aria-label={`Open ${suggestion.title}`}
+                                      onClick={() => setActiveItem(WORK_ITEMS.find((item) => item.id === suggestion.id) || activeItem)}
+                                      className="shrink-0 w-32 rounded-xl overflow-hidden border border-white/6 bg-black/20 snap-center"
+                                    >
+                                      <div className="relative h-20 w-full bg-black">
+                                        {suggestion.mediaType === 'video' ? (
+                                          <video src={encodeURI(mediaSrc || '')} muted playsInline preload="metadata" className="h-full w-full object-cover" />
+                                        ) : (
+                                          <Image src={encodeURI(mediaSrc || '')} alt={suggestion.title} fill className="object-cover" loading="lazy" />
+                                        )}
+                                      </div>
+                                      <div className="p-2 text-xs text-white/80">{suggestion.title}</div>
+                                    </button>
+                                  );
+                                })}
                       </div>
                     </div>
                   ) : (
