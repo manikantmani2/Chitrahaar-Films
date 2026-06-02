@@ -11,7 +11,6 @@ import Card from './Card';
 type ItemEvent = 'All' | 'Food & Beverages' | 'Corporate & Events' | 'Fashion' | 'Artist' | 'Short Films' | 'Wedding';
 type EventFilter = 'All' | 'Food & Beverages' | 'Corporate & Events' | 'Fashion' | 'Artist' | 'Short Films' | 'Wedding';
 type MediaType = 'all' | 'photo' | 'video';
-type OrientationMode = 'landscape' | 'portrait';
 
 interface WorkItem {
   id: number;
@@ -110,7 +109,6 @@ const eventTypes: EventFilter[] = ['All', ...ALLOWED_GALLERY_GROUPS];
 const MediaLibrary: React.FC = () => {
   const [eventType, setEventType] = useState<EventFilter>('All');
   const [mediaType, setMediaType] = useState<MediaType>('all');
-  const [layoutMode, setLayoutMode] = useState<OrientationMode>('landscape');
   const [activeItem, setActiveItem] = useState<WorkItem | null>(null);
   const [hoverPreviewId, setHoverPreviewId] = useState<number | null>(null);
   const [isAutoScrolling, setIsAutoScrolling] = useState(false);
@@ -194,9 +192,11 @@ const MediaLibrary: React.FC = () => {
     [eventType]
   );
 
-  const galleryFrameClass = layoutMode === 'landscape'
-    ? 'shrink-0 w-64 sm:w-72 lg:w-80 aspect-[16/9]'
-    : 'shrink-0 w-44 sm:w-48 md:w-52 aspect-[9/16]';
+  const getFrameClass = (item: WorkItem) => {
+    return item.mediaType === 'video'
+      ? 'shrink-0 w-64 aspect-[16/9]'
+      : 'shrink-0 w-64 aspect-[9/16]';
+  };
 
   const handleFilterClick = (type: EventFilter | MediaType, kind: 'event' | 'media') => {
     if (kind === 'event') {
@@ -395,17 +395,6 @@ const MediaLibrary: React.FC = () => {
             {mt === 'all' ? 'All' : mt === 'photo' ? 'Photos' : 'Videos'}
           </button>
         ))}
-
-        <span className="shrink-0 rounded-full border border-[rgba(212,175,55,0.08)] bg-[rgba(212,175,55,0.03)] px-3 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-[rgba(212,175,55,0.9)] ml-4">Frame</span>
-        {(['landscape', 'portrait'] as OrientationMode[]).map((mode) => (
-          <button
-            key={mode}
-            onClick={() => setLayoutMode(mode)}
-            className={`shrink-0 px-4 py-2 rounded-lg text-sm font-semibold border transition-all duration-300 ${layoutMode === mode ? 'bg-[rgba(212,175,55,0.12)] text-[var(--color-text)] border-[rgba(212,175,55,0.12)]' : 'border-[rgba(255,255,255,0.03)] text-[var(--color-muted)] hover:border-[rgba(212,175,55,0.08)]'}`}
-          >
-            {mode === 'landscape' ? 'Landscape' : 'Portrait'}
-          </button>
-        ))}
       </div>
 
       {filteredItems.length === 0 && (
@@ -429,14 +418,14 @@ const MediaLibrary: React.FC = () => {
                 <div className="mb-2">
                   <div className="flex gap-4 overflow-x-auto scrollbar-hide py-2">
                     {combined.map((item) => (
-                      <div key={item.id} className={galleryFrameClass}>
-                        <Card variant="hover" className="overflow-hidden rounded-[12px] hover-lift">
+                      <div key={item.id} className={getFrameClass(item)}>
+                        <Card variant="hover" className={`overflow-hidden rounded-[12px] hover-lift`}>
                           {item.mediaType === 'photo' ? (
-                            <div className="relative h-full w-full cursor-pointer" onClick={() => openItem(item)} role="button" tabIndex={0}>
+                            <div className="relative h-40 cursor-pointer" onClick={() => openItem(item)} role="button" tabIndex={0}>
                               <Image src={encodeURI(item.thumb)} alt={item.title} fill className="object-cover" priority={combined.length <= 2} />
                             </div>
                           ) : (
-                            <div className="relative h-full w-full bg-black cursor-pointer" onClick={() => openItem(item)} role="button" tabIndex={0}>
+                            <div className="relative h-40 bg-black cursor-pointer" onClick={() => openItem(item)} role="button" tabIndex={0}>
                               <video
                                 src={encodeURI(item.videoUrl || '')}
                                 muted
@@ -475,10 +464,10 @@ const MediaLibrary: React.FC = () => {
                 <h4 className="mb-4 text-lg font-semibold">Photos & Videos</h4>
                 <div ref={galleryStripRef} className="flex gap-4 overflow-x-auto scrollbar-hide py-2">
                   {eventCombined.map((item, idx) => (
-                    <div key={item.id} className={`${galleryFrameClass} transition-all duration-500 ${(item.mediaType === 'photo' ? idx === photoActiveIndex : idx === videoActiveIndex) ? 'scale-[1.14] z-10' : 'scale-[0.9] opacity-65'}`}>
-                      <Card variant="hover" className="overflow-hidden rounded-[12px] hover-lift transition-all duration-500">
+                    <div key={item.id} className={`${getFrameClass(item)} transition-all duration-500 ${(item.mediaType === 'photo' ? idx === photoActiveIndex : idx === videoActiveIndex) ? 'scale-[1.14] z-10' : 'scale-[0.9] opacity-65'}`}>
+                      <Card variant="hover" className={`overflow-hidden rounded-[12px] hover-lift transition-all duration-500`}>
                         {item.mediaType === 'photo' ? (
-                          <div className="relative h-full w-full cursor-pointer" onClick={() => openItem(item)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openItem(item); } }} role="button" tabIndex={0}>
+                          <div className="relative h-40 cursor-pointer" onClick={() => openItem(item)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openItem(item); } }} role="button" tabIndex={0}>
                             <Image src={encodeURI(item.thumb)} alt={item.title} fill className="object-cover" priority={idx < 2} />
                             <div className="absolute top-2 right-2 flex gap-2">
                               <button
@@ -493,7 +482,7 @@ const MediaLibrary: React.FC = () => {
                             </div>
                           </div>
                         ) : (
-                          <div className="relative h-full w-full bg-black cursor-pointer" onClick={() => openItem(item)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openItem(item); } }} role="button" tabIndex={0}>
+                          <div className="relative h-40 bg-black cursor-pointer" onClick={() => openItem(item)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openItem(item); } }} role="button" tabIndex={0}>
                             <video
                               src={encodeURI(item.videoUrl || '')}
                               muted
