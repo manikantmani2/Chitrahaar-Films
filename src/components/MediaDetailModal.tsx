@@ -25,6 +25,8 @@ export interface MediaDetailModalProps {
   }>;
   storageKey: string;
   onClose: () => void;
+  onPrev?: () => void;
+  onNext?: () => void;
 }
 
 type Reaction = 'like' | 'dislike' | null;
@@ -62,11 +64,14 @@ const MediaDetailModal: React.FC<MediaDetailModalProps> = ({
   sourceLinks = [],
   storageKey,
   onClose,
+  onPrev,
+  onNext,
 }) => {
   const [reaction, setReaction] = useState<Reaction>(null);
   const [commentText, setCommentText] = useState('');
   const [comments, setComments] = useState<CommentItem[]>([]);
   const rightColRef = React.useRef<HTMLDivElement | null>(null);
+  const navEnabled = Boolean(onPrev || onNext);
 
   useEffect(() => {
     if (!open) return;
@@ -125,6 +130,27 @@ const MediaDetailModal: React.FC<MediaDetailModalProps> = ({
     }
   };
 
+  useEffect(() => {
+    const handler = (event: KeyboardEvent) => {
+      if (!open) return;
+      if (event.key === 'ArrowLeft' && onPrev) {
+        event.preventDefault();
+        onPrev();
+      }
+      if (event.key === 'ArrowRight' && onNext) {
+        event.preventDefault();
+        onNext();
+      }
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [open, onPrev, onNext, onClose]);
+
   if (!open) {
     return null;
   }
@@ -173,6 +199,32 @@ const MediaDetailModal: React.FC<MediaDetailModalProps> = ({
           <div className="border-b border-white/10 bg-[radial-gradient(circle_at_top,rgba(212,175,55,0.08),transparent_35%),linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01))] p-4 md:p-6 lg:border-b-0 lg:border-r lg:border-white/10">
             <div className="overflow-hidden rounded-[1.75rem] border border-white/10 bg-black shadow-[0_24px_70px_rgba(0,0,0,0.35)]">
               <div className="relative aspect-[16/10] w-full bg-black md:aspect-[16/9] xl:aspect-[17/10]">
+                {navEnabled && onPrev && (
+                  <div className="absolute inset-y-0 left-0 z-20 flex w-20 items-center justify-center bg-black/20 p-3">
+                    <button
+                      onClick={onPrev}
+                      aria-label="Previous media"
+                      className="flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-black/70 text-white transition hover:bg-black/90"
+                    >
+                      <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                      </svg>
+                    </button>
+                  </div>
+                )}
+                {navEnabled && onNext && (
+                  <div className="absolute inset-y-0 right-0 z-20 flex w-20 items-center justify-center bg-black/20 p-3">
+                    <button
+                      onClick={onNext}
+                      aria-label="Next media"
+                      className="flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-black/70 text-white transition hover:bg-black/90"
+                    >
+                      <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </button>
+                  </div>
+                )}
                 {kind === 'photo' ? (
                   <Image
                     src={src}

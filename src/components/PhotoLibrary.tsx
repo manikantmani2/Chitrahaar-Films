@@ -1,16 +1,17 @@
 import React from 'react';
 import Image from 'next/image';
-import Section from './Section';
 import Card from './Card';
 import { PORTFOLIO_PROJECTS } from '@/constants';
 import { motion } from 'framer-motion';
 import { imageHover } from '@/utils/animations';
+import { FaInstagram } from 'react-icons/fa';
 
 const PhotoLibrary: React.FC = () => {
   const photos = PORTFOLIO_PROJECTS.filter((p) => p.image && p.category !== 'Short Films');
+  const instagramUrl = 'https://instagram.com/chitrahaarfilms';
 
   return (
-    <Section id="photo-library" title="Photo Library" subtitle="Curated photo collections">
+    <div id="photo-library" className="py-16 px-4 md:px-8">
       <div className="grid-auto">
         {photos.map((p) => (
           <Card key={p.id} variant="hover" className="h-full">
@@ -28,10 +29,21 @@ const PhotoLibrary: React.FC = () => {
               </motion.div>
             <h3 className="text-heading-2 font-bold mb-2">{p.title}</h3>
             <p className="text-text-secondary text-sm mb-4">{p.description}</p>
+            <div className="flex items-center gap-2">
+              <a
+                href={instagramUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-text-secondary hover:text-primary transition-colors"
+                title="Follow on Instagram"
+              >
+                <FaInstagram size={20} />
+              </a>
+            </div>
           </Card>
         ))}
       </div>
-    </Section>
+    </div>
   );
 };
 

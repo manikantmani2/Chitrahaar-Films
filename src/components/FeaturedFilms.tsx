@@ -66,6 +66,22 @@ const FeaturedFilms: React.FC = () => {
   const [current, setCurrent] = useState(0);
   const currentIndexRef = useRef(0);
 
+  const handleViewerPrev = () => {
+    if (!catalog.length) return;
+    const prevIndex = (currentIndexRef.current - 1 + catalog.length) % catalog.length;
+    currentIndexRef.current = prevIndex;
+    setCurrent(prevIndex);
+    setActiveItem(catalog[prevIndex]);
+  };
+
+  const handleViewerNext = () => {
+    if (!catalog.length) return;
+    const nextIndex = (currentIndexRef.current + 1) % catalog.length;
+    currentIndexRef.current = nextIndex;
+    setCurrent(nextIndex);
+    setActiveItem(catalog[nextIndex]);
+  };
+
   useEffect(() => {
     let cancelled = false;
     let timeoutId: number | null = null;
@@ -253,10 +269,16 @@ const FeaturedFilms: React.FC = () => {
                   <button
                     type="button"
                     className="relative w-full text-left"
-                    onClick={() => setActiveItem(createFeaturedViewerItem(f))}
+                    onClick={() => {
+                      currentIndexRef.current = idx;
+                      setCurrent(idx);
+                      setActiveItem(createFeaturedViewerItem(f));
+                    }}
                     onKeyDown={(event) => {
                       if (event.key === 'Enter' || event.key === ' ') {
                         event.preventDefault();
+                        currentIndexRef.current = idx;
+                        setCurrent(idx);
                         setActiveItem(createFeaturedViewerItem(f));
                       }
                     }}
@@ -318,6 +340,8 @@ const FeaturedFilms: React.FC = () => {
           metaValue={activeItem?.duration}
           storageKey={activeItem ? activeItem.storageKey : 'featured:unknown'}
           onClose={() => setActiveItem(null)}
+          onPrev={handleViewerPrev}
+          onNext={handleViewerNext}
         />
       </motion.div>
     </Section>

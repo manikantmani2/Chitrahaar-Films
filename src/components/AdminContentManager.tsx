@@ -24,9 +24,15 @@ const createPortfolioItem = (): PortfolioContentItem => ({
   visible: true,
 });
 
+const MAX_FILE_SIZE = 500 * 1024 * 1024; // 500MB
+
 export default function AdminContentManager() {
   const [featured, setFeatured] = useState<FeaturedContentItem[]>([]);
   const [portfolio, setPortfolio] = useState<PortfolioContentItem[]>([]);
+  const [uploading, setUploading] = useState(false);
+  const [uploadStatus, setUploadStatus] = useState<string | null>(null);
+  const [uploadProgress, setUploadProgress] = useState<number | null>(null);
+  const [uploadFolder, setUploadFolder] = useState<string>('Highlights');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
@@ -117,6 +123,95 @@ export default function AdminContentManager() {
           >
             Add portfolio item
           </button>
+          <div className="flex items-center gap-2">
+            <select value={uploadFolder} onChange={(e) => setUploadFolder(e.target.value)} className="rounded-2xl border border-white/10 bg-black/10 px-3 py-2 text-sm">
+              <option>Featured Films</option>
+              <option>Highlights</option>
+              <option>Intro videos</option>
+            </select>
+            <label className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium hover:bg-white/10 transition cursor-pointer">
+              <input
+                type="file"
+                accept="image/*,video/*"
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  setUploading(true);
+                  setUploadStatus(null);
+                  setUploadProgress(null);
+                  try {
+                    // Read file as base64
+                    const reader = new FileReader();
+                    const dataUrl: Promise<string> = new Promise((resolve, reject) => {
+                      reader.onload = () => resolve(String(reader.result || ''));
+                      reader.onerror = () => reject(new Error('Failed reading file'));
+                      reader.readAsDataURL(file);
+                    });
+                    const payload = await dataUrl;
+
+                    // Use XMLHttpRequest for upload progress tracking
+                    await new Promise<void>((resolve, reject) => {
+                      const xhr = new XMLHttpRequest();
+                      xhr.open('POST', '/api/admin/upload');
+                      xhr.setRequestHeader('Content-Type', 'application/json');
+                      xhr.upload.addEventListener('progress', (event) => {
+                        if (event.lengthComputable) {
+                          const percent = Math.round((event.loaded / event.total) * 100);
+                          setUploadProgress(percent);
+                        }
+                      });
+                      xhr.addEventListener('load', () => {
+                        if (xhr.status >= 200 && xhr.status < 300) {
+                          try {
+                            const json = JSON.parse(xhr.responseText);
+                            const publicPath = json.path as string;
+                            const isVideo = file.type.startsWith('video');
+                            if (uploadFolder === 'Featured Films') {
+                              const f = createFeaturedItem();
+                              f.id = Date.now();
+                              f.title = file.name;
+                              f.thumb = isVideo ? publicPath : publicPath;
+                              f.video = isVideo ? publicPath : '';
+                              setFeatured((cur) => [f, ...cur]);
+                            } else {
+                              const newItem = createPortfolioItem();
+                              newItem.id = Date.now();
+                              newItem.title = file.name;
+                              newItem.thumb = publicPath;
+                              newItem.mediaType = isVideo ? 'video' : 'photo';
+                              if (isVideo) newItem.videoUrl = publicPath;
+                              setPortfolio((cur) => [newItem, ...cur]);
+                            }
+                            setUploadStatus(`Uploaded: ${publicPath}`);
+                            resolve();
+                          } catch (err) {
+                            reject(new Error('Invalid response from server'));
+                          }
+                        } else {
+                          try {
+                            const err = JSON.parse(xhr.responseText);
+                            reject(new Error(err?.error || 'Upload failed'));
+                          } catch {
+                            reject(new Error('Upload failed'));
+                          }
+                        }
+                      });
+                      xhr.addEventListener('error', () => reject(new Error('Upload failed')));
+                      xhr.addEventListener('abort', () => reject(new Error('Upload cancelled')));
+                      xhr.send(JSON.stringify({ filename: file.name, folder: uploadFolder, data: payload }));
+                    });
+                  } catch (err) {
+                    setUploadStatus(err instanceof Error ? err.message : 'Upload failed');
+                  } finally {
+                    setUploading(false);
+                    setUploadProgress(null);
+                  }
+                }}
+                className="hidden"
+              />
+              Upload
+            </label>
+          </div>
         </div>
       </div>
 
@@ -125,6 +220,18 @@ export default function AdminContentManager() {
       ) : null}
 
       <div className="space-y-8">
+        {uploading && uploadProgress !== null ? (
+          <div className="space-y-2">
+            <div className="flex items-center justify-between text-sm text-white/65">
+              <span>Uploading...</span>
+              <span>{uploadProgress}%</span>
+            </div>
+            <div className="w-full h-2 rounded-full bg-white/10">
+              <div className="h-full rounded-full bg-accent transition-all" style={{ width: `${uploadProgress}%` }} />
+            </div>
+          </div>
+        ) : null}
+        {uploadStatus && !uploading ? <p className="text-sm text-white/65">{uploadStatus}</p> : null}
         <div>
           <div className="mb-4 flex items-center justify-between gap-3">
             <h3 className="text-lg font-semibold">Featured films</h3>
