@@ -215,9 +215,7 @@ const MediaLibrary: React.FC = () => {
   );
 
   const getFrameClass = (item: WorkItem) => {
-    return item.mediaType === 'video'
-      ? 'shrink-0 w-64 aspect-[16/9]'
-      : 'shrink-0 w-64 aspect-[9/16]';
+    return 'shrink-0 w-64';
   };
 
   const handleFilterClick = (type: EventFilter | MediaType, kind: 'event' | 'media') => {
@@ -356,7 +354,9 @@ const MediaLibrary: React.FC = () => {
   };
 
   const doShare = async (item: WorkItem) => {
-    const url = typeof window !== 'undefined' ? window.location.href.split('#')[0] + `#works-gallery` : '';
+    const url = typeof window !== 'undefined'
+      ? window.location.href.split('#')[0] + `#works-gallery-item-${item.id}`
+      : '';
     try {
       if ((navigator as any).share) {
         await (navigator as any).share({ title: item.title, text: item.description, url });
@@ -372,6 +372,35 @@ const MediaLibrary: React.FC = () => {
     }
     setTimeout(() => setToast(null), 2500);
   };
+
+  // Deep-link: when the active item changes update the URL hash so it can be shared
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      if (activeItem) {
+        history.replaceState(null, '', `#works-gallery-item-${activeItem.id}`);
+      } else {
+        history.replaceState(null, '', '#works-gallery');
+      }
+    } catch (e) {
+      // ignore replaceState errors
+    }
+  }, [activeItem]);
+
+  // On mount, check the URL hash for a deep-link and open the matching item in the modal
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const hash = window.location.hash || '';
+    const m = hash.match(/#works-gallery-item-(\d+)/);
+    if (m) {
+      const id = Number(m[1]);
+      const found = WORK_ITEMS.find((it) => it.id === id);
+      if (found) {
+        // defer to next tick to avoid interfering with initial render
+        setTimeout(() => setActiveItem(found), 0);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const filterStrip = filterStripRef.current;
@@ -395,7 +424,7 @@ const MediaLibrary: React.FC = () => {
       subtitle="Browse photos and videos by event type: Food & Beverages, Corporate & Events, Fashion, Artist, Short Films, Wedding"
       background="gradient"
     >
-      <div ref={filterStripRef} className="flex w-full gap-3 overflow-x-auto whitespace-nowrap rounded-2xl border border-[rgba(255,255,255,0.03)] bg-[rgba(255,255,255,0.02)] px-3 py-3 scrollbar-hide mb-8">
+      <div ref={filterStripRef} className="flex w-full gap-2 overflow-x-auto whitespace-nowrap rounded-2xl border border-[rgba(255,255,255,0.03)] bg-[rgba(255,255,255,0.02)] px-3 py-2 scrollbar-hide mb-5">
         <span className="shrink-0 rounded-full border border-[rgba(212,175,55,0.08)] bg-[rgba(212,175,55,0.03)] px-3 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-[rgba(212,175,55,0.9)]">Filters</span>
         {eventTypes.map((et) => (
           <button
@@ -435,19 +464,19 @@ const MediaLibrary: React.FC = () => {
             const combined = groupItems.slice().sort((a, b) => a.id - b.id);
             if (combined.length === 0) return null;
             return (
-              <div key={group} className="mb-4" ref={(el) => { groupRefs.current[group] = el; }}>
+              <div key={group} className="mb-3" ref={(el) => { groupRefs.current[group] = el; }}>
                 <h4 className="mb-2 text-base font-semibold">{group}</h4>
-                <div className="mb-2">
-                  <div className="flex gap-3 overflow-x-auto scrollbar-hide py-1">
+                <div className="mb-1">
+                  <div className="flex gap-2 overflow-x-auto scrollbar-hide py-0">
                     {combined.map((item) => (
                       <div key={item.id} className={getFrameClass(item)}>
                         <Card variant="hover" className={`overflow-hidden rounded-lg hover-lift`}>
                           {item.mediaType === 'photo' ? (
-                            <div className="relative h-28 cursor-pointer" onClick={() => openItem(item)} role="button" tabIndex={0}>
+                            <div className="relative w-full aspect-[9/16] cursor-pointer" onClick={() => openItem(item)} role="button" tabIndex={0}>
                               <Image src={encodeURI(item.thumb)} alt={item.title} fill className="object-cover" priority={combined.length <= 2} />
                             </div>
                           ) : (
-                            <div className="relative h-28 bg-black cursor-pointer" onClick={() => openItem(item)} role="button" tabIndex={0}>
+                            <div className="relative w-full aspect-[9/16] bg-black cursor-pointer" onClick={() => openItem(item)} role="button" tabIndex={0}>
                               <video
                                 src={encodeURI(item.videoUrl || '')}
                                 muted
@@ -482,14 +511,14 @@ const MediaLibrary: React.FC = () => {
             const eventCombined = [...photoItems, ...videoItems].slice().sort((a, b) => a.id - b.id);
             if (eventCombined.length === 0) return null;
             return (
-              <div className="mb-4">
+              <div className="mb-3">
                 <h4 className="mb-2 text-base font-semibold">Photos & Videos</h4>
-                <div ref={galleryStripRef} className="flex gap-3 overflow-x-auto scrollbar-hide py-1">
+                <div ref={galleryStripRef} className="flex gap-2 overflow-x-auto scrollbar-hide py-0">
                   {eventCombined.map((item, idx) => (
                     <div key={item.id} className={`${getFrameClass(item)} transition-all duration-500 ${(item.mediaType === 'photo' ? idx === photoActiveIndex : idx === videoActiveIndex) ? 'scale-[1.14] z-10' : 'scale-[0.9] opacity-65'}`}>
                       <Card variant="hover" className={`overflow-hidden rounded-lg hover-lift transition-all duration-500`}>
                         {item.mediaType === 'photo' ? (
-                          <div className="relative h-28 cursor-pointer" onClick={() => openItem(item)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openItem(item); } }} role="button" tabIndex={0}>
+                          <div className="relative w-full aspect-[9/16] cursor-pointer" onClick={() => openItem(item)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openItem(item); } }} role="button" tabIndex={0}>
                             <Image src={encodeURI(item.thumb)} alt={item.title} fill className="object-cover" priority={idx < 2} />
                             <div className="absolute top-1 right-1 flex gap-1">
                               <button
@@ -504,7 +533,7 @@ const MediaLibrary: React.FC = () => {
                             </div>
                           </div>
                         ) : (
-                          <div className="relative h-28 bg-black cursor-pointer" onClick={() => openItem(item)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openItem(item); } }} role="button" tabIndex={0}>
+                          <div className="relative w-full aspect-[9/16] bg-black cursor-pointer" onClick={() => openItem(item)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openItem(item); } }} role="button" tabIndex={0}>
                             <video
                               src={encodeURI(item.videoUrl || '')}
                               muted
