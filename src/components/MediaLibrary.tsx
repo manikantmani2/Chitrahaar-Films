@@ -503,15 +503,6 @@ const MediaLibrary: React.FC = () => {
                             <p className="text-xs text-text-secondary truncate">{item.mediaType === 'photo' ? item.eventType : item.duration || 'Video'}</p>
                           </div>
                         </Card>
-                        </div>
-                        <button
-                          type="button"
-                          aria-label="Scroll right"
-                          onClick={() => scrollSuggestions(1)}
-                          className="absolute right-1 top-1/2 -translate-y-1/2 z-20 inline-flex items-center justify-center w-8 h-8 rounded-full bg-black/50 text-white/90 hover:bg-white/10"
-                        >
-                          <FaChevronRight />
-                        </button>
                       </div>
                     ))}
                   </div>
@@ -652,26 +643,35 @@ const MediaLibrary: React.FC = () => {
                         </button>
                         <div ref={suggestionsRef} className="flex gap-3 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-1">
                           {relatedItems.map((suggestion) => {
-                                  const full = WORK_ITEMS.find((it) => it.id === suggestion.id);
-                                  const mediaSrc = full?.mediaType === 'video' ? (full?.videoUrl || full?.thumb) : full?.thumb;
-                                  return (
-                                    <button
-                                      key={suggestion.id}
-                                      aria-label={`Open ${suggestion.title}`}
-                                      onClick={() => setActiveItem(WORK_ITEMS.find((item) => item.id === suggestion.id) || activeItem)}
-                                      className="shrink-0 w-32 rounded-xl overflow-hidden border border-white/6 bg-black/20 snap-center"
-                                    >
-                                      <div className="relative h-20 w-full bg-black">
-                                        {suggestion.mediaType === 'video' ? (
-                                          <video src={encodeURI(mediaSrc || '')} muted playsInline preload="metadata" className="h-full w-full object-cover" />
-                                        ) : (
-                                          <Image src={encodeURI(mediaSrc || '')} alt={suggestion.title} fill className="object-cover" loading="lazy" />
-                                        )}
-                                      </div>
-                                      <div className="p-2 text-xs text-white/80">{suggestion.title}</div>
-                                    </button>
-                                  );
-                                })}
+                            const full = WORK_ITEMS.find((it) => it.id === suggestion.id);
+                            const mediaSrc = full?.mediaType === 'video' ? (full?.videoUrl || full?.thumb) : full?.thumb;
+                            return (
+                              <button
+                                key={suggestion.id}
+                                aria-label={`Open ${suggestion.title}`}
+                                onClick={() => setActiveItem(WORK_ITEMS.find((item) => item.id === suggestion.id) || activeItem)}
+                                className="shrink-0 w-32 rounded-xl overflow-hidden border border-white/6 bg-black/20 snap-center"
+                              >
+                                <div className="relative h-20 w-full bg-black">
+                                  {suggestion.mediaType === 'video' ? (
+                                    <video src={encodeURI(mediaSrc || '')} muted playsInline preload="metadata" className="h-full w-full object-cover" />
+                                  ) : (
+                                    <Image src={encodeURI(mediaSrc || '')} alt={suggestion.title} fill className="object-cover" loading="lazy" />
+                                  )}
+                                </div>
+                                <div className="p-2 text-xs text-white/80">{suggestion.title}</div>
+                              </button>
+                            );
+                          })}
+                        </div>
+                        <button
+                          type="button"
+                          aria-label="Scroll right"
+                          onClick={() => scrollSuggestions(1)}
+                          className="absolute right-1 top-1/2 -translate-y-1/2 z-20 inline-flex items-center justify-center w-8 h-8 rounded-full bg-black/50 text-white/90 hover:bg-white/10"
+                        >
+                          <FaChevronRight />
+                        </button>
                       </div>
                     </div>
                   ) : (
