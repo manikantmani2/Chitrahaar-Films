@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { FaInstagram, FaYoutube, FaHeart, FaShareAlt } from 'react-icons/fa';
+import { FaInstagram, FaYoutube, FaHeart, FaShareAlt, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { containerVariants, itemVariants } from '@/utils/animations';
 import { getGalleryPosterWebp } from '@/utils/imagePaths';
 import { getRelatedGallerySuggestions, normalizeGalleryGroup, ALLOWED_GALLERY_GROUPS, type GallerySuggestionItem } from '@/utils/gallerySuggestions';
@@ -142,6 +142,7 @@ const MediaLibrary: React.FC = () => {
   const galleryStripRef = useRef<HTMLDivElement | null>(null);
   const photoStripRef = useRef<HTMLDivElement | null>(null);
   const videoStripRef = useRef<HTMLDivElement | null>(null);
+  const suggestionsRef = useRef<HTMLDivElement | null>(null);
   const groupRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const autoScrollTimerRef = useRef<number | null>(null);
   const photoAutoScrollTimerRef = useRef<number | null>(null);
@@ -216,6 +217,13 @@ const MediaLibrary: React.FC = () => {
 
   const getFrameClass = (item: WorkItem) => {
     return 'shrink-0 w-64';
+  };
+
+  const scrollSuggestions = (direction: number) => {
+    const el = suggestionsRef.current;
+    if (!el) return;
+    const amount = Math.round(el.clientWidth * 0.6) || 240;
+    el.scrollBy({ left: direction * amount, behavior: 'smooth' });
   };
 
   const handleFilterClick = (type: EventFilter | MediaType, kind: 'event' | 'media') => {
@@ -495,6 +503,15 @@ const MediaLibrary: React.FC = () => {
                             <p className="text-xs text-text-secondary truncate">{item.mediaType === 'photo' ? item.eventType : item.duration || 'Video'}</p>
                           </div>
                         </Card>
+                        </div>
+                        <button
+                          type="button"
+                          aria-label="Scroll right"
+                          onClick={() => scrollSuggestions(1)}
+                          className="absolute right-1 top-1/2 -translate-y-1/2 z-20 inline-flex items-center justify-center w-8 h-8 rounded-full bg-black/50 text-white/90 hover:bg-white/10"
+                        >
+                          <FaChevronRight />
+                        </button>
                       </div>
                     ))}
                   </div>
@@ -624,8 +641,17 @@ const MediaLibrary: React.FC = () => {
                       <p className="mb-2 text-[11px] uppercase tracking-[0.25em] text-[rgba(212,175,55,0.75)]">
                         Similar picks
                       </p>
-                      <div className="flex gap-3 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-1">
-                                {relatedItems.map((suggestion) => {
+                      <div className="relative">
+                        <button
+                          type="button"
+                          aria-label="Scroll left"
+                          onClick={() => scrollSuggestions(-1)}
+                          className="absolute left-1 top-1/2 -translate-y-1/2 z-20 inline-flex items-center justify-center w-8 h-8 rounded-full bg-black/50 text-white/90 hover:bg-white/10"
+                        >
+                          <FaChevronLeft />
+                        </button>
+                        <div ref={suggestionsRef} className="flex gap-3 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-1">
+                          {relatedItems.map((suggestion) => {
                                   const full = WORK_ITEMS.find((it) => it.id === suggestion.id);
                                   const mediaSrc = full?.mediaType === 'video' ? (full?.videoUrl || full?.thumb) : full?.thumb;
                                   return (
