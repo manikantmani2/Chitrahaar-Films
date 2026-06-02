@@ -68,12 +68,8 @@ export const getRelatedGallerySuggestions = (
   context: SortContext = {},
   limit = 8,
 ) => {
-  const strictRelatedItems = items.filter((item) => {
-    if (context.activeId != null && item.id === context.activeId) return false;
-    if (context.activeGroup && item.group !== context.activeGroup) return false;
-    if (context.activeMediaType && item.mediaType !== context.activeMediaType) return false;
-    return true;
-  });
-
-  return sortGallerySuggestions(strictRelatedItems, context, limit);
+  // Instead of strictly filtering by group/mediaType, score and sort all other
+  // items so we still prefer same-group and same-media-type matches but fall
+  // back to other relevant items when not enough strict matches exist.
+  return sortGallerySuggestions(items.filter((it) => it.id !== context.activeId), context, limit);
 };
