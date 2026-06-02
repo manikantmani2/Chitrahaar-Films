@@ -29,7 +29,7 @@ const createFeaturedViewerItem = (item: FeaturedContentItem): ViewerItem => ({
   mediaType: 'video',
   thumb: item.thumb,
   duration: item.duration,
-  group: normalizeGalleryGroup(item.eventType || 'featured') || 'featured',
+  group: 'featured',
   kind: 'video',
   src: item.video || '',
   poster: item.video ? getGalleryPosterWebp(item.video, 'large') : item.thumb,
