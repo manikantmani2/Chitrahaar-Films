@@ -12,6 +12,10 @@ const FALLBACK_CONTENT: SiteContentData = {
   portfolio: [],
 };
 
+function stripBom(value: string): string {
+  return value.charCodeAt(0) === 0xfeff ? value.slice(1) : value;
+}
+
 async function ensureContentFile() {
   await fs.mkdir(DATA_DIR, { recursive: true });
   try {
@@ -24,7 +28,7 @@ async function ensureContentFile() {
 async function readContent(): Promise<SiteContentData> {
   await ensureContentFile();
   const raw = await fs.readFile(CONTENT_FILE, 'utf8');
-  return JSON.parse(raw || '{}') as SiteContentData;
+  return JSON.parse(stripBom(raw) || '{}') as SiteContentData;
 }
 
 async function writeContent(content: SiteContentData) {
