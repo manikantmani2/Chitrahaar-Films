@@ -11,9 +11,16 @@ import {
   getGalleryThumbAvif,
   getGalleryThumbWebp,
 } from '@/utils/imagePaths';
-import { getRelatedGallerySuggestions, normalizeGalleryGroup, type GallerySuggestionItem } from '@/utils/gallerySuggestions';
+import { normalizeGalleryGroup } from '@/utils/gallerySuggestions';
 
-type ViewerItem = GallerySuggestionItem & {
+type ViewerItem = {
+  id: string | number;
+  title: string;
+  description: string;
+  mediaType: 'photo' | 'video';
+  thumb: string;
+  duration?: string;
+  group?: string | undefined;
   kind: 'photo' | 'video';
   src: string;
   poster?: string;
@@ -309,13 +316,6 @@ const FeaturedFilms: React.FC = () => {
           poster={activeItem?.poster}
           metaLabel={activeItem?.group === 'featured' ? 'Featured film' : activeItem?.group || 'Portfolio item'}
           metaValue={activeItem?.duration}
-          suggestions={getRelatedGallerySuggestions(catalog, { activeId: activeItem?.id, activeGroup: activeItem?.group, activeMediaType: activeItem?.kind }, 8)}
-          activeSuggestionId={activeItem?.id}
-          activeSuggestionGroup={activeItem?.group || null}
-          onSelectSuggestion={(suggestionId) => {
-            const nextItem = catalog.find((item) => item.id === suggestionId);
-            if (nextItem) setActiveItem(nextItem);
-          }}
           storageKey={activeItem ? activeItem.storageKey : 'featured:unknown'}
           onClose={() => setActiveItem(null)}
         />

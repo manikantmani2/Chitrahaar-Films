@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { FaInstagram, FaYoutube, FaHeart, FaShareAlt, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaInstagram, FaYoutube, FaHeart, FaShareAlt } from 'react-icons/fa';
 import { containerVariants, itemVariants } from '@/utils/animations';
 import { getGalleryPosterWebp } from '@/utils/imagePaths';
-import { getRelatedGallerySuggestions, normalizeGalleryGroup, ALLOWED_GALLERY_GROUPS, type GallerySuggestionItem } from '@/utils/gallerySuggestions';
+import { normalizeGalleryGroup, ALLOWED_GALLERY_GROUPS } from '@/utils/gallerySuggestions';
 import Section from './Section';
 import Card from './Card';
 
@@ -142,7 +142,7 @@ const MediaLibrary: React.FC = () => {
   const galleryStripRef = useRef<HTMLDivElement | null>(null);
   const photoStripRef = useRef<HTMLDivElement | null>(null);
   const videoStripRef = useRef<HTMLDivElement | null>(null);
-  const suggestionsRef = useRef<HTMLDivElement | null>(null);
+  
   const groupRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const autoScrollTimerRef = useRef<number | null>(null);
   const photoAutoScrollTimerRef = useRef<number | null>(null);
@@ -165,29 +165,7 @@ const MediaLibrary: React.FC = () => {
     return seconds;
   };
 
-  const relatedItems = useMemo(() => {
-    if (!activeItem) return [];
-
-    const suggestions: GallerySuggestionItem[] = WORK_ITEMS.map((item) => ({
-      id: item.id,
-      title: item.title,
-      description: item.description,
-      mediaType: item.mediaType,
-      thumb: item.thumb,
-      duration: item.duration,
-      group: normalizeGalleryGroup(item.eventType) || undefined,
-    }));
-
-    return getRelatedGallerySuggestions(
-      suggestions,
-      {
-        activeId: activeItem.id,
-        activeGroup: normalizeGalleryGroup(activeItem.eventType) || undefined,
-        activeMediaType: activeItem.mediaType,
-      },
-      8,
-    );
-  }, [activeItem]);
+  
 
   const filteredItems = useMemo(() => {
     return WORK_ITEMS.filter((item) => {
@@ -219,12 +197,7 @@ const MediaLibrary: React.FC = () => {
     return 'shrink-0 w-64';
   };
 
-  const scrollSuggestions = (direction: number) => {
-    const el = suggestionsRef.current;
-    if (!el) return;
-    const amount = Math.round(el.clientWidth * 0.6) || 240;
-    el.scrollBy({ left: direction * amount, behavior: 'smooth' });
-  };
+  
 
   const handleFilterClick = (type: EventFilter | MediaType, kind: 'event' | 'media') => {
     if (kind === 'event') {
@@ -245,7 +218,7 @@ const MediaLibrary: React.FC = () => {
       modalAdvanceTimerRef.current = null;
     }
 
-    if (!activeItem || relatedItems.length === 0) {
+    if (!activeItem) {
       return;
     }
 
@@ -257,8 +230,7 @@ const MediaLibrary: React.FC = () => {
       if (currentIndex === -1) return;
 
       const nextRelated = WORK_ITEMS.slice(currentIndex + 1).find((item) => item.eventType === activeItem.eventType && item.mediaType === activeItem.mediaType && item.id !== activeItem.id)
-        || WORK_ITEMS.find((item) => item.eventType === activeItem.eventType && item.mediaType === activeItem.mediaType && item.id !== activeItem.id)
-        || relatedItems[0];
+        || WORK_ITEMS.find((item) => item.eventType === activeItem.eventType && item.mediaType === activeItem.mediaType && item.id !== activeItem.id);
 
       if (nextRelated) {
         setActiveItem(WORK_ITEMS.find((item) => item.id === nextRelated.id) || activeItem);
@@ -271,7 +243,7 @@ const MediaLibrary: React.FC = () => {
         modalAdvanceTimerRef.current = null;
       }
     };
-  }, [activeItem, relatedItems]);
+  }, [activeItem]);
 
   // Manual scroller: auto-scroll disabled to keep user control
 
@@ -624,60 +596,7 @@ const MediaLibrary: React.FC = () => {
                   <p className="mt-2 text-lg font-medium capitalize">{activeItem.mediaType}</p>
                 </div>
 
-                {/* Suggestions: keep the rail inside the clicked media type */}
-                <div>
-                  <p className="text-xs uppercase tracking-[0.3em] text-white/40 mb-2">You may also like</p>
-                  {relatedItems.length > 0 ? (
-                    <div>
-                      <p className="mb-2 text-[11px] uppercase tracking-[0.25em] text-[rgba(212,175,55,0.75)]">
-                        Similar picks
-                      </p>
-                      <div className="relative">
-                        <button
-                          type="button"
-                          aria-label="Scroll left"
-                          onClick={() => scrollSuggestions(-1)}
-                          className="absolute left-1 top-1/2 -translate-y-1/2 z-20 inline-flex items-center justify-center w-8 h-8 rounded-full bg-black/50 text-white/90 hover:bg-white/10"
-                        >
-                          <FaChevronLeft />
-                        </button>
-                        <div ref={suggestionsRef} className="flex gap-3 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-1">
-                          {relatedItems.map((suggestion) => {
-                            const full = WORK_ITEMS.find((it) => it.id === suggestion.id);
-                            const mediaSrc = full?.mediaType === 'video' ? (full?.videoUrl || full?.thumb) : full?.thumb;
-                            return (
-                              <button
-                                key={suggestion.id}
-                                aria-label={`Open ${suggestion.title}`}
-                                onClick={() => setActiveItem(WORK_ITEMS.find((item) => item.id === suggestion.id) || activeItem)}
-                                className="shrink-0 w-32 rounded-xl overflow-hidden border border-white/6 bg-black/20 snap-center"
-                              >
-                                <div className="relative h-20 w-full bg-black">
-                                  {suggestion.mediaType === 'video' ? (
-                                    <video src={encodeURI(mediaSrc || '')} muted playsInline preload="metadata" className="h-full w-full object-cover" />
-                                  ) : (
-                                    <Image src={encodeURI(mediaSrc || '')} alt={suggestion.title} fill className="object-cover" loading="lazy" />
-                                  )}
-                                </div>
-                                <div className="p-2 text-xs text-white/80">{suggestion.title}</div>
-                              </button>
-                            );
-                          })}
-                        </div>
-                        <button
-                          type="button"
-                          aria-label="Scroll right"
-                          onClick={() => scrollSuggestions(1)}
-                          className="absolute right-1 top-1/2 -translate-y-1/2 z-20 inline-flex items-center justify-center w-8 h-8 rounded-full bg-black/50 text-white/90 hover:bg-white/10"
-                        >
-                          <FaChevronRight />
-                        </button>
-                      </div>
-                    </div>
-                  ) : (
-                    <p className="text-sm text-white/45">No matching suggestions found for this {activeItem.mediaType}.</p>
-                  )}
-                </div>
+                {/* Recommendations removed */}
                 <div className="flex flex-col gap-3">
                   <a href={activeItem.instagramUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-2xl bg-accent px-4 py-3 font-semibold text-primary transition hover:opacity-90">
                     <FaInstagram /> Open Instagram
