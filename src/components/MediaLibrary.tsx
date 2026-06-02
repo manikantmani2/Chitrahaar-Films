@@ -38,7 +38,71 @@ const getOrCreateClientId = () => {
 };
 
 
-const WORK_ITEMS: WorkItem[] = [];
+const WORK_ITEMS: WorkItem[] = [
+  // Artist
+  { id: 1, title: 'cf', eventType: 'Artist', mediaType: 'photo', thumb: '/Our Works Gallery/Artist/cf.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 2, title: 'RAJ04410', eventType: 'Artist', mediaType: 'photo', thumb: '/Our Works Gallery/Artist/RAJ04410.JPG', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 3, title: 'Worldclass-354', eventType: 'Artist', mediaType: 'photo', thumb: '/Our Works Gallery/Artist/Worldclass-354.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 4, title: 'Worldclass-355', eventType: 'Artist', mediaType: 'photo', thumb: '/Our Works Gallery/Artist/Worldclass-355.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 5, title: 'Worldclass-357', eventType: 'Artist', mediaType: 'photo', thumb: '/Our Works Gallery/Artist/Worldclass-357.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 6, title: 'Worldclass-358', eventType: 'Artist', mediaType: 'photo', thumb: '/Our Works Gallery/Artist/Worldclass-358.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 7, title: 'Worldclass-374', eventType: 'Artist', mediaType: 'photo', thumb: '/Our Works Gallery/Artist/Worldclass-374.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 8, title: 'Worldclass-379', eventType: 'Artist', mediaType: 'photo', thumb: '/Our Works Gallery/Artist/Worldclass-379.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+
+  // Corporate & Events
+  { id: 9, title: 'CF-27', eventType: 'Corporate & Events', mediaType: 'photo', thumb: '/Our Works Gallery/Corporate & Events/CF-27.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 10, title: 'CF-40', eventType: 'Corporate & Events', mediaType: 'photo', thumb: '/Our Works Gallery/Corporate & Events/CF-40.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 11, title: 'CF-42', eventType: 'Corporate & Events', mediaType: 'photo', thumb: '/Our Works Gallery/Corporate & Events/CF-42.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 12, title: 'CF-53', eventType: 'Corporate & Events', mediaType: 'photo', thumb: '/Our Works Gallery/Corporate & Events/CF-53.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 13, title: 'CF-54', eventType: 'Corporate & Events', mediaType: 'photo', thumb: '/Our Works Gallery/Corporate & Events/CF-54.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 14, title: 'CF-61', eventType: 'Corporate & Events', mediaType: 'photo', thumb: '/Our Works Gallery/Corporate & Events/CF-61.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 15, title: 'CF-68', eventType: 'Corporate & Events', mediaType: 'photo', thumb: '/Our Works Gallery/Corporate & Events/CF-68.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 16, title: 'CF-7', eventType: 'Corporate & Events', mediaType: 'photo', thumb: '/Our Works Gallery/Corporate & Events/CF-7.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 17, title: 'CF008231', eventType: 'Corporate & Events', mediaType: 'photo', thumb: '/Our Works Gallery/Corporate & Events/CF008231.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 18, title: 'CF008434', eventType: 'Corporate & Events', mediaType: 'photo', thumb: '/Our Works Gallery/Corporate & Events/CF008434.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 19, title: 'CF008595', eventType: 'Corporate & Events', mediaType: 'photo', thumb: '/Our Works Gallery/Corporate & Events/CF008595.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 20, title: 'CF008742', eventType: 'Corporate & Events', mediaType: 'photo', thumb: '/Our Works Gallery/Corporate & Events/CF008742.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 21, title: 'CF008744', eventType: 'Corporate & Events', mediaType: 'photo', thumb: '/Our Works Gallery/Corporate & Events/CF008744.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 22, title: 'CF008954', eventType: 'Corporate & Events', mediaType: 'photo', thumb: '/Our Works Gallery/Corporate & Events/CF008954.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 23, title: 'CF009007', eventType: 'Corporate & Events', mediaType: 'photo', thumb: '/Our Works Gallery/Corporate & Events/CF009007.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 24, title: 'Worldclass-174', eventType: 'Corporate & Events', mediaType: 'photo', thumb: '/Our Works Gallery/Corporate & Events/Worldclass-174.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 25, title: 'Worldclass-177', eventType: 'Corporate & Events', mediaType: 'photo', thumb: '/Our Works Gallery/Corporate & Events/Worldclass-177.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 26, title: 'Worldclass-179', eventType: 'Corporate & Events', mediaType: 'photo', thumb: '/Our Works Gallery/Corporate & Events/Worldclass-179.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 27, title: 'Worldclass-183', eventType: 'Corporate & Events', mediaType: 'photo', thumb: '/Our Works Gallery/Corporate & Events/Worldclass-183.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 28, title: 'Worldclass-185', eventType: 'Corporate & Events', mediaType: 'photo', thumb: '/Our Works Gallery/Corporate & Events/Worldclass-185.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 29, title: 'Worldclass-342', eventType: 'Corporate & Events', mediaType: 'photo', thumb: '/Our Works Gallery/Corporate & Events/Worldclass-342.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 30, title: 'Worldclass-349', eventType: 'Corporate & Events', mediaType: 'photo', thumb: '/Our Works Gallery/Corporate & Events/Worldclass-349.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 31, title: 'Worldclass-52', eventType: 'Corporate & Events', mediaType: 'photo', thumb: '/Our Works Gallery/Corporate & Events/Worldclass-52.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 32, title: 'Worldclass-56', eventType: 'Corporate & Events', mediaType: 'photo', thumb: '/Our Works Gallery/Corporate & Events/Worldclass-56.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 33, title: 'CORPRATE', eventType: 'Corporate & Events', mediaType: 'video', thumb: '/Our Works Gallery/Corporate & Events/CORPRATE.mp4', description: '', videoUrl: '/Our Works Gallery/Corporate & Events/CORPRATE.mp4', instagramUrl: '', youtubeUrl: '' },
+  { id: 34, title: 'EVENTS', eventType: 'Corporate & Events', mediaType: 'video', thumb: '/Our Works Gallery/Corporate & Events/EVENTS.m4v', description: '', videoUrl: '/Our Works Gallery/Corporate & Events/EVENTS.m4v', instagramUrl: '', youtubeUrl: '' },
+  { id: 35, title: 'PRODUCT VIDEO', eventType: 'Corporate & Events', mediaType: 'video', thumb: '/Our Works Gallery/Corporate & Events/PRODUCT VIDEO.mp4', description: '', videoUrl: '/Our Works Gallery/Corporate & Events/PRODUCT VIDEO.mp4', instagramUrl: '', youtubeUrl: '' },
+
+  // Fashion
+  { id: 36, title: 'cf-2', eventType: 'Fashion', mediaType: 'photo', thumb: '/Our Works Gallery/Fashion/cf-2.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 37, title: 'cf-3', eventType: 'Fashion', mediaType: 'photo', thumb: '/Our Works Gallery/Fashion/cf-3.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 38, title: 'cf-4', eventType: 'Fashion', mediaType: 'photo', thumb: '/Our Works Gallery/Fashion/cf-4.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 39, title: 'cf-5', eventType: 'Fashion', mediaType: 'photo', thumb: '/Our Works Gallery/Fashion/cf-5.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 40, title: 'cf-6', eventType: 'Fashion', mediaType: 'photo', thumb: '/Our Works Gallery/Fashion/cf-6.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 41, title: 'fashion video', eventType: 'Fashion', mediaType: 'video', thumb: '/Our Works Gallery/Fashion/fashion video.mp4', description: '', videoUrl: '/Our Works Gallery/Fashion/fashion video.mp4', instagramUrl: '', youtubeUrl: '' },
+
+  // Food & Beverages
+  { id: 42, title: 'F&B', eventType: 'Food & Beverages', mediaType: 'video', thumb: '/Our Works Gallery/Food & Beverages/F&B.mp4', description: '', videoUrl: '/Our Works Gallery/Food & Beverages/F&B.mp4', instagramUrl: '', youtubeUrl: '' },
+
+  // Wedding
+  { id: 43, title: '0U8A4373', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/0U8A4373.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 44, title: '0U8A4857', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/0U8A4857.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 45, title: '0U8A5138', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/0U8A5138.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 46, title: '0U8A5532', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/0U8A5532.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 47, title: 'DSC04511', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/DSC04511.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 48, title: 'DSC04586', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/DSC04586.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 49, title: 'cf-2-wed', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/cf-2.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 50, title: 'cf-3-wed', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/cf-3.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 51, title: 'cf-4-wed', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/cf-4.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 52, title: 'cf-wed', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/cf.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 53, title: 'Tejas & Taniya Preweding', eventType: 'Wedding', mediaType: 'video', thumb: '/Our Works Gallery/Wedding/Tejas & Taniya.mov Preweding.mov', description: '', videoUrl: '/Our Works Gallery/Wedding/Tejas & Taniya.mov Preweding.mov', instagramUrl: '', youtubeUrl: '' },
+  { id: 54, title: 'WEDDING', eventType: 'Wedding', mediaType: 'video', thumb: '/Our Works Gallery/Wedding/WEDDING.mp4', description: '', videoUrl: '/Our Works Gallery/Wedding/WEDDING.mp4', instagramUrl: '', youtubeUrl: '' },
+];
 
 const eventTypes: EventFilter[] = ['All', ...ALLOWED_GALLERY_GROUPS];
 
@@ -338,42 +402,26 @@ const MediaLibrary: React.FC = () => {
       {eventType === 'All' ? (
         <div>
           {eventTypes.filter((t) => t !== 'All').map((group) => {
-            const groupPhotoItems = WORK_ITEMS.filter((i) => i.eventType === group && i.mediaType === 'photo');
-            const groupVideoItems = WORK_ITEMS.filter((i) => i.eventType === group && i.mediaType === 'video');
+            const groupItems = WORK_ITEMS.filter((i) => i.eventType === group && (mediaType === 'all' || i.mediaType === mediaType));
+            // sort by id to provide a stable mixed ordering of photos and videos
+            const combined = groupItems.slice().sort((a, b) => a.id - b.id);
+            if (combined.length === 0) return null;
             return (
               <div key={group} className="mb-8" ref={(el) => { groupRefs.current[group] = el; }}>
                 <h4 className="mb-2 text-lg font-semibold">{group}</h4>
-                {(mediaType === 'all' || mediaType === 'photo') && groupPhotoItems.length > 0 && (
-                  <div className="mb-4">
-                    <p className="mb-3 text-sm font-medium">Photos</p>
-                    <div className="flex gap-4 overflow-x-auto scrollbar-hide py-2">
-                      {groupPhotoItems.map((item) => (
-                        <div key={item.id} className={`shrink-0 w-64`}>
-                          <Card variant="hover" className={`overflow-hidden rounded-[12px] hover-lift`}>
+                <div className="mb-2">
+                  <div className="flex gap-4 overflow-x-auto scrollbar-hide py-2">
+                    {combined.map((item) => (
+                      <div key={item.id} className={`shrink-0 w-64`}>
+                        <Card variant="hover" className={`overflow-hidden rounded-[12px] hover-lift`}>
+                          {item.mediaType === 'photo' ? (
                             <div className="relative h-40 cursor-pointer" onClick={() => openItem(item)} role="button" tabIndex={0}>
-                                <Image src={item.thumb} alt={item.title} fill className="object-cover" priority={groupPhotoItems.length <= 2} />
+                              <Image src={encodeURI(item.thumb)} alt={item.title} fill className="object-cover" priority={combined.length <= 2} />
                             </div>
-                            <div className="p-3">
-                              <h5 className="text-sm font-semibold">{item.title}</h5>
-                              <p className="text-xs text-text-secondary">{item.eventType}</p>
-                            </div>
-                          </Card>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {(mediaType === 'all' || mediaType === 'video') && groupVideoItems.length > 0 && (
-                  <div className="mb-2">
-                    <p className="mb-3 text-sm font-medium">Videos</p>
-                    <div className="flex gap-4 overflow-x-auto scrollbar-hide py-2">
-                      {groupVideoItems.map((item) => (
-                        <div key={item.id} className={`shrink-0 w-64`}>
-                          <Card variant="hover" className={`overflow-hidden rounded-[12px] hover-lift`}>
+                          ) : (
                             <div className="relative h-40 bg-black cursor-pointer" onClick={() => openItem(item)} role="button" tabIndex={0}>
                               <video
-                                src={item.videoUrl || ''}
+                                src={encodeURI(item.videoUrl || '')}
                                 muted
                                 playsInline
                                 preload="metadata"
@@ -384,16 +432,16 @@ const MediaLibrary: React.FC = () => {
                                 <div className="rounded-full bg-black/60 p-3 text-white/90">▶</div>
                               </div>
                             </div>
-                            <div className="p-3">
-                              <h5 className="text-sm font-semibold">{item.title}</h5>
-                              <p className="text-xs text-text-secondary">{item.duration || 'Video'}</p>
-                            </div>
-                          </Card>
-                        </div>
-                      ))}
-                    </div>
+                          )}
+                          <div className="p-3">
+                            <h5 className="text-sm font-semibold">{item.title}</h5>
+                            <p className="text-xs text-text-secondary">{item.mediaType === 'photo' ? item.eventType : item.duration || 'Video'}</p>
+                          </div>
+                        </Card>
+                      </div>
+                    ))}
                   </div>
-                )}
+                </div>
               </div>
             );
           })}
@@ -401,80 +449,69 @@ const MediaLibrary: React.FC = () => {
       ) : (
         <>
           {/* Photo strip */}
-          {(mediaType === 'all' || mediaType === 'photo') && (
-            <div className="mb-8">
-              <h4 className="mb-4 text-lg font-semibold">Photos</h4>
-              <div ref={photoStripRef} className="flex gap-4 overflow-x-auto scrollbar-hide py-2">
-                {photoItems.map((item, idx) => (
-                  <div key={item.id} data-photo-item="true" className={`shrink-0 w-64 transition-all duration-500 ${idx === photoActiveIndex ? 'scale-[1.14] z-10' : 'scale-[0.9] opacity-65'}`}>
-                    <Card variant="hover" className={`overflow-hidden rounded-[12px] hover-lift transition-all duration-500 ${idx === photoActiveIndex ? 'shadow-[0_22px_55px_rgba(0,0,0,0.35)]' : ''}`}>
-                      <div className="relative h-40 cursor-pointer" onClick={() => openItem(item)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openItem(item); } }} role="button" tabIndex={0}>
-                        <Image src={item.thumb} alt={item.title} fill className="object-cover" priority={idx === photoActiveIndex && idx < 2} />
-                          <div className="absolute top-2 right-2 flex gap-2">
-                            <button
-                              onClick={(e) => { e.stopPropagation(); toggleLike(item.id); }}
-                              aria-pressed={!!likes[item.id]}
-                              className={`rounded-full p-2 text-white/90 ${likes[item.id] ? 'bg-accent text-primary scale-110' : 'bg-black/50'}`}
-                            ><FaHeart /></button>
-                            <button
-                              onClick={(e) => { e.stopPropagation(); doShare(item); }}
-                              className="rounded-full bg-black/50 p-2 text-white/90"
-                            ><FaShareAlt /></button>
+          {/* Combined strip for selected event: mix photos and videos into a single rail */}
+          {(() => {
+            const eventCombined = [...photoItems, ...videoItems].slice().sort((a, b) => a.id - b.id);
+            if (eventCombined.length === 0) return null;
+            return (
+              <div className="mb-8">
+                <h4 className="mb-4 text-lg font-semibold">Photos & Videos</h4>
+                <div ref={galleryStripRef} className="flex gap-4 overflow-x-auto scrollbar-hide py-2">
+                  {eventCombined.map((item, idx) => (
+                    <div key={item.id} className={`shrink-0 w-64 transition-all duration-500 ${(item.mediaType === 'photo' ? idx === photoActiveIndex : idx === videoActiveIndex) ? 'scale-[1.14] z-10' : 'scale-[0.9] opacity-65'}`}>
+                      <Card variant="hover" className={`overflow-hidden rounded-[12px] hover-lift transition-all duration-500`}>
+                        {item.mediaType === 'photo' ? (
+                          <div className="relative h-40 cursor-pointer" onClick={() => openItem(item)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openItem(item); } }} role="button" tabIndex={0}>
+                            <Image src={encodeURI(item.thumb)} alt={item.title} fill className="object-cover" priority={idx < 2} />
+                            <div className="absolute top-2 right-2 flex gap-2">
+                              <button
+                                onClick={(e) => { e.stopPropagation(); toggleLike(item.id); }}
+                                aria-pressed={!!likes[item.id]}
+                                className={`rounded-full p-2 text-white/90 ${likes[item.id] ? 'bg-accent text-primary scale-110' : 'bg-black/50'}`}
+                              ><FaHeart /></button>
+                              <button
+                                onClick={(e) => { e.stopPropagation(); doShare(item); }}
+                                className="rounded-full bg-black/50 p-2 text-white/90"
+                              ><FaShareAlt /></button>
+                            </div>
                           </div>
-                      </div>
-                      <div className="p-3">
-                        <h5 className="text-sm font-semibold">{item.title}</h5>
-                        <p className="text-xs text-text-secondary">{item.eventType}</p>
-                      </div>
-                    </Card>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Video strip */}
-          {(mediaType === 'all' || mediaType === 'video') && (
-            <div className="mb-8">
-              <h4 className="mb-4 text-lg font-semibold">Videos</h4>
-              <div ref={videoStripRef} className="flex gap-4 overflow-x-auto scrollbar-hide py-2">
-                {videoItems.map((item, idx) => (
-                  <div key={item.id} data-video-item="true" className={`shrink-0 w-64 transition-all duration-500 ${idx === videoActiveIndex ? 'scale-[1.14] z-10' : 'scale-[0.9] opacity-65'}`}>
-                    <Card variant="hover" className={`overflow-hidden rounded-[12px] hover-lift transition-all duration-500 ${idx === videoActiveIndex ? 'shadow-[0_22px_55px_rgba(0,0,0,0.35)]' : ''}`}>
-                      <div className="relative h-40 bg-black cursor-pointer" onClick={() => openItem(item)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openItem(item); } }} role="button" tabIndex={0}>
-                        <video
-                          src={item.videoUrl || ''}
-                          muted
-                          playsInline
-                          preload="metadata"
-                          className="h-full w-full object-cover"
-                          aria-label={item.title}
-                        />
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="rounded-full bg-black/60 p-3 text-white/90">▶</div>
+                        ) : (
+                          <div className="relative h-40 bg-black cursor-pointer" onClick={() => openItem(item)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openItem(item); } }} role="button" tabIndex={0}>
+                            <video
+                              src={encodeURI(item.videoUrl || '')}
+                              muted
+                              playsInline
+                              preload="metadata"
+                              className="h-full w-full object-cover"
+                              aria-label={item.title}
+                            />
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <div className="rounded-full bg-black/60 p-3 text-white/90">▶</div>
+                            </div>
+                            <div className="absolute top-2 right-2 flex gap-2">
+                              <button
+                                onClick={(e) => { e.stopPropagation(); toggleLike(item.id); }}
+                                aria-pressed={!!likes[item.id]}
+                                className={`rounded-full p-2 text-white/90 ${likes[item.id] ? 'bg-accent text-primary scale-110' : 'bg-black/50'} transform transition`}
+                              ><FaHeart /></button>
+                              <button
+                                onClick={(e) => { e.stopPropagation(); doShare(item); }}
+                                className="rounded-full bg-black/50 p-2 text-white/90"
+                              ><FaShareAlt /></button>
+                            </div>
+                          </div>
+                        )}
+                        <div className="p-3">
+                          <h5 className="text-sm font-semibold">{item.title}</h5>
+                          <p className="text-xs text-text-secondary">{item.mediaType === 'photo' ? item.eventType : item.duration || 'Video'}</p>
                         </div>
-                        <div className="absolute top-2 right-2 flex gap-2">
-                          <button
-                            onClick={(e) => { e.stopPropagation(); toggleLike(item.id); }}
-                            aria-pressed={!!likes[item.id]}
-                            className={`rounded-full p-2 text-white/90 ${likes[item.id] ? 'bg-accent text-primary scale-110' : 'bg-black/50'} transform transition`}
-                          ><FaHeart /></button>
-                          <button
-                            onClick={(e) => { e.stopPropagation(); doShare(item); }}
-                            className="rounded-full bg-black/50 p-2 text-white/90"
-                          ><FaShareAlt /></button>
-                        </div>
-                      </div>
-                      <div className="p-3">
-                        <h5 className="text-sm font-semibold">{item.title}</h5>
-                        <p className="text-xs text-text-secondary">{item.duration || 'Video'}</p>
-                      </div>
-                    </Card>
-                  </div>
-                ))}
+                      </Card>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
+            );
+          })()}
         </>
       )}
 
@@ -496,10 +533,10 @@ const MediaLibrary: React.FC = () => {
             <div className="grid gap-0 lg:grid-cols-[1.6fr_0.9fr]">
                           <div className="relative min-h-[420px] bg-black flex items-center justify-center">
                 {activeItem.mediaType === 'photo' ? (
-                  <Image src={activeItem.thumb} alt={activeItem.title} fill sizes="100vw" className="object-contain" priority />
+                  <Image src={encodeURI(activeItem.thumb)} alt={activeItem.title} fill sizes="100vw" className="object-contain" priority />
                 ) : (
                   <video controls autoPlay playsInline className="h-full w-full bg-black object-contain">
-                    <source src={activeItem.videoUrl || ''} type="video/mp4" />
+                    <source src={encodeURI(activeItem.videoUrl || '')} type="video/mp4" />
                     Your browser does not support the video tag.
                   </video>
                 )}
@@ -534,7 +571,7 @@ const MediaLibrary: React.FC = () => {
                                 {relatedItems.map((suggestion) => (
                                   <button key={suggestion.id} aria-label={`Open ${suggestion.title}`} onClick={() => setActiveItem(WORK_ITEMS.find((item) => item.id === suggestion.id) || activeItem)} className="shrink-0 w-32 rounded-xl overflow-hidden border border-white/6 bg-black/20 snap-center">
                             <div className="relative h-20 w-full">
-                              <Image src={suggestion.thumb} alt={suggestion.title} fill className="object-cover" loading="lazy" />
+                              <Image src={encodeURI(suggestion.thumb)} alt={suggestion.title} fill className="object-cover" loading="lazy" />
                             </div>
                             <div className="p-2 text-xs text-white/80">{suggestion.title}</div>
                           </button>
