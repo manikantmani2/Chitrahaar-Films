@@ -88,20 +88,42 @@ const WORK_ITEMS: WorkItem[] = [
 
   // Food & Beverages
   { id: 42, title: 'F&B', eventType: 'Food & Beverages', mediaType: 'video', thumb: '/Our Works Gallery/Food & Beverages/F&B.mp4', description: '', videoUrl: '/Our Works Gallery/Food & Beverages/F&B.mp4', instagramUrl: '', youtubeUrl: '' },
+  { id: 43, title: '2', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/2.jpeg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 44, title: '3', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/3.jpeg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 45, title: '4', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/4.jpeg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 46, title: '5', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/5.jpeg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 47, title: '6', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/6.jpeg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 48, title: '7', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/7.jpeg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 49, title: '8', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/8.jpeg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 50, title: '9', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/9.jpeg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 51, title: '10', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/10.jpeg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 52, title: '11', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/11.jpeg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 53, title: '12', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/12.jpeg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 54, title: '13', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/13.jpeg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 55, title: '14', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/14.jpeg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 56, title: '15', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/15.jpeg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 57, title: '16', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/16.jpeg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 58, title: '20', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/20.JPG', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 59, title: '21', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/21.JPG', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 60, title: '27', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/27.JPG', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 61, title: '28', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/28.JPG', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 62, title: '29', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/29.JPG', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 63, title: '30', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/30.JPG', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 64, title: '32', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/32.JPG', description: '', instagramUrl: '', youtubeUrl: '' },
 
   // Wedding
-  { id: 43, title: '0U8A4373', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/0U8A4373.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
-  { id: 44, title: '0U8A4857', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/0U8A4857.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
-  { id: 45, title: '0U8A5138', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/0U8A5138.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
-  { id: 46, title: '0U8A5532', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/0U8A5532.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
-  { id: 47, title: 'DSC04511', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/DSC04511.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
-  { id: 48, title: 'DSC04586', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/DSC04586.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
-  { id: 49, title: 'cf-2-wed', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/cf-2.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
-  { id: 50, title: 'cf-3-wed', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/cf-3.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
-  { id: 51, title: 'cf-4-wed', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/cf-4.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
-  { id: 52, title: 'cf-wed', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/cf.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
-  { id: 53, title: 'Tejas & Taniya Preweding', eventType: 'Wedding', mediaType: 'video', thumb: '/Our Works Gallery/Wedding/Tejas & Taniya.mov Preweding.mov', description: '', videoUrl: '/Our Works Gallery/Wedding/Tejas & Taniya.mov Preweding.mov', instagramUrl: '', youtubeUrl: '' },
-  { id: 54, title: 'WEDDING', eventType: 'Wedding', mediaType: 'video', thumb: '/Our Works Gallery/Wedding/WEDDING.mp4', description: '', videoUrl: '/Our Works Gallery/Wedding/WEDDING.mp4', instagramUrl: '', youtubeUrl: '' },
+  { id: 65, title: '0U8A4373', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/0U8A4373.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 66, title: '0U8A4857', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/0U8A4857.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 67, title: '0U8A5138', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/0U8A5138.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 68, title: '0U8A5532', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/0U8A5532.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 69, title: 'DSC04511', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/DSC04511.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 70, title: 'DSC04586', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/DSC04586.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 71, title: 'cf-2-wed', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/cf-2.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 72, title: 'cf-3-wed', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/cf-3.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 73, title: 'cf-4-wed', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/cf-4.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 74, title: 'cf-wed', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/cf.jpg', description: '', instagramUrl: '', youtubeUrl: '' },
+  { id: 75, title: 'Tejas & Taniya Preweding', eventType: 'Wedding', mediaType: 'video', thumb: '/Our Works Gallery/Wedding/Tejas & Taniya.mov Preweding.mov', description: '', videoUrl: '/Our Works Gallery/Wedding/Tejas & Taniya.mov Preweding.mov', instagramUrl: '', youtubeUrl: '' },
+  { id: 76, title: 'WEDDING', eventType: 'Wedding', mediaType: 'video', thumb: '/Our Works Gallery/Wedding/WEDDING.mp4', description: '', videoUrl: '/Our Works Gallery/Wedding/WEDDING.mp4', instagramUrl: '', youtubeUrl: '' },
 ];
 
 const eventTypes: EventFilter[] = ['All', ...ALLOWED_GALLERY_GROUPS];
@@ -413,19 +435,19 @@ const MediaLibrary: React.FC = () => {
             const combined = groupItems.slice().sort((a, b) => a.id - b.id);
             if (combined.length === 0) return null;
             return (
-              <div key={group} className="mb-8" ref={(el) => { groupRefs.current[group] = el; }}>
-                <h4 className="mb-2 text-lg font-semibold">{group}</h4>
+              <div key={group} className="mb-4" ref={(el) => { groupRefs.current[group] = el; }}>
+                <h4 className="mb-2 text-base font-semibold">{group}</h4>
                 <div className="mb-2">
-                  <div className="flex gap-4 overflow-x-auto scrollbar-hide py-2">
+                  <div className="flex gap-3 overflow-x-auto scrollbar-hide py-1">
                     {combined.map((item) => (
                       <div key={item.id} className={getFrameClass(item)}>
-                        <Card variant="hover" className={`overflow-hidden rounded-[12px] hover-lift`}>
+                        <Card variant="hover" className={`overflow-hidden rounded-lg hover-lift`}>
                           {item.mediaType === 'photo' ? (
-                            <div className="relative h-40 cursor-pointer" onClick={() => openItem(item)} role="button" tabIndex={0}>
+                            <div className="relative h-28 cursor-pointer" onClick={() => openItem(item)} role="button" tabIndex={0}>
                               <Image src={encodeURI(item.thumb)} alt={item.title} fill className="object-cover" priority={combined.length <= 2} />
                             </div>
                           ) : (
-                            <div className="relative h-40 bg-black cursor-pointer" onClick={() => openItem(item)} role="button" tabIndex={0}>
+                            <div className="relative h-28 bg-black cursor-pointer" onClick={() => openItem(item)} role="button" tabIndex={0}>
                               <video
                                 src={encodeURI(item.videoUrl || '')}
                                 muted
@@ -435,13 +457,13 @@ const MediaLibrary: React.FC = () => {
                                 aria-label={item.title}
                               />
                               <div className="absolute inset-0 flex items-center justify-center">
-                                <div className="rounded-full bg-black/60 p-3 text-white/90">▶</div>
+                                <div className="rounded-full bg-black/60 p-2 text-white/90 text-sm">▶</div>
                               </div>
                             </div>
                           )}
-                          <div className="p-3">
-                            <h5 className="text-sm font-semibold">{item.title}</h5>
-                            <p className="text-xs text-text-secondary">{item.mediaType === 'photo' ? item.eventType : item.duration || 'Video'}</p>
+                          <div className="p-2">
+                            <h5 className="text-xs font-semibold truncate">{item.title}</h5>
+                            <p className="text-xs text-text-secondary truncate">{item.mediaType === 'photo' ? item.eventType : item.duration || 'Video'}</p>
                           </div>
                         </Card>
                       </div>
@@ -460,29 +482,29 @@ const MediaLibrary: React.FC = () => {
             const eventCombined = [...photoItems, ...videoItems].slice().sort((a, b) => a.id - b.id);
             if (eventCombined.length === 0) return null;
             return (
-              <div className="mb-8">
-                <h4 className="mb-4 text-lg font-semibold">Photos & Videos</h4>
-                <div ref={galleryStripRef} className="flex gap-4 overflow-x-auto scrollbar-hide py-2">
+              <div className="mb-4">
+                <h4 className="mb-2 text-base font-semibold">Photos & Videos</h4>
+                <div ref={galleryStripRef} className="flex gap-3 overflow-x-auto scrollbar-hide py-1">
                   {eventCombined.map((item, idx) => (
                     <div key={item.id} className={`${getFrameClass(item)} transition-all duration-500 ${(item.mediaType === 'photo' ? idx === photoActiveIndex : idx === videoActiveIndex) ? 'scale-[1.14] z-10' : 'scale-[0.9] opacity-65'}`}>
-                      <Card variant="hover" className={`overflow-hidden rounded-[12px] hover-lift transition-all duration-500`}>
+                      <Card variant="hover" className={`overflow-hidden rounded-lg hover-lift transition-all duration-500`}>
                         {item.mediaType === 'photo' ? (
-                          <div className="relative h-40 cursor-pointer" onClick={() => openItem(item)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openItem(item); } }} role="button" tabIndex={0}>
+                          <div className="relative h-28 cursor-pointer" onClick={() => openItem(item)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openItem(item); } }} role="button" tabIndex={0}>
                             <Image src={encodeURI(item.thumb)} alt={item.title} fill className="object-cover" priority={idx < 2} />
-                            <div className="absolute top-2 right-2 flex gap-2">
+                            <div className="absolute top-1 right-1 flex gap-1">
                               <button
                                 onClick={(e) => { e.stopPropagation(); toggleLike(item.id); }}
                                 aria-pressed={!!likes[item.id]}
-                                className={`rounded-full p-2 text-white/90 ${likes[item.id] ? 'bg-accent text-primary scale-110' : 'bg-black/50'}`}
+                                className={`rounded-full p-1 text-white/90 text-sm ${likes[item.id] ? 'bg-accent text-primary scale-110' : 'bg-black/50'}`}
                               ><FaHeart /></button>
                               <button
                                 onClick={(e) => { e.stopPropagation(); doShare(item); }}
-                                className="rounded-full bg-black/50 p-2 text-white/90"
+                                className="rounded-full bg-black/50 p-1 text-white/90 text-sm"
                               ><FaShareAlt /></button>
                             </div>
                           </div>
                         ) : (
-                          <div className="relative h-40 bg-black cursor-pointer" onClick={() => openItem(item)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openItem(item); } }} role="button" tabIndex={0}>
+                          <div className="relative h-28 bg-black cursor-pointer" onClick={() => openItem(item)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openItem(item); } }} role="button" tabIndex={0}>
                             <video
                               src={encodeURI(item.videoUrl || '')}
                               muted
@@ -492,24 +514,24 @@ const MediaLibrary: React.FC = () => {
                               aria-label={item.title}
                             />
                             <div className="absolute inset-0 flex items-center justify-center">
-                              <div className="rounded-full bg-black/60 p-3 text-white/90">▶</div>
+                              <div className="rounded-full bg-black/60 p-2 text-white/90 text-sm">▶</div>
                             </div>
-                            <div className="absolute top-2 right-2 flex gap-2">
+                            <div className="absolute top-1 right-1 flex gap-1">
                               <button
                                 onClick={(e) => { e.stopPropagation(); toggleLike(item.id); }}
                                 aria-pressed={!!likes[item.id]}
-                                className={`rounded-full p-2 text-white/90 ${likes[item.id] ? 'bg-accent text-primary scale-110' : 'bg-black/50'} transform transition`}
+                                className={`rounded-full p-1 text-white/90 text-sm ${likes[item.id] ? 'bg-accent text-primary scale-110' : 'bg-black/50'} transform transition`}
                               ><FaHeart /></button>
                               <button
                                 onClick={(e) => { e.stopPropagation(); doShare(item); }}
-                                className="rounded-full bg-black/50 p-2 text-white/90"
+                                className="rounded-full bg-black/50 p-1 text-white/90 text-sm"
                               ><FaShareAlt /></button>
                             </div>
                           </div>
                         )}
-                        <div className="p-3">
-                          <h5 className="text-sm font-semibold">{item.title}</h5>
-                          <p className="text-xs text-text-secondary">{item.mediaType === 'photo' ? item.eventType : item.duration || 'Video'}</p>
+                        <div className="p-2">
+                          <h5 className="text-xs font-semibold truncate">{item.title}</h5>
+                          <p className="text-xs text-text-secondary truncate">{item.mediaType === 'photo' ? item.eventType : item.duration || 'Video'}</p>
                         </div>
                       </Card>
                     </div>
