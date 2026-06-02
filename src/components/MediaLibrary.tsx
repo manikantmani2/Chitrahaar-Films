@@ -595,7 +595,7 @@ const MediaLibrary: React.FC = () => {
               </button>
             </div>
 
-            <div className="grid gap-0 lg:grid-cols-[1.6fr_0.9fr]">
+            <div className="grid gap-0 lg:grid-cols-[3fr_2fr]">
                           <div className="relative min-h-[420px] bg-black flex items-center justify-center">
                 {activeItem.mediaType === 'photo' ? (
                   <Image src={encodeURI(activeItem.thumb)} alt={activeItem.title} fill sizes="100vw" className="object-contain" priority />
