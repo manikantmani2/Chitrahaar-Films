@@ -5,6 +5,10 @@ const nextConfig = {
   images: {
     unoptimized: true,
     formats: ['image/webp', 'image/avif'],
+    remotePatterns: [
+      { protocol: 'https', hostname: '**' },
+      { protocol: 'http', hostname: '**' },
+    ],
   },
   experimental: {
     outputFileTracingExcludes: {

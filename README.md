@@ -62,10 +62,13 @@ Premium, interactive portfolio website for Chitrahaar Films with cinematic desig
    Create a `.env.local` file:
    ```
    NEXT_PUBLIC_API_URL=http://localhost:3000/api
+   NEXT_PUBLIC_MEDIA_BASE_URL=https://your-media-host.com
    EMAIL_USER=your-email@gmail.com
    EMAIL_PASSWORD=your-app-password
    BUSINESS_EMAIL=contact@chitrahaarfilms.com
    ```
+
+   If you host gallery media remotely, set `NEXT_PUBLIC_MEDIA_BASE_URL` to the remote base URL. Local fallback paths still work when this variable is unset.
 
 4. **Run development server**
    ```bash

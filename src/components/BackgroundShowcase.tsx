@@ -32,16 +32,19 @@ export default function BackgroundShowcase({
   const playlist = items && items.length > 0 ? items : defaultItems;
   const [index, setIndex] = useState(0);
   // muted preference persisted in localStorage (default: true)
-  const [muted, setMuted] = useState<boolean>(() => {
-    try {
-      const raw = localStorage.getItem('bg-audio-muted');
-      return raw ? JSON.parse(raw) : true;
-    } catch (e) {
-      return true;
-    }
-  });
+  const [muted, setMuted] = useState<boolean>(true);
   const timerRef = useRef<number | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      const raw = localStorage.getItem('bg-audio-muted');
+      setMuted(raw ? JSON.parse(raw) : true);
+    } catch (e) {
+      setMuted(true);
+    }
+  }, []);
 
   useEffect(() => {
     // clear timer when index changes
@@ -95,7 +98,7 @@ export default function BackgroundShowcase({
               src={item.src}
               poster={item.poster}
               autoPlay={active}
-              muted
+              muted={muted}
               playsInline
               onEnded={handleVideoEnded}
               onError={() => {
@@ -103,7 +106,7 @@ export default function BackgroundShowcase({
                 handleVideoEnded();
               }}
               className={commonClass + ' object-cover bg-showcase-video'}
-              preload="metadata"
+              preload="auto"
             />
           );
         }
@@ -128,7 +131,8 @@ export default function BackgroundShowcase({
                       fill
                       sizes="100vw"
                       className="object-cover filter brightness-110 contrast-105"
-                      priority={i === 0}
+                      priority={active}
+                      loading={active ? 'eager' : 'lazy'}
                     />
                   </picture>
                 </div>
@@ -139,7 +143,8 @@ export default function BackgroundShowcase({
                   fill
                   sizes="100vw"
                   className="object-cover filter brightness-110 contrast-105"
-                  priority={i === 0}
+                  priority={active}
+                  loading={active ? 'eager' : 'lazy'}
                 />
               )}
             </div>

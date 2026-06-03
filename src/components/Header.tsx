@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import Logo from './Logo';
 import { NAV_LINKS } from '@/constants';
 import { useIsMobile } from '@/hooks';
@@ -67,6 +68,22 @@ const Header: React.FC = () => {
     document.documentElement.style.setProperty('--site-header-height', `${h}px`);
   }, [isMobileMenuOpen, isScrolled]);
 
+  const router = useRouter();
+
+  const getNavHref = (href: string) => {
+    if (href === '#home' && router.pathname !== '/') {
+      return `/${href}`;
+    }
+    return href;
+  };
+
+  const getNavLabel = (link: { name: string; href: string }) => {
+    if (link.href === '#home' && router.pathname !== '/') {
+      return 'Landing';
+    }
+    return link.name;
+  };
+
   const headerClasses = `fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
     isScrolled ? 'bg-[rgba(11,11,11,0.85)] border-b border-transparent shadow-lg' : 'sticky-navbar'
   }`;
@@ -102,18 +119,18 @@ const Header: React.FC = () => {
           {!isMobile && (
             <nav className="flex items-center gap-8">
               {NAV_LINKS.map((link, i) => (
-                <motion.a
-                  key={link.name}
-                  href={link.href}
-                  className="text-text-secondary hover:text-accent transition-colors duration-300 relative group text-sm font-medium"
-                  custom={i}
-                  initial="hidden"
-                  animate="visible"
-                  variants={navVariants}
-                >
-                  {link.name}
-                  <span className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-accent to-gold origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
-                </motion.a>
+                <Link key={link.name} href={getNavHref(link.href)} passHref legacyBehavior>
+                  <motion.a
+                    className="text-text-secondary hover:text-accent transition-colors duration-300 relative group text-sm font-medium"
+                    custom={i}
+                    initial="hidden"
+                    animate="visible"
+                    variants={navVariants}
+                  >
+                    {getNavLabel(link)}
+                    <span className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-accent to-gold origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
+                  </motion.a>
+                </Link>
               ))}
 
               <ThemeToggleButton theme={theme} onToggle={toggleTheme} />
@@ -143,14 +160,14 @@ const Header: React.FC = () => {
             transition={{ duration: 0.3 }}
           >
             {NAV_LINKS.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="text-text-secondary hover:text-accent transition-colors duration-300"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {link.name}
-              </a>
+              <Link key={link.name} href={getNavHref(link.href)} passHref legacyBehavior>
+                <a
+                  className="text-text-secondary hover:text-accent transition-colors duration-300"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {getNavLabel(link)}
+                </a>
+              </Link>
             ))}
 
             <ThemeToggleButton theme={theme} onToggle={toggleTheme} className="w-full justify-center" />

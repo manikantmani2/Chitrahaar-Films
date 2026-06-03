@@ -48,7 +48,7 @@ export default function LandingPage() {
           }}
         />
 
-        <section className="relative z-10 flex min-h-screen items-center justify-center px-6 py-16">
+        <section id="home" className="relative z-10 flex min-h-screen items-center justify-center px-6 py-16">
           <div className="grid w-full max-w-7xl items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
             <div className="max-w-2xl">
               <motion.div

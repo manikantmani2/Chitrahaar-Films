@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { FaInstagram, FaYoutube, FaHeart, FaShareAlt } from 'react-icons/fa';
 import { containerVariants, itemVariants } from '@/utils/animations';
-import { getGalleryPosterWebp } from '@/utils/imagePaths';
+import { encodeMediaUrl, getGalleryPosterWebp } from '@/utils/imagePaths';
 import { normalizeGalleryGroup, ALLOWED_GALLERY_GROUPS } from '@/utils/gallerySuggestions';
 import Section from './Section';
 import Card from './Card';
@@ -600,7 +600,7 @@ const MediaLibrary: React.FC = () => {
                     <Card variant="hover" className="overflow-hidden rounded-lg hover-lift transition-all duration-500">
                       {item.mediaType === 'photo' ? (
                         <div className="relative w-full aspect-[9/16] cursor-pointer" onClick={() => openItem(item)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openItem(item); } }} role="button" tabIndex={0}>
-                          <Image src={encodeURI(item.thumb).replace(/&/g, '%26')} alt={item.title} fill className="object-cover" priority={idx < 2} />
+                          <Image src={encodeMediaUrl(item.thumb)} alt={item.title} fill className="object-cover" priority={idx < 2} />
                           <div className="absolute top-1 right-1 flex gap-1">
                             <button
                               onClick={(e) => { e.stopPropagation(); toggleLike(item.id); }}
@@ -616,7 +616,7 @@ const MediaLibrary: React.FC = () => {
                       ) : (
                         <div className="relative w-full aspect-[9/16] bg-black cursor-pointer" onClick={() => openItem(item)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openItem(item); } }} role="button" tabIndex={0}>
                           <video
-                            src={encodeURI(item.videoUrl || '').replace(/&/g, '%26')}
+                            src={encodeMediaUrl(item.videoUrl || '')}
                             muted
                             playsInline
                             preload="metadata"
@@ -668,7 +668,7 @@ const MediaLibrary: React.FC = () => {
                     <Card variant="hover" className="overflow-hidden rounded-lg hover-lift transition-all duration-500">
                       {item.mediaType === 'photo' ? (
                         <div className="relative w-full aspect-[9/16] cursor-pointer" onClick={() => openItem(item)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openItem(item); } }} role="button" tabIndex={0}>
-                          <Image src={encodeURI(item.thumb).replace(/&/g, '%26')} alt={item.title} fill className="object-cover" priority={idx < 2} />
+                          <Image src={encodeMediaUrl(item.thumb)} alt={item.title} fill className="object-cover" priority={idx < 2} />
                           <div className="absolute top-1 right-1 flex gap-1">
                             <button
                               onClick={(e) => { e.stopPropagation(); toggleLike(item.id); }}
@@ -684,7 +684,7 @@ const MediaLibrary: React.FC = () => {
                       ) : (
                         <div className="relative w-full aspect-[9/16] bg-black cursor-pointer" onClick={() => openItem(item)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openItem(item); } }} role="button" tabIndex={0}>
                           <video
-                            src={encodeURI(item.videoUrl || '').replace(/&/g, '%26')}
+                            src={encodeMediaUrl(item.videoUrl || '')}
                             muted
                             playsInline
                             preload="metadata"
@@ -761,10 +761,10 @@ const MediaLibrary: React.FC = () => {
             {/* Media Display */}
             <div className="relative flex-1 min-h-0 bg-black md:aspect-[16/10]">
               {activeItem.mediaType === 'photo' ? (
-                <Image src={encodeURI(activeItem.thumb).replace(/&/g, '%26')} alt="Media preview" fill sizes="100vw" className="object-contain" priority />
+                <Image src={encodeMediaUrl(activeItem.thumb)} alt="Media preview" fill sizes="100vw" className="object-contain" priority />
               ) : (
                 <video controls autoPlay playsInline className="h-full w-full object-contain" preload="metadata">
-                  <source src={encodeURI(activeItem.videoUrl || '').replace(/&/g, '%26')} type="video/mp4" />
+                  <source src={encodeMediaUrl(activeItem.videoUrl || '')} type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
               )}

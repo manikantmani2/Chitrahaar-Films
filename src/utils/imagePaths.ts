@@ -3,6 +3,8 @@ const GALLERY_THUMBS_ROOT = '/gallery/thumbs';
 
 const MEDIA_EXTENSIONS = /\.(mp4|m4v|mov|webm|mkv)$/i;
 
+const MEDIA_BASE_URL = process.env.NEXT_PUBLIC_MEDIA_BASE_URL?.replace(/\/+|\s+$/g, '') || '';
+
 export const makeGallerySafePath = (path: string) => {
   if (!path) return path;
 
@@ -14,21 +16,22 @@ export const makeGallerySafePath = (path: string) => {
     .replace(/\.[^.]+$/, '');
 };
 
+const resolveGalleryPath = (path: string) => getMediaUrl(path);
+
 export const getGalleryThumbWebp = (path: string, size: 'small' | 'large' = 'small') => {
   try {
     if (!path) return path;
-    // already a generated thumb — return as-is
-    if (path.startsWith(GALLERY_THUMBS_ROOT)) return path;
+    if (path.startsWith(GALLERY_THUMBS_ROOT)) return resolveGalleryPath(path);
     if (!path.startsWith(GALLERY_ROOT)) return path;
 
     const safePath = makeGallerySafePath(path);
-    if (MEDIA_EXTENSIONS.test(path)) {
-      return size === 'small'
+    const thumbPath = MEDIA_EXTENSIONS.test(path)
+      ? size === 'small'
         ? `${GALLERY_THUMBS_ROOT}/${safePath}@640.webp`
-        : `${GALLERY_THUMBS_ROOT}/${safePath}.webp`;
-    }
+        : `${GALLERY_THUMBS_ROOT}/${safePath}.webp`
+      : `${GALLERY_THUMBS_ROOT}/${safePath}.webp`;
 
-    return `${GALLERY_THUMBS_ROOT}/${safePath}.webp`;
+    return resolveGalleryPath(thumbPath);
   } catch {
     return path;
   }
@@ -37,18 +40,17 @@ export const getGalleryThumbWebp = (path: string, size: 'small' | 'large' = 'sma
 export const getGalleryThumbAvif = (path: string, size: 'small' | 'large' = 'small') => {
   try {
     if (!path) return path;
-    // already a generated thumb — return as-is
-    if (path.startsWith(GALLERY_THUMBS_ROOT)) return path;
+    if (path.startsWith(GALLERY_THUMBS_ROOT)) return resolveGalleryPath(path);
     if (!path.startsWith(GALLERY_ROOT)) return path;
 
     const safePath = makeGallerySafePath(path);
-    if (MEDIA_EXTENSIONS.test(path)) {
-      return size === 'small'
+    const thumbPath = MEDIA_EXTENSIONS.test(path)
+      ? size === 'small'
         ? `${GALLERY_THUMBS_ROOT}/${safePath}@640.avif`
-        : `${GALLERY_THUMBS_ROOT}/${safePath}.avif`;
-    }
+        : `${GALLERY_THUMBS_ROOT}/${safePath}.avif`
+      : `${GALLERY_THUMBS_ROOT}/${safePath}.avif`;
 
-    return `${GALLERY_THUMBS_ROOT}/${safePath}.avif`;
+    return resolveGalleryPath(thumbPath);
   } catch {
     return path;
   }
@@ -57,29 +59,51 @@ export const getGalleryThumbAvif = (path: string, size: 'small' | 'large' = 'sma
 export const getGalleryPosterWebp = (path: string, size: 'small' | 'large' = 'large') => {
   try {
     if (!path) return path;
-    // if already a thumbs path, use as-is
-    if (path.startsWith(GALLERY_THUMBS_ROOT)) return path;
+    if (path.startsWith(GALLERY_THUMBS_ROOT)) return resolveGalleryPath(path);
     if (!path.startsWith(GALLERY_ROOT)) return path;
 
     const safePath = makeGallerySafePath(path);
-    return size === 'small'
+    const posterPath = size === 'small'
       ? `${GALLERY_THUMBS_ROOT}/${safePath}@640.webp`
       : `${GALLERY_THUMBS_ROOT}/${safePath}.webp`;
+
+    return resolveGalleryPath(posterPath);
   } catch {
     return path;
+  }
+};
+
+export const getMediaUrl = (path?: string) => {
+  if (!path) return '';
+  const trimmed = path.trim();
+  if (!trimmed) return '';
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  if (!MEDIA_BASE_URL) return trimmed;
+  return trimmed.startsWith('/') ? `${MEDIA_BASE_URL}${trimmed}` : `${MEDIA_BASE_URL}/${trimmed}`;
+};
+
+export const encodeMediaUrl = (path?: string) => {
+  const raw = getMediaUrl(path);
+  if (!raw) return '';
+  try {
+    return encodeURI(raw).replace(/&/g, '%26');
+  } catch {
+    return raw;
   }
 };
 
 export const getGalleryPosterAvif = (path: string, size: 'small' | 'large' = 'large') => {
   try {
     if (!path) return path;
-    if (path.startsWith(GALLERY_THUMBS_ROOT)) return path;
+    if (path.startsWith(GALLERY_THUMBS_ROOT)) return resolveGalleryPath(path);
     if (!path.startsWith(GALLERY_ROOT)) return path;
 
     const safePath = makeGallerySafePath(path);
-    return size === 'small'
+    const posterPath = size === 'small'
       ? `${GALLERY_THUMBS_ROOT}/${safePath}@640.avif`
       : `${GALLERY_THUMBS_ROOT}/${safePath}.avif`;
+
+    return resolveGalleryPath(posterPath);
   } catch {
     return path;
   }

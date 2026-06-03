@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { FaPlay } from 'react-icons/fa';
 import { slideUpVariants, slideLeftVariants, slideRightVariants } from '@/utils/animations';
-import { getGalleryThumbAvif, getGalleryThumbWebp } from '@/utils/imagePaths';
+import { encodeMediaUrl, getGalleryThumbAvif, getGalleryThumbWebp } from '@/utils/imagePaths';
 import Button from './Button';
 import BackgroundShowcase from './BackgroundShowcase';
 
@@ -71,17 +71,17 @@ const Hero: React.FC<HeroProps> = ({
         if (Array.isArray(data.featured) && data.featured.length > 0) {
           const featuredItem = data.featured[0];
           if (featuredItem.videoUrl) {
-            nextItems.push({ type: 'video', src: encodeURI(featuredItem.videoUrl), poster: featuredItem.thumb ? encodeURI(featuredItem.thumb) : undefined });
-            seen.add(encodeURI(featuredItem.videoUrl));
+            nextItems.push({ type: 'video', src: encodeMediaUrl(featuredItem.videoUrl), poster: featuredItem.thumb ? encodeMediaUrl(featuredItem.thumb) : undefined });
+            seen.add(encodeMediaUrl(featuredItem.videoUrl));
           } else if (featuredItem.thumb) {
-            nextItems.push({ type: 'image', src: encodeURI(featuredItem.thumb) });
-            seen.add(encodeURI(featuredItem.thumb));
+            nextItems.push({ type: 'image', src: encodeMediaUrl(featuredItem.thumb) });
+            seen.add(encodeMediaUrl(featuredItem.thumb));
           }
         }
 
         const addImage = (src?: string) => {
           if (!src) return;
-          const encoded = encodeURI(src);
+          const encoded = encodeMediaUrl(src);
           if (!seen.has(encoded)) {
             seen.add(encoded);
             nextItems.push({ type: 'image', src: encoded });

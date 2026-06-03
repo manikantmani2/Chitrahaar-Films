@@ -7,6 +7,7 @@ import Card from './Card';
 import MediaDetailModal from './MediaDetailModal';
 import type { FeaturedContentItem } from '@/types/content';
 import {
+  encodeMediaUrl,
   getGalleryPosterWebp,
   getGalleryThumbAvif,
   getGalleryThumbWebp,
@@ -30,7 +31,7 @@ type ViewerItem = {
 const FALLBACK_FEATURED: FeaturedContentItem[] = [];
 
 function safeUrl(url: string) {
-  return encodeURI(url);
+  return encodeMediaUrl(url);
 }
 
 const createFeaturedViewerItem = (item: FeaturedContentItem): ViewerItem => ({
@@ -43,7 +44,7 @@ const createFeaturedViewerItem = (item: FeaturedContentItem): ViewerItem => ({
   group: 'featured',
   kind: 'video',
   src: safeUrl(item.video || ''),
-  poster: item.video ? getGalleryPosterWebp(safeUrl(item.video), 'large') : safeUrl(item.thumb),
+  poster: item.video ? getGalleryPosterWebp(item.video, 'large') : safeUrl(item.thumb),
   storageKey: `featured:${item.id}`,
 });
 
@@ -57,7 +58,7 @@ const createPortfolioViewerItem = (item: { id: number; title: string; eventType:
   group: normalizeGalleryGroup(item.eventType),
   kind: item.mediaType,
   src: item.mediaType === 'video' ? safeUrl(item.videoUrl || item.thumb) : safeUrl(item.thumb),
-  poster: item.mediaType === 'video' ? getGalleryPosterWebp(safeUrl(item.videoUrl || item.thumb), 'large') : undefined,
+  poster: item.mediaType === 'video' ? getGalleryPosterWebp(item.videoUrl || item.thumb, 'large') : undefined,
   storageKey: `portfolio:${item.id}`,
 });
 

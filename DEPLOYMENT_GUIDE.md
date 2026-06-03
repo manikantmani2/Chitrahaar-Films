@@ -47,10 +47,13 @@ git push -u origin main
    - Add from `.env.local`:
      ```
      NEXT_PUBLIC_API_URL=https://yourdomain.com/api
+     NEXT_PUBLIC_MEDIA_BASE_URL=https://your-media-host.com
      EMAIL_USER=your-email@gmail.com
      EMAIL_PASSWORD=your-app-password
      BUSINESS_EMAIL=contact@chitrahaarfilms.com
      ```
+
+   If gallery media is hosted externally, `NEXT_PUBLIC_MEDIA_BASE_URL` ensures image and video URLs are resolved from the remote host instead of local `public/` assets.
 
 4. **Deploy**
    - Click "Deploy"
