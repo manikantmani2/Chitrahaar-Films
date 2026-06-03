@@ -64,17 +64,36 @@ export const useWindowSize = () => {
   return windowSize;
 };
 
-// Hook for scroll position
+// Hook for scroll position (throttled for performance)
 export const useScrollPosition = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
+  const lastScrollTimeRef = useState<number>(0)[1];
+  const rafRef = useState<number | null>(null)[1];
 
   useEffect(() => {
+    let lastScrollTime = 0;
+    let rafId: number | null = null;
+
     const handleScroll = () => {
-      setScrollPosition(window.scrollY);
+      const now = Date.now();
+      // Throttle to max 1 update per 50ms (20fps)
+      if (now - lastScrollTime < 50) {
+        if (rafId !== null) cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(() => {
+          setScrollPosition(window.scrollY);
+          lastScrollTime = now;
+        });
+      } else {
+        lastScrollTime = now;
+        setScrollPosition(window.scrollY);
+      }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (rafId !== null) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   return scrollPosition;

@@ -15,9 +15,15 @@ const Header: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
   const scrollPosition = useScrollPosition();
   const isMobile = useIsMobile();
+  const prevScrolledRef = useRef(false);
 
   useEffect(() => {
-    setIsScrolled(scrollPosition > 50);
+    // Only update state if threshold crossed to avoid unnecessary renders
+    const scrolled = scrollPosition > 50;
+    if (scrolled !== prevScrolledRef.current) {
+      prevScrolledRef.current = scrolled;
+      setIsScrolled(scrolled);
+    }
   }, [scrollPosition]);
 
   // Keep CSS variable --site-header-height in sync with actual header height.
@@ -45,7 +51,7 @@ const Header: React.FC = () => {
     document.documentElement.style.setProperty('--site-header-height', `${h}px`);
   }, [isMobileMenuOpen, isScrolled]);
 
-  const headerClasses = `fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+  const headerClasses = `fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
     isScrolled ? 'bg-[rgba(11,11,11,0.75)] backdrop-blur-lg border-b border-transparent shadow-lg' : 'sticky-navbar'
   }`;
 
@@ -54,7 +60,7 @@ const Header: React.FC = () => {
     visible: (i: number) => ({
       opacity: 1,
       y: 0,
-      transition: { delay: i * 0.1, duration: 0.5 },
+      transition: { delay: i * 0.05, duration: 0.3 },
     }),
   };
 
@@ -90,7 +96,7 @@ const Header: React.FC = () => {
                   variants={navVariants}
                 >
                   {link.name}
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-accent to-gold group-hover:w-full transition-all duration-300"></span>
+                  <span className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-accent to-gold origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
                 </motion.a>
               ))}
 
@@ -139,4 +145,4 @@ const Header: React.FC = () => {
   );
 };
 
-export default Header;
+export default React.memo(Header);

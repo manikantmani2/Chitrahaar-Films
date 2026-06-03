@@ -93,6 +93,7 @@ export default function BackgroundShowcase({
               key={i}
               ref={active ? videoRef : undefined}
               src={item.src}
+              poster={item.poster}
               autoPlay={active}
               muted
               playsInline
@@ -102,6 +103,7 @@ export default function BackgroundShowcase({
                 handleVideoEnded();
               }}
               className={commonClass + ' object-cover bg-showcase-video'}
+              preload="metadata"
             />
           );
         }

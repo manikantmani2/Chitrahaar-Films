@@ -67,6 +67,18 @@ const Hero: React.FC<HeroProps> = ({
         const seen = new Set<string>();
         const nextItems: ShowcaseMediaItem[] = [];
 
+        // Prioritize featured video for intro
+        if (Array.isArray(data.featured) && data.featured.length > 0) {
+          const featuredItem = data.featured[0];
+          if (featuredItem.videoUrl) {
+            nextItems.push({ type: 'video', src: encodeURI(featuredItem.videoUrl), poster: featuredItem.thumb ? encodeURI(featuredItem.thumb) : undefined });
+            seen.add(encodeURI(featuredItem.videoUrl));
+          } else if (featuredItem.thumb) {
+            nextItems.push({ type: 'image', src: encodeURI(featuredItem.thumb) });
+            seen.add(encodeURI(featuredItem.thumb));
+          }
+        }
+
         const addImage = (src?: string) => {
           if (!src) return;
           const encoded = encodeURI(src);

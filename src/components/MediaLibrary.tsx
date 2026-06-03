@@ -177,6 +177,7 @@ const MediaLibrary: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const autoScrollCarouselRef = useRef<number | null>(null);
   const modalAdvanceTimerRef = useRef<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   const parseDurationSeconds = (duration?: string) => {
     if (!duration) return null;
@@ -189,7 +190,15 @@ const MediaLibrary: React.FC = () => {
     return seconds;
   };
 
-  
+  // Detect mobile and avoid auto-play on mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const filteredItems = useMemo(() => {
     const baseFiltered = WORK_ITEMS.filter((item) => {
@@ -331,9 +340,10 @@ const MediaLibrary: React.FC = () => {
     }
   }, [activeIndex, filteredItems]);
 
-  // Auto-play video in the visible/active card for up to 5 seconds
+  // Auto-play video in the visible/active card for up to 5 seconds (desktop only)
   useEffect(() => {
-    if (!carouselRef.current || filteredItems.length === 0) return;
+    // Skip auto-play on mobile
+    if (isMobile || !carouselRef.current || filteredItems.length === 0) return;
 
     // Pause all videos first
     const allVideos: HTMLVideoElement[] = Array.from(carouselRef.current.querySelectorAll('video')) as HTMLVideoElement[];
@@ -387,7 +397,7 @@ const MediaLibrary: React.FC = () => {
       // cancel play handler
       try { if (typeof playPromise === 'function') (playPromise as any)(); } catch (e) {}
     };
-  }, [activeIndex, filteredItems]);
+  }, [activeIndex, filteredItems, isMobile]);
 
   // Manual scroller: auto-scroll disabled to keep user control
 
@@ -548,24 +558,24 @@ const MediaLibrary: React.FC = () => {
       subtitle="Browse photos and videos by event type: Food & Beverages, Corporate & Events, Fashion, Artist, Short Films, Wedding"
       background="gradient"
     >
-      <div ref={filterStripRef} className="flex w-full gap-2 overflow-x-auto whitespace-nowrap rounded-2xl border border-[rgba(255,255,255,0.03)] bg-[rgba(255,255,255,0.02)] px-3 py-2 scrollbar-hide mb-5">
-        <span className="shrink-0 rounded-full border border-[rgba(212,175,55,0.08)] bg-[rgba(212,175,55,0.03)] px-3 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-[rgba(212,175,55,0.9)]">Filters</span>
+      <div ref={filterStripRef} className="flex w-full gap-1 md:gap-2 overflow-x-auto whitespace-nowrap rounded-2xl border border-[rgba(255,255,255,0.03)] bg-[rgba(255,255,255,0.02)] px-2 md:px-3 py-2 scrollbar-hide mb-5">
+        <span className="shrink-0 rounded-full border border-[rgba(212,175,55,0.08)] bg-[rgba(212,175,55,0.03)] px-2 md:px-3 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-[rgba(212,175,55,0.9)]">Filters</span>
         {eventTypes.map((et) => (
           <button
             key={et}
             onClick={() => handleFilterClick(et, 'event')}
-            className={`shrink-0 px-4 py-2 rounded-full text-sm font-semibold border transition-all duration-300 ${eventType === et ? 'bg-[rgba(212,175,55,0.12)] text-[var(--color-text)] border-[rgba(212,175,55,0.12)]' : 'border-[rgba(255,255,255,0.03)] text-[var(--color-muted)] hover:border-[rgba(212,175,55,0.08)]'}`}
+            className={`shrink-0 px-2 md:px-4 py-2 rounded-full text-xs md:text-sm font-semibold border transition-all duration-300 ${eventType === et ? 'bg-[rgba(212,175,55,0.12)] text-[var(--color-text)] border-[rgba(212,175,55,0.12)]' : 'border-[rgba(255,255,255,0.03)] text-[var(--color-muted)] hover:border-[rgba(212,175,55,0.08)]'}`}
           >
             {et}
           </button>
         ))}
 
-        <span className="shrink-0 rounded-full border border-[rgba(212,175,55,0.08)] bg-[rgba(212,175,55,0.03)] px-3 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-[rgba(212,175,55,0.9)] ml-4">Media</span>
+        <span className="shrink-0 rounded-full border border-[rgba(212,175,55,0.08)] bg-[rgba(212,175,55,0.03)] px-2 md:px-3 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-[rgba(212,175,55,0.9)] ml-2 md:ml-4">Media</span>
         {(['all', 'photo', 'video'] as MediaType[]).map((mt) => (
           <button
             key={mt}
             onClick={() => handleFilterClick(mt, 'media')}
-            className={`shrink-0 px-4 py-2 rounded-lg text-sm font-semibold border transition-all duration-300 ${mediaType === mt ? 'bg-[rgba(212,175,55,0.12)] text-[var(--color-text)] border-[rgba(212,175,55,0.12)]' : 'border-[rgba(255,255,255,0.03)] text-[var(--color-muted)] hover:border-[rgba(212,175,55,0.08)]'}`}
+            className={`shrink-0 px-2 md:px-4 py-2 rounded-lg text-xs md:text-sm font-semibold border transition-all duration-300 ${mediaType === mt ? 'bg-[rgba(212,175,55,0.12)] text-[var(--color-text)] border-[rgba(212,175,55,0.12)]' : 'border-[rgba(255,255,255,0.03)] text-[var(--color-muted)] hover:border-[rgba(212,175,55,0.08)]'}`}
           >
             {mt === 'all' ? 'All' : mt === 'photo' ? 'Photos' : 'Videos'}
           </button>
@@ -574,15 +584,18 @@ const MediaLibrary: React.FC = () => {
 
       {eventType === 'All' ? (
         <div className="mb-3">
-          <h4 className="mb-2 text-base font-semibold">All Media - Mixed Sections</h4>
+          <h4 className="mb-2 text-sm md:text-base font-semibold">All Media - Mixed Sections</h4>
           <div className="relative">
-            <div ref={carouselRef} className="flex gap-2 overflow-x-auto scrollbar-hide py-2">
+            <div ref={carouselRef} className="flex gap-1 md:gap-2 overflow-x-auto scrollbar-hide py-2">
               {filteredItems.map((item, idx) => {
                 const isActive = idx === activeIndex;
+                const frameClass = isMobile 
+                  ? 'w-40 md:w-56' 
+                  : isActive ? 'w-72' : 'w-56';
                 return (
                   <div
                     key={item.id}
-                    className={`${getFrameClass(item, isActive)} transition-all duration-300 flex-shrink-0 ${isActive ? 'scale-[1.18] z-20 opacity-100 shadow-[0_20px_60px_rgba(0,0,0,0.25)]' : 'scale-[0.92] opacity-60'}`}
+                    className={`${frameClass} transition-all duration-300 flex-shrink-0 ${isActive ? 'scale-[1.18] z-20 opacity-100 shadow-[0_20px_60px_rgba(0,0,0,0.25)]' : 'scale-[0.92] opacity-60'}`}
                   >
                     <Card variant="hover" className="overflow-hidden rounded-lg hover-lift transition-all duration-500">
                       {item.mediaType === 'photo' ? (
@@ -639,15 +652,18 @@ const MediaLibrary: React.FC = () => {
         </div>
       ) : (
         <div className="mb-3">
-          <h4 className="mb-2 text-base font-semibold">{eventType}</h4>
+          <h4 className="mb-2 text-sm md:text-base font-semibold">{eventType}</h4>
           <div className="relative">
-            <div ref={carouselRef} className="flex gap-2 overflow-x-auto scrollbar-hide py-2">
+            <div ref={carouselRef} className="flex gap-1 md:gap-2 overflow-x-auto scrollbar-hide py-2">
               {filteredItems.map((item, idx) => {
                 const isActive = idx === activeIndex;
+                const frameClass = isMobile 
+                  ? 'w-40 md:w-56' 
+                  : isActive ? 'w-72' : 'w-56';
                 return (
                   <div
                     key={item.id}
-                    className={`${getFrameClass(item, isActive)} transition-all duration-300 flex-shrink-0 ${isActive ? 'scale-[1.18] z-20 opacity-100 shadow-[0_20px_60px_rgba(0,0,0,0.25)]' : 'scale-[0.92] opacity-60'}`}
+                    className={`${frameClass} transition-all duration-300 flex-shrink-0 ${isActive ? 'scale-[1.18] z-20 opacity-100 shadow-[0_20px_60px_rgba(0,0,0,0.25)]' : 'scale-[0.92] opacity-60'}`}
                   >
                     <Card variant="hover" className="overflow-hidden rounded-lg hover-lift transition-all duration-500">
                       {item.mediaType === 'photo' ? (
@@ -704,10 +720,22 @@ const MediaLibrary: React.FC = () => {
         </div>
       )}
       {activeItem && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6">
           <div className="absolute inset-0 bg-black/80" onClick={() => setActiveItem(null)} />
-          <div className="relative w-full max-w-6xl overflow-hidden rounded-[2rem] border border-white/10 bg-[#020405] shadow-2xl">
-            <div className="absolute inset-y-0 left-0 z-20 flex w-20 items-center justify-center bg-black/20 p-3">
+          <div className="relative w-full max-w-6xl overflow-hidden rounded-xl sm:rounded-2xl md:rounded-[2rem] border border-white/10 bg-[#020405] shadow-2xl max-h-[90vh] flex flex-col">
+            {/* Close Button */}
+            <button
+              onClick={() => setActiveItem(null)}
+              aria-label="Close modal"
+              className="absolute top-3 right-3 z-30 flex h-10 w-10 items-center justify-center rounded-full bg-black/70 text-white transition hover:bg-black/90 md:top-4 md:right-4"
+            >
+              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            {/* Navigation Buttons */}
+            <div className="absolute inset-y-0 left-0 z-20 hidden sm:flex w-16 items-center justify-center bg-black/20 p-3">
               <button
                 onClick={handleModalPrev}
                 aria-label="Previous media"
@@ -718,7 +746,7 @@ const MediaLibrary: React.FC = () => {
                 </svg>
               </button>
             </div>
-            <div className="absolute inset-y-0 right-0 z-20 flex w-20 items-center justify-center bg-black/20 p-3">
+            <div className="absolute inset-y-0 right-0 z-20 hidden sm:flex w-16 items-center justify-center bg-black/20 p-3">
               <button
                 onClick={handleModalNext}
                 aria-label="Next media"
@@ -729,35 +757,39 @@ const MediaLibrary: React.FC = () => {
                 </svg>
               </button>
             </div>
-            <div className="relative aspect-[16/10] w-full bg-black">
+
+            {/* Media Display */}
+            <div className="relative flex-1 min-h-0 bg-black md:aspect-[16/10]">
               {activeItem.mediaType === 'photo' ? (
                 <Image src={encodeURI(activeItem.thumb).replace(/&/g, '%26')} alt="Media preview" fill sizes="100vw" className="object-contain" priority />
               ) : (
-                <video controls autoPlay playsInline className="h-full w-full object-contain">
+                <video controls autoPlay playsInline className="h-full w-full object-contain" preload="metadata">
                   <source src={encodeURI(activeItem.videoUrl || '').replace(/&/g, '%26')} type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
               )}
             </div>
-            <div className="border-t border-white/10 bg-[#090d14] px-5 py-4 md:px-6 md:py-5">
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <div className="flex flex-wrap items-center gap-3">
-                  <button onClick={() => toggleLike(activeItem.id)} className={`inline-flex items-center gap-2 rounded-full px-4 py-3 text-sm font-semibold text-white transition ${likes[activeItem.id] ? 'bg-accent text-primary' : 'bg-white/10 hover:bg-white/15'}`}>
-                    <FaHeart /> Like <span className="ml-2 text-xs">{likesCount[activeItem.id] || 0}</span>
+
+            {/* Footer Controls */}
+            <div className="border-t border-white/10 bg-[#090d14] px-3 py-2 sm:px-5 sm:py-4 md:px-6 md:py-5">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                  <button onClick={() => toggleLike(activeItem.id)} className={`inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs sm:px-4 sm:py-3 sm:text-sm font-semibold text-white transition ${likes[activeItem.id] ? 'bg-accent text-primary' : 'bg-white/10 hover:bg-white/15'}`}>
+                    <FaHeart /> <span className="hidden sm:inline">Like</span> <span className="text-xs">{likesCount[activeItem.id] || 0}</span>
                   </button>
-                  <button onClick={() => doShare(activeItem)} className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/15">
-                    <FaShareAlt /> Share
+                  <button onClick={() => doShare(activeItem)} className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-2 text-xs sm:px-4 sm:py-3 sm:text-sm font-semibold text-white transition hover:bg-white/15">
+                    <FaShareAlt /> <span className="hidden sm:inline">Share</span>
                   </button>
                 </div>
-                <div className="flex flex-wrap items-center gap-3">
+                <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                   {activeItem.instagramUrl && (
-                    <a href={activeItem.instagramUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-4 py-3 text-sm font-semibold text-primary transition hover:opacity-95">
-                      <FaInstagram /> Instagram
+                    <a href={activeItem.instagramUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-3 py-2 text-xs sm:px-4 sm:py-3 sm:text-sm font-semibold text-primary transition hover:opacity-95">
+                      <FaInstagram /> <span className="hidden sm:inline">Instagram</span>
                     </a>
                   )}
                   {activeItem.mediaType === 'video' && activeItem.youtubeUrl && (
-                    <a href={activeItem.youtubeUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/10 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/15">
-                      <FaYoutube /> YouTube
+                    <a href={activeItem.youtubeUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-2 text-xs sm:px-4 sm:py-3 sm:text-sm font-semibold text-white transition hover:bg-white/15">
+                      <FaYoutube /> <span className="hidden sm:inline">YouTube</span>
                     </a>
                   )}
                 </div>
