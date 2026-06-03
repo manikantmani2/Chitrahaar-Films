@@ -6,6 +6,12 @@ const nextConfig = {
     unoptimized: true,
     formats: ['image/webp', 'image/avif'],
   },
+  experimental: {
+    outputFileTracingExcludes: {
+      'public/Our Works Gallery': ['**/*'],
+      'public/Highlights': ['**/*'],
+    },
+  },
   headers: async () => {
     return [
       {

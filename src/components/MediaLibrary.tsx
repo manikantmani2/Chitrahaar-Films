@@ -126,8 +126,8 @@ const WORK_ITEMS: WorkItem[] = [
   { id: 72, title: 'cf-3-wed', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/cf-3.jpg', description: '', instagramUrl: INSTAGRAM_URL, youtubeUrl: YOUTUBE_URL },
   { id: 73, title: 'cf-4-wed', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/cf-4.jpg', description: '', instagramUrl: INSTAGRAM_URL, youtubeUrl: YOUTUBE_URL },
   { id: 74, title: 'cf-wed', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/cf.jpg', description: '', instagramUrl: INSTAGRAM_URL, youtubeUrl: YOUTUBE_URL },
-  { id: 75, title: 'Tejas & Taniya Preweding', eventType: 'Wedding', mediaType: 'video', thumb: '/Our Works Gallery/Wedding/._Tejas & Taniya.mov Preweding.mov', description: '', videoUrl: '/Our Works Gallery/Wedding/._Tejas & Taniya.mov Preweding.mov', instagramUrl: INSTAGRAM_URL, youtubeUrl: YOUTUBE_URL },
-  { id: 76, title: 'WEDDING', eventType: 'Wedding', mediaType: 'video', thumb: '/Our Works Gallery/Wedding/._WEDDING.mp4', description: '', videoUrl: '/Our Works Gallery/Wedding/._WEDDING.mp4', instagramUrl: INSTAGRAM_URL, youtubeUrl: YOUTUBE_URL },
+  { id: 75, title: 'Tejas & Taniya Preweding', eventType: 'Wedding', mediaType: 'video', thumb: '/Our Works Gallery/Wedding/Tejas & Taniya.mov Preweding.mov', description: '', videoUrl: '/Our Works Gallery/Wedding/Tejas & Taniya.mov Preweding.mov', instagramUrl: INSTAGRAM_URL, youtubeUrl: YOUTUBE_URL },
+  { id: 76, title: 'WEDDING', eventType: 'Wedding', mediaType: 'video', thumb: '/Our Works Gallery/Wedding/WEDDING.mp4', description: '', videoUrl: '/Our Works Gallery/Wedding/WEDDING.mp4', instagramUrl: INSTAGRAM_URL, youtubeUrl: YOUTUBE_URL },
 ];
 
 const eventTypes: EventFilter[] = ['All', ...ALLOWED_GALLERY_GROUPS];
