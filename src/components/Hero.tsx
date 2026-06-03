@@ -18,6 +18,10 @@ interface HeroProps {
   hideForegroundContent?: boolean;
 }
 
+type ShowcaseMediaItem =
+  | { type: 'video'; src: string; poster?: string }
+  | { type: 'image'; src: string };
+
 const Hero: React.FC<HeroProps> = ({
   title,
   subtitle,
@@ -29,6 +33,7 @@ const Hero: React.FC<HeroProps> = ({
   hideForegroundContent = false,
 }) => {
   const [showIntro, setShowIntro] = useState(true);
+  const [showcaseItems, setShowcaseItems] = useState<ShowcaseMediaItem[] | undefined>(undefined);
 
   useEffect(() => {
     const introTimer = window.setTimeout(() => {
@@ -48,6 +53,47 @@ const Hero: React.FC<HeroProps> = ({
 
     return () => {
       window.clearTimeout(introTimer);
+    };
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadShowcase = async () => {
+      try {
+        const response = await fetch('/api/content');
+        if (!response.ok) return;
+        const data = await response.json();
+        const seen = new Set<string>();
+        const nextItems: ShowcaseMediaItem[] = [];
+
+        const addImage = (src?: string) => {
+          if (!src) return;
+          const encoded = encodeURI(src);
+          if (!seen.has(encoded)) {
+            seen.add(encoded);
+            nextItems.push({ type: 'image', src: encoded });
+          }
+        };
+
+        if (Array.isArray(data.featured)) {
+          data.featured.forEach((item: any) => addImage(item.thumb));
+        }
+        if (Array.isArray(data.portfolio)) {
+          data.portfolio.forEach((item: any) => addImage(item.thumb));
+        }
+
+        if (!cancelled && nextItems.length > 0) {
+          setShowcaseItems(nextItems);
+        }
+      } catch {
+        // ignore network or JSON errors
+      }
+    };
+
+    void loadShowcase();
+    return () => {
+      cancelled = true;
     };
   }, []);
 
@@ -77,17 +123,17 @@ const Hero: React.FC<HeroProps> = ({
               />
             </picture>
           </div>
-          <div className="absolute inset-0 bg-black/20" />
+          <div className="absolute inset-0 bg-black/10" />
         </div>
 
         <div
           data-hero-showcase
           className={`absolute inset-0 transition-opacity duration-1000 ${showIntro ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
         >
-          <BackgroundShowcase items={undefined} />
+          <BackgroundShowcase items={showcaseItems} />
         </div>
 
-        <div className="absolute inset-0 hero-overlay"></div>
+        <div className="absolute inset-0 hero-overlay" />
         {backgroundImage && (
           <Image
             src={backgroundImage}
@@ -95,7 +141,7 @@ const Hero: React.FC<HeroProps> = ({
             fill
             priority
             sizes="100vw"
-            className="w-full h-full object-cover opacity-30"
+            className="w-full h-full object-cover opacity-10"
           />
         )}
 

@@ -125,7 +125,7 @@ export default function BackgroundShowcase({
                       alt="Background"
                       fill
                       sizes="100vw"
-                      className="object-cover"
+                      className="object-cover filter brightness-110 contrast-105"
                       priority={i === 0}
                     />
                   </picture>
@@ -136,12 +136,12 @@ export default function BackgroundShowcase({
                   alt="Background"
                   fill
                   sizes="100vw"
-                  className="object-cover"
+                  className="object-cover filter brightness-110 contrast-105"
                   priority={i === 0}
                 />
               )}
             </div>
-            <div className="absolute inset-0 bg-black/30" />
+            <div className="absolute inset-0 bg-black/0" />
           </div>
         );
       })}

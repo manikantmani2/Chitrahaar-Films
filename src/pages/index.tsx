@@ -117,24 +117,26 @@ export default function LandingPage() {
               className="relative"
             >
               <div className="absolute -inset-4 rounded-[2rem] bg-[radial-gradient(circle,rgba(212,175,55,0.2),transparent_70%)] blur-2xl" />
-                <div className="relative overflow-hidden rounded-[2rem] border border-border bg-secondary/70 shadow-[0_30px_80px_rgba(0,0,0,0.32)] backdrop-blur-sm">
+              <div className="relative overflow-hidden rounded-[2rem] border border-border bg-secondary/70 shadow-[0_30px_80px_rgba(0,0,0,0.32)] backdrop-blur-sm">
                 <div className="aspect-[16/9] md:aspect-[16/9]">
-                  <Image
-                    src="/company-image.jpg"
-                    alt="Chitrahaar Films intro still"
-                    fill
-                    priority
-                    sizes="(min-width: 768px) 50vw, 100vw"
-                    className="object-cover"
+                  <video
+                    src="/Intro%20videos/WEDDING.mp4"
+                    poster="/Highlights/0U8A4373.jpg"
+                    preload="metadata"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="w-full h-full object-cover"
                   />
                 </div>
                 <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(var(--color-secondary-rgb),0.06),rgba(var(--color-primary-rgb),0.6))]" />
                 <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
                   <div className="flex items-end justify-between gap-6">
                     <div>
-                        <p className="text-xs uppercase tracking-[0.35em] text-[rgba(212,175,55,0.95)]">Local intro video</p>
+                      <p className="text-xs uppercase tracking-[0.35em] text-[rgba(212,175,55,0.95)]">Local intro video</p>
                       <p className="mt-2 max-w-xs text-sm leading-6 text-text-secondary">
-                          A self-hosted cinematic opener before the full experience loads.
+                        A self-hosted cinematic opener before the full experience loads.
                       </p>
                     </div>
                     <div className="rounded-full border border-border bg-secondary/70 px-4 py-2 text-xs uppercase tracking-[0.35em] text-text-secondary backdrop-blur-sm">

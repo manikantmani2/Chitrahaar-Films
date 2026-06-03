@@ -29,17 +29,21 @@ type ViewerItem = {
 
 const FALLBACK_FEATURED: FeaturedContentItem[] = [];
 
+function safeUrl(url: string) {
+  return encodeURI(url);
+}
+
 const createFeaturedViewerItem = (item: FeaturedContentItem): ViewerItem => ({
   id: `featured:${item.id}`,
   title: item.title,
   description: item.duration ? `Featured film • ${item.duration}` : 'Featured film',
   mediaType: 'video',
-  thumb: item.thumb,
+  thumb: safeUrl(item.thumb),
   duration: item.duration,
   group: 'featured',
   kind: 'video',
-  src: item.video || '',
-  poster: item.video ? getGalleryPosterWebp(item.video, 'large') : item.thumb,
+  src: safeUrl(item.video || ''),
+  poster: item.video ? getGalleryPosterWebp(safeUrl(item.video), 'large') : safeUrl(item.thumb),
   storageKey: `featured:${item.id}`,
 });
 
@@ -48,12 +52,12 @@ const createPortfolioViewerItem = (item: { id: number; title: string; eventType:
   title: item.title,
   description: item.description,
   mediaType: item.mediaType,
-  thumb: item.thumb,
+  thumb: safeUrl(item.thumb),
   duration: item.duration,
   group: normalizeGalleryGroup(item.eventType),
   kind: item.mediaType,
-  src: item.mediaType === 'video' ? (item.videoUrl || item.thumb) : item.thumb,
-  poster: item.mediaType === 'video' ? getGalleryPosterWebp(item.videoUrl || item.thumb, 'large') : undefined,
+  src: item.mediaType === 'video' ? safeUrl(item.videoUrl || item.thumb) : safeUrl(item.thumb),
+  poster: item.mediaType === 'video' ? getGalleryPosterWebp(safeUrl(item.videoUrl || item.thumb), 'large') : undefined,
   storageKey: `portfolio:${item.id}`,
 });
 
@@ -114,9 +118,9 @@ const FeaturedFilms: React.FC = () => {
       if (!items.length) return;
 
       const idx = currentIndexRef.current;
-      const currentItem = featured[idx];
+      const currentItem = catalog[idx];
       const parsed = parseDuration(currentItem?.duration || undefined);
-      const isVideo = !!currentItem?.video;
+      const isVideo = currentItem?.kind === 'video';
       const dwell = parsed ? Math.min(Math.max(parsed * 1000, 3000), 20000) : (isVideo ? 9000 : 5000);
 
       timeoutId = window.setTimeout(() => {
@@ -151,16 +155,10 @@ const FeaturedFilms: React.FC = () => {
         if (!response.ok) return;
         const data = await response.json();
         const items = Array.isArray(data?.featured) ? data.featured : [];
-        const portfolio = Array.isArray(data?.portfolio)
-          ? data.portfolio.filter((item: { eventType?: string }) => normalizeGalleryGroup(item.eventType) !== null)
-          : [];
         if (!cancelled) {
           if (items.length > 0) setFeatured(items);
-          const nextCatalog = [
-            ...items.map(createFeaturedViewerItem),
-            ...portfolio.map(createPortfolioViewerItem),
-          ];
-          if (nextCatalog.length > 0) setCatalog(nextCatalog);
+          const nextCatalog = items.map(createFeaturedViewerItem);
+          setCatalog(nextCatalog);
         }
       } catch {
         // fall back to static content
@@ -191,7 +189,7 @@ const FeaturedFilms: React.FC = () => {
       if (localEl) localEl.removeEventListener('scroll', onUserScroll);
       cancelled = true;
     };
-  }, [featured]);
+  }, [catalog]);
 
   // compute a card width so each featured card fills the visible frame
   useEffect(() => {
@@ -211,7 +209,7 @@ const FeaturedFilms: React.FC = () => {
     compute();
     window.addEventListener('resize', compute);
     return () => window.removeEventListener('resize', compute);
-  }, [featured.length]);
+  }, [catalog.length]);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -243,7 +241,7 @@ const FeaturedFilms: React.FC = () => {
     el.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
     return () => el.removeEventListener('scroll', onScroll);
-  }, [featured]);
+  }, [catalog]);
 
   return (
     <Section id="featured" title="Featured Films" subtitle="Curated cinematic stories" background="default">
@@ -256,9 +254,9 @@ const FeaturedFilms: React.FC = () => {
       >
         <div ref={containerRef} className="overflow-x-auto -mx-4 py-6 scrollbar-hide px-4 snap-carousel" role="region" aria-label="Featured films carousel">
           <div className="flex gap-6">
-            {featured.map((f, idx) => (
+            {catalog.map((item, idx) => (
               <motion.div
-                key={f.id}
+                key={item.id}
                 className={`snap-item transition-all duration-500 ease-out ${idx === current ? 'scale-[1.15] md:scale-[1.2] opacity-100 z-30 shadow-[0_18px_50px_rgba(0,0,0,0.3)]' : 'scale-[0.82] md:scale-[0.86] opacity-55 z-10'}`}
                 style={cardWidth ? { width: cardWidth } : undefined}
                 variants={itemVariants}
@@ -272,26 +270,26 @@ const FeaturedFilms: React.FC = () => {
                     onClick={() => {
                       currentIndexRef.current = idx;
                       setCurrent(idx);
-                      setActiveItem(createFeaturedViewerItem(f));
+                      setActiveItem(item);
                     }}
                     onKeyDown={(event) => {
                       if (event.key === 'Enter' || event.key === ' ') {
                         event.preventDefault();
                         currentIndexRef.current = idx;
                         setCurrent(idx);
-                        setActiveItem(createFeaturedViewerItem(f));
+                        setActiveItem(item);
                       }
                     }}
                   >
                     <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl">
                       <picture className="relative block h-full w-full">
-                        <source srcSet={getGalleryThumbAvif(f.thumb, 'large')} type="image/avif" />
-                        <source srcSet={getGalleryThumbWebp(f.thumb, 'large')} type="image/webp" />
+                        <source srcSet={getGalleryThumbAvif(item.thumb, 'large')} type="image/avif" />
+                        <source srcSet={getGalleryThumbWebp(item.thumb, 'large')} type="image/webp" />
                         <Image
-                          src={f.thumb}
-                          alt={f.title}
+                          src={item.thumb}
+                          alt={item.title}
                           fill
-                          sizes={f.video ? '(min-width:1280px) 860px, (min-width:768px) 720px, 420px' : '(min-width:1024px) 660px, 360px'}
+                          sizes={item.kind === 'video' ? '(min-width:1280px) 860px, (min-width:768px) 720px, 420px' : '(min-width:1024px) 660px, 360px'}
                           className="object-cover object-center transition-transform duration-500 hover:scale-105"
                           loading="lazy"
                           placeholder="blur"
@@ -300,18 +298,18 @@ const FeaturedFilms: React.FC = () => {
                       </picture>
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
                       <div className="absolute left-4 bottom-4">
-                        <h3 className="text-xl font-display text-text-primary">{f.title}</h3>
-                        <p className="text-sm text-text-secondary mt-1">{f.duration}</p>
+                        <h3 className="text-xl font-display text-text-primary">{item.title}</h3>
+                        <p className="text-sm text-text-secondary mt-1">{item.duration}</p>
                       </div>
                       <div className="absolute right-4 top-4 bg-[rgba(212,175,55,0.12)] text-gold rounded-full p-3">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 3v18l15-9L5 3z" fill="#D4AF37"/></svg>
                       </div>
 
                       {/* Only the centered item plays; the rest stay as still frames */}
-                      {f.video && idx === current ? (
+                      {item.kind === 'video' && idx === current ? (
                         <video
-                          src={f.video}
-                          poster={getGalleryPosterWebp(f.video, 'large')}
+                          src={item.src}
+                          poster={item.poster}
                           preload="metadata"
                           autoPlay
                           muted

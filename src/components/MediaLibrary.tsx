@@ -106,13 +106,14 @@ const WORK_ITEMS: WorkItem[] = [
   { id: 55, title: '14', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/14.jpeg', description: '', instagramUrl: INSTAGRAM_URL, youtubeUrl: YOUTUBE_URL },
   { id: 56, title: '15', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/15.jpeg', description: '', instagramUrl: INSTAGRAM_URL, youtubeUrl: YOUTUBE_URL },
   { id: 57, title: '16', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/16.jpeg', description: '', instagramUrl: INSTAGRAM_URL, youtubeUrl: YOUTUBE_URL },
-  { id: 58, title: '20', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/20.JPG', description: '', instagramUrl: INSTAGRAM_URL, youtubeUrl: YOUTUBE_URL },
-  { id: 59, title: '21', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/21.JPG', description: '', instagramUrl: INSTAGRAM_URL, youtubeUrl: YOUTUBE_URL },
-  { id: 60, title: '27', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/27.JPG', description: '', instagramUrl: INSTAGRAM_URL, youtubeUrl: YOUTUBE_URL },
-  { id: 61, title: '28', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/28.JPG', description: '', instagramUrl: INSTAGRAM_URL, youtubeUrl: YOUTUBE_URL },
-  { id: 62, title: '29', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/29.JPG', description: '', instagramUrl: INSTAGRAM_URL, youtubeUrl: YOUTUBE_URL },
-  { id: 63, title: '30', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/30.JPG', description: '', instagramUrl: INSTAGRAM_URL, youtubeUrl: YOUTUBE_URL },
-  { id: 64, title: '32', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/32.JPG', description: '', instagramUrl: INSTAGRAM_URL, youtubeUrl: YOUTUBE_URL },
+  // Map missing/newer filenames to available images in the folder
+  { id: 58, title: '20', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/10.jpeg', description: '', instagramUrl: INSTAGRAM_URL, youtubeUrl: YOUTUBE_URL },
+  { id: 59, title: '21', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/11.jpeg', description: '', instagramUrl: INSTAGRAM_URL, youtubeUrl: YOUTUBE_URL },
+  { id: 60, title: '27', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/12.jpeg', description: '', instagramUrl: INSTAGRAM_URL, youtubeUrl: YOUTUBE_URL },
+  { id: 61, title: '28', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/13.jpeg', description: '', instagramUrl: INSTAGRAM_URL, youtubeUrl: YOUTUBE_URL },
+  { id: 62, title: '29', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/14.jpeg', description: '', instagramUrl: INSTAGRAM_URL, youtubeUrl: YOUTUBE_URL },
+  { id: 63, title: '30', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/15.jpeg', description: '', instagramUrl: INSTAGRAM_URL, youtubeUrl: YOUTUBE_URL },
+  { id: 64, title: '32', eventType: 'Food & Beverages', mediaType: 'photo', thumb: '/Our Works Gallery/Food & Beverages/16.jpeg', description: '', instagramUrl: INSTAGRAM_URL, youtubeUrl: YOUTUBE_URL },
 
   // Wedding
   { id: 65, title: '0U8A4373', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/0U8A4373.jpg', description: '', instagramUrl: INSTAGRAM_URL, youtubeUrl: YOUTUBE_URL },
@@ -125,11 +126,37 @@ const WORK_ITEMS: WorkItem[] = [
   { id: 72, title: 'cf-3-wed', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/cf-3.jpg', description: '', instagramUrl: INSTAGRAM_URL, youtubeUrl: YOUTUBE_URL },
   { id: 73, title: 'cf-4-wed', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/cf-4.jpg', description: '', instagramUrl: INSTAGRAM_URL, youtubeUrl: YOUTUBE_URL },
   { id: 74, title: 'cf-wed', eventType: 'Wedding', mediaType: 'photo', thumb: '/Our Works Gallery/Wedding/cf.jpg', description: '', instagramUrl: INSTAGRAM_URL, youtubeUrl: YOUTUBE_URL },
-  { id: 75, title: 'Tejas & Taniya Preweding', eventType: 'Wedding', mediaType: 'video', thumb: '/Our Works Gallery/Wedding/Tejas & Taniya.mov Preweding.mov', description: '', videoUrl: '/Our Works Gallery/Wedding/Tejas & Taniya.mov Preweding.mov', instagramUrl: INSTAGRAM_URL, youtubeUrl: YOUTUBE_URL },
-  { id: 76, title: 'WEDDING', eventType: 'Wedding', mediaType: 'video', thumb: '/Our Works Gallery/Wedding/WEDDING.mp4', description: '', videoUrl: '/Our Works Gallery/Wedding/WEDDING.mp4', instagramUrl: INSTAGRAM_URL, youtubeUrl: YOUTUBE_URL },
+  { id: 75, title: 'Tejas & Taniya Preweding', eventType: 'Wedding', mediaType: 'video', thumb: '/Our Works Gallery/Wedding/._Tejas & Taniya.mov Preweding.mov', description: '', videoUrl: '/Our Works Gallery/Wedding/._Tejas & Taniya.mov Preweding.mov', instagramUrl: INSTAGRAM_URL, youtubeUrl: YOUTUBE_URL },
+  { id: 76, title: 'WEDDING', eventType: 'Wedding', mediaType: 'video', thumb: '/Our Works Gallery/Wedding/._WEDDING.mp4', description: '', videoUrl: '/Our Works Gallery/Wedding/._WEDDING.mp4', instagramUrl: INSTAGRAM_URL, youtubeUrl: YOUTUBE_URL },
 ];
 
 const eventTypes: EventFilter[] = ['All', ...ALLOWED_GALLERY_GROUPS];
+
+// Define section order for interleaving
+const SECTION_ORDER: EventFilter[] = ['Food & Beverages', 'Corporate & Events', 'Fashion', 'Artist', 'Short Films', 'Wedding'];
+
+// Helper: interleave items by position across all sections
+const interleaveItemsBySections = (items: WorkItem[], sections: EventFilter[]): WorkItem[] => {
+  const bySectionMap: Record<string, WorkItem[]> = {};
+  
+  sections.forEach(section => {
+    bySectionMap[section] = items.filter(item => item.eventType === section);
+  });
+
+  const result: WorkItem[] = [];
+  let maxLength = Math.max(...sections.map(s => (bySectionMap[s] || []).length));
+  
+  for (let position = 0; position < maxLength; position++) {
+    for (const section of sections) {
+      const sectionItems = bySectionMap[section] || [];
+      if (position < sectionItems.length) {
+        result.push(sectionItems[position]);
+      }
+    }
+  }
+
+  return result;
+};
 
 const MediaLibrary: React.FC = () => {
   const [eventType, setEventType] = useState<EventFilter>('All');
@@ -143,30 +170,11 @@ const MediaLibrary: React.FC = () => {
   const [clientId, setClientId] = useState('');
   const filterStripRef = useRef<HTMLDivElement | null>(null);
   const galleryStripRef = useRef<HTMLDivElement | null>(null);
-  const photoStripRef = useRef<HTMLDivElement | null>(null);
-  const videoStripRef = useRef<HTMLDivElement | null>(null);
-  
-  const groupRefs = useRef<Record<string, HTMLDivElement | null>>({});
-  const autoScrollTimerRef = useRef<number | null>(null);
-  const photoAutoScrollTimerRef = useRef<number | null>(null);
-  const videoAutoScrollTimerRef = useRef<number | null>(null);
-  const autoScrollIndexRef = useRef(0);
-  const photoAutoScrollIndexRef = useRef(0);
-  const videoAutoScrollIndexRef = useRef(0);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [groupActiveIndexes, setGroupActiveIndexes] = useState<Record<string, number>>(
-    () => eventTypes.filter((t) => t !== 'All').reduce((acc, group) => {
-      acc[group] = 0;
-      return acc;
-    }, {} as Record<string, number>)
-  );
-  const groupActiveIndexesRef = useRef<Record<string, number>>(
-    eventTypes.filter((t) => t !== 'All').reduce((acc, group) => {
-      acc[group] = 0;
-      return acc;
-    }, {} as Record<string, number>)
-  );
   const carouselRef = useRef<HTMLDivElement | null>(null);
+  
+  const autoScrollTimerRef = useRef<number | null>(null);
+  const autoScrollIndexRef = useRef(0);
+  const [activeIndex, setActiveIndex] = useState(0);
   const autoScrollCarouselRef = useRef<number | null>(null);
   const modalAdvanceTimerRef = useRef<number | null>(null);
 
@@ -184,34 +192,18 @@ const MediaLibrary: React.FC = () => {
   
 
   const filteredItems = useMemo(() => {
-    return WORK_ITEMS.filter((item) => {
+    const baseFiltered = WORK_ITEMS.filter((item) => {
       const eventOk = eventType === 'All' || item.eventType === eventType;
       const mediaOk = mediaType === 'all' || item.mediaType === mediaType;
       return eventOk && mediaOk;
     });
+
+    // If showing all events, interleave by section order; otherwise return as-is
+    if (eventType === 'All') {
+      return interleaveItemsBySections(baseFiltered, SECTION_ORDER);
+    }
+    return baseFiltered;
   }, [eventType, mediaType]);
-
-  const photoItems = useMemo(
-    () =>
-      WORK_ITEMS.filter((i) => {
-        const eventOk = eventType === 'All' || i.eventType === eventType;
-        return eventOk && i.mediaType === 'photo';
-      }),
-    [eventType]
-  );
-
-  const videoItems = useMemo(
-    () =>
-      WORK_ITEMS.filter((i) => {
-        const eventOk = eventType === 'All' || i.eventType === eventType;
-        return eventOk && i.mediaType === 'video';
-      }),
-    [eventType]
-  );
-
-  const eventCombined = useMemo(() => {
-    return [...photoItems, ...videoItems].slice().sort((a, b) => a.id - b.id);
-  }, [photoItems, videoItems]);
 
   const getFrameClass = (item: WorkItem, isActive = false) => {
     return isActive ? 'shrink-0 w-72' : 'shrink-0 w-56';
@@ -228,7 +220,7 @@ const MediaLibrary: React.FC = () => {
   const openItem = (item: WorkItem) => {
     setIsAutoScrolling(false);
     setActiveItem(item);
-    const currentIndex = eventCombined.findIndex((candidate) => candidate.id === item.id);
+    const currentIndex = filteredItems.findIndex((candidate) => candidate.id === item.id);
     setActiveIndex(currentIndex >= 0 ? currentIndex : 0);
   };
 
@@ -265,16 +257,16 @@ const MediaLibrary: React.FC = () => {
     };
   }, [activeItem]);
 
-  // Carousel auto-scroll: 3 seconds per item, forward only for active event view
+  // Carousel auto-scroll: 3 seconds per item
   useEffect(() => {
-    if (eventType === 'All' || eventCombined.length === 0) return;
+    if (filteredItems.length === 0) return;
 
     if (autoScrollCarouselRef.current) {
       window.clearInterval(autoScrollCarouselRef.current);
     }
 
     autoScrollCarouselRef.current = window.setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % eventCombined.length);
+      setActiveIndex((prev) => (prev + 1) % filteredItems.length);
     }, 3000);
 
     return () => {
@@ -282,87 +274,23 @@ const MediaLibrary: React.FC = () => {
         window.clearInterval(autoScrollCarouselRef.current);
       }
     };
-  }, [eventType, eventCombined]);
-
-  useEffect(() => {
-    if (eventType !== 'All') return;
-
-    const resetIndexes = eventTypes.filter((t) => t !== 'All').reduce((acc, group) => {
-      acc[group] = 0;
-      return acc;
-    }, {} as Record<string, number>);
-
-    setGroupActiveIndexes(resetIndexes);
-    groupActiveIndexesRef.current = resetIndexes;
-
-    const intervalId = window.setInterval(() => {
-      const nextIndexes = { ...groupActiveIndexesRef.current };
-
-      eventTypes.filter((t) => t !== 'All').forEach((group) => {
-        const items = WORK_ITEMS.filter((item) => item.eventType === group && (mediaType === 'all' || item.mediaType === mediaType));
-        if (items.length <= 1) {
-          nextIndexes[group] = 0;
-          return;
-        }
-
-        const current = nextIndexes[group] ?? 0;
-        nextIndexes[group] = (current + 1) % items.length;
-      });
-
-      groupActiveIndexesRef.current = nextIndexes;
-      setGroupActiveIndexes(nextIndexes);
-    }, 3000);
-
-    return () => window.clearInterval(intervalId);
-  }, [eventType, mediaType]);
-
-  useEffect(() => {
-    if (eventType !== 'All') return;
-
-    Object.entries(groupActiveIndexes).forEach(([group, index]) => {
-      const container = groupRefs.current[group];
-      if (!container) return;
-
-      const activeItem = container.querySelector<HTMLDivElement>(`[data-gallery-item-index="${index}"]`);
-      if (!activeItem) return;
-
-      container.scrollTo({
-        left: activeItem.offsetLeft - container.clientWidth / 2 + activeItem.clientWidth / 2,
-        behavior: 'smooth',
-      });
-    });
-  }, [groupActiveIndexes, eventType]);
-
-  useEffect(() => {
-    if (eventType !== 'All') {
-      setActiveIndex(0);
-      return;
-    }
-
-    const resetIndexes = eventTypes.filter((t) => t !== 'All').reduce((acc, group) => {
-      acc[group] = 0;
-      return acc;
-    }, {} as Record<string, number>);
-
-    setGroupActiveIndexes(resetIndexes);
-    groupActiveIndexesRef.current = resetIndexes;
-  }, [eventType, mediaType]);
+  }, [filteredItems]);
 
   const handleModalNext = useCallback(() => {
-    if (!activeItem || eventCombined.length === 0) return;
-    const currentIndex = eventCombined.findIndex((item) => item.id === activeItem.id);
-    const nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % eventCombined.length;
+    if (!activeItem || filteredItems.length === 0) return;
+    const currentIndex = filteredItems.findIndex((item) => item.id === activeItem.id);
+    const nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % filteredItems.length;
     setActiveIndex(nextIndex);
-    setActiveItem(eventCombined[nextIndex]);
-  }, [activeItem, eventCombined]);
+    setActiveItem(filteredItems[nextIndex]);
+  }, [activeItem, filteredItems]);
 
   const handleModalPrev = useCallback(() => {
-    if (!activeItem || eventCombined.length === 0) return;
-    const currentIndex = eventCombined.findIndex((item) => item.id === activeItem.id);
-    const prevIndex = currentIndex === -1 ? 0 : (currentIndex - 1 + eventCombined.length) % eventCombined.length;
+    if (!activeItem || filteredItems.length === 0) return;
+    const currentIndex = filteredItems.findIndex((item) => item.id === activeItem.id);
+    const prevIndex = currentIndex === -1 ? 0 : (currentIndex - 1 + filteredItems.length) % filteredItems.length;
     setActiveIndex(prevIndex);
-    setActiveItem(eventCombined[prevIndex]);
-  }, [activeItem, eventCombined]);
+    setActiveItem(filteredItems[prevIndex]);
+  }, [activeItem, filteredItems]);
 
   useEffect(() => {
     if (!activeItem) return;
@@ -387,9 +315,9 @@ const MediaLibrary: React.FC = () => {
   }, [activeItem, handleModalNext, handleModalPrev]);
 
   useEffect(() => {
-    if (eventCombined.length === 0) return;
+    if (filteredItems.length === 0) return;
 
-    if (activeIndex >= eventCombined.length) {
+    if (activeIndex >= filteredItems.length) {
       setActiveIndex(0);
       return;
     }
@@ -401,7 +329,65 @@ const MediaLibrary: React.FC = () => {
       const scrollPosition = activeIndex * itemWidth - centerOffset;
       carouselRef.current.scrollTo({ left: scrollPosition, behavior: 'smooth' });
     }
-  }, [activeIndex, eventCombined]);
+  }, [activeIndex, filteredItems]);
+
+  // Auto-play video in the visible/active card for up to 5 seconds
+  useEffect(() => {
+    if (!carouselRef.current || filteredItems.length === 0) return;
+
+    // Pause all videos first
+    const allVideos: HTMLVideoElement[] = Array.from(carouselRef.current.querySelectorAll('video')) as HTMLVideoElement[];
+    allVideos.forEach((v) => {
+      try { v.pause(); } catch (e) {}
+    });
+
+    if (activeIndex < 0 || activeIndex >= carouselRef.current.children.length) return;
+
+    const activeChild = carouselRef.current.children[activeIndex] as HTMLElement | undefined;
+    if (!activeChild) return;
+
+    const videoEl = activeChild.querySelector('video') as HTMLVideoElement | null;
+    if (!videoEl) return;
+
+    let cancelled = false;
+    const playPromise = (async () => {
+      try {
+        // Ensure muted to allow autoplay in browsers
+        videoEl.muted = true;
+        videoEl.playsInline = true;
+        await videoEl.play();
+      } catch (e) {
+        // ignore play errors
+      }
+
+      if (cancelled) return;
+
+      const maxMs = 5000; // 5 seconds cap
+      // If video is shorter than 5s, let it end naturally; otherwise pause after 5s
+      const effectiveMs = Math.min(maxMs, (videoEl.duration && Number.isFinite(videoEl.duration) ? videoEl.duration * 1000 : maxMs));
+
+      const timeoutId = window.setTimeout(() => {
+        try { videoEl.pause(); } catch (e) {}
+      }, effectiveMs);
+
+      const onEnded = () => {
+        window.clearTimeout(timeoutId);
+      };
+
+      videoEl.addEventListener('ended', onEnded);
+
+      return () => {
+        cancelled = true;
+        window.clearTimeout(timeoutId);
+        try { videoEl.removeEventListener('ended', onEnded); videoEl.pause(); } catch (e) {}
+      };
+    })();
+
+    return () => {
+      // cancel play handler
+      try { if (typeof playPromise === 'function') (playPromise as any)(); } catch (e) {}
+    };
+  }, [activeIndex, filteredItems]);
 
   // Manual scroller: auto-scroll disabled to keep user control
 
@@ -587,64 +573,11 @@ const MediaLibrary: React.FC = () => {
       </div>
 
       {eventType === 'All' ? (
-        <div>
-          {eventTypes.filter((t) => t !== 'All').map((group) => {
-            const groupItems = WORK_ITEMS.filter((item) => item.eventType === group && (mediaType === 'all' || item.mediaType === mediaType)).slice().sort((a, b) => a.id - b.id);
-            if (groupItems.length === 0) return null;
-
-            return (
-              <div key={group} className="mb-8">
-                <div className="mb-3 flex items-center justify-between gap-4">
-                  <h4 className="text-base font-semibold">{group}</h4>
-                </div>
-                <div ref={(el) => { groupRefs.current[group] = el; }} className="flex gap-2 overflow-x-auto scrollbar-hide py-2">
-                  {groupItems.map((item, idx) => {
-                    const isActive = groupActiveIndexes[group] === idx;
-                    return (
-                      <div
-                        key={item.id}
-                        data-gallery-item-index={idx}
-                        className={`${getFrameClass(item, isActive)} transition-all duration-500 flex-shrink-0 ${isActive ? 'scale-[1.15] z-20 opacity-100' : 'scale-[0.92] opacity-60'}`}
-                      >
-                        <Card variant="hover" className="overflow-hidden rounded-lg hover-lift">
-                          {item.mediaType === 'photo' ? (
-                            <div className="relative w-full aspect-[9/16] cursor-pointer" onClick={() => openItem(item)} role="button" tabIndex={0}>
-                              <Image src={encodeURI(item.thumb)} alt={item.title} fill className="object-cover" priority={groupItems.length <= 2} />
-                            </div>
-                          ) : (
-                            <div className="relative w-full aspect-[9/16] bg-black cursor-pointer" onClick={() => openItem(item)} role="button" tabIndex={0}>
-                              <video
-                                src={encodeURI(item.videoUrl || '')}
-                                muted
-                                playsInline
-                                preload="metadata"
-                                className="h-full w-full object-cover"
-                                aria-label={item.title}
-                              />
-                              <div className="absolute inset-0 flex items-center justify-center">
-                                <div className="rounded-full bg-black/60 p-2 text-white/90 text-sm">▶</div>
-                              </div>
-                            </div>
-                          )}
-                          <div className="p-2">
-                            <h5 className="text-xs font-semibold truncate">{item.title}</h5>
-                            <p className="text-xs text-text-secondary truncate">{item.mediaType === 'photo' ? item.eventType : item.duration || 'Video'}</p>
-                          </div>
-                        </Card>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      ) : (
         <div className="mb-3">
-          <h4 className="mb-2 text-base font-semibold">Photos & Videos</h4>
+          <h4 className="mb-2 text-base font-semibold">All Media - Mixed Sections</h4>
           <div className="relative">
             <div ref={carouselRef} className="flex gap-2 overflow-x-auto scrollbar-hide py-2">
-              {eventCombined.map((item, idx) => {
+              {filteredItems.map((item, idx) => {
                 const isActive = idx === activeIndex;
                 return (
                   <div
@@ -654,7 +587,7 @@ const MediaLibrary: React.FC = () => {
                     <Card variant="hover" className="overflow-hidden rounded-lg hover-lift transition-all duration-500">
                       {item.mediaType === 'photo' ? (
                         <div className="relative w-full aspect-[9/16] cursor-pointer" onClick={() => openItem(item)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openItem(item); } }} role="button" tabIndex={0}>
-                          <Image src={encodeURI(item.thumb)} alt={item.title} fill className="object-cover" priority={idx < 2} />
+                          <Image src={encodeURI(item.thumb).replace(/&/g, '%26')} alt={item.title} fill className="object-cover" priority={idx < 2} />
                           <div className="absolute top-1 right-1 flex gap-1">
                             <button
                               onClick={(e) => { e.stopPropagation(); toggleLike(item.id); }}
@@ -670,7 +603,72 @@ const MediaLibrary: React.FC = () => {
                       ) : (
                         <div className="relative w-full aspect-[9/16] bg-black cursor-pointer" onClick={() => openItem(item)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openItem(item); } }} role="button" tabIndex={0}>
                           <video
-                            src={encodeURI(item.videoUrl || '')}
+                            src={encodeURI(item.videoUrl || '').replace(/&/g, '%26')}
+                            muted
+                            playsInline
+                            preload="metadata"
+                            className="h-full w-full object-cover"
+                            aria-label={item.title}
+                          />
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="rounded-full bg-black/60 p-2 text-white/90 text-sm">▶</div>
+                          </div>
+                          <div className="absolute top-1 right-1 flex gap-1">
+                            <button
+                              onClick={(e) => { e.stopPropagation(); toggleLike(item.id); }}
+                              aria-pressed={!!likes[item.id]}
+                              className={`rounded-full p-1 text-white/90 text-sm ${likes[item.id] ? 'bg-accent text-primary scale-110' : 'bg-black/50'} transform transition`}
+                            ><FaHeart /></button>
+                            <button
+                              onClick={(e) => { e.stopPropagation(); doShare(item); }}
+                              className="rounded-full bg-black/50 p-1 text-white/90 text-sm"
+                            ><FaShareAlt /></button>
+                          </div>
+                        </div>
+                      )}
+                      <div className="p-2">
+                        <h5 className="text-xs font-semibold truncate">{item.title}</h5>
+                        <p className="text-xs text-text-secondary truncate">{item.eventType}</p>
+                      </div>
+                    </Card>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="mb-3">
+          <h4 className="mb-2 text-base font-semibold">{eventType}</h4>
+          <div className="relative">
+            <div ref={carouselRef} className="flex gap-2 overflow-x-auto scrollbar-hide py-2">
+              {filteredItems.map((item, idx) => {
+                const isActive = idx === activeIndex;
+                return (
+                  <div
+                    key={item.id}
+                    className={`${getFrameClass(item, isActive)} transition-all duration-300 flex-shrink-0 ${isActive ? 'scale-[1.18] z-20 opacity-100 shadow-[0_20px_60px_rgba(0,0,0,0.25)]' : 'scale-[0.92] opacity-60'}`}
+                  >
+                    <Card variant="hover" className="overflow-hidden rounded-lg hover-lift transition-all duration-500">
+                      {item.mediaType === 'photo' ? (
+                        <div className="relative w-full aspect-[9/16] cursor-pointer" onClick={() => openItem(item)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openItem(item); } }} role="button" tabIndex={0}>
+                          <Image src={encodeURI(item.thumb).replace(/&/g, '%26')} alt={item.title} fill className="object-cover" priority={idx < 2} />
+                          <div className="absolute top-1 right-1 flex gap-1">
+                            <button
+                              onClick={(e) => { e.stopPropagation(); toggleLike(item.id); }}
+                              aria-pressed={!!likes[item.id]}
+                              className={`rounded-full p-1 text-white/90 text-sm ${likes[item.id] ? 'bg-accent text-primary scale-110' : 'bg-black/50'}`}
+                            ><FaHeart /></button>
+                            <button
+                              onClick={(e) => { e.stopPropagation(); doShare(item); }}
+                              className="rounded-full bg-black/50 p-1 text-white/90 text-sm"
+                            ><FaShareAlt /></button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="relative w-full aspect-[9/16] bg-black cursor-pointer" onClick={() => openItem(item)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openItem(item); } }} role="button" tabIndex={0}>
+                          <video
+                            src={encodeURI(item.videoUrl || '').replace(/&/g, '%26')}
                             muted
                             playsInline
                             preload="metadata"
@@ -733,10 +731,10 @@ const MediaLibrary: React.FC = () => {
             </div>
             <div className="relative aspect-[16/10] w-full bg-black">
               {activeItem.mediaType === 'photo' ? (
-                <Image src={encodeURI(activeItem.thumb)} alt="Media preview" fill sizes="100vw" className="object-contain" priority />
+                <Image src={encodeURI(activeItem.thumb).replace(/&/g, '%26')} alt="Media preview" fill sizes="100vw" className="object-contain" priority />
               ) : (
                 <video controls autoPlay playsInline className="h-full w-full object-contain">
-                  <source src={encodeURI(activeItem.videoUrl || '')} type="video/mp4" />
+                  <source src={encodeURI(activeItem.videoUrl || '').replace(/&/g, '%26')} type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
               )}

@@ -1,64 +1,108 @@
 {
-	"featured": [
-		{
-			"id": 1,
-			"title": "Corporate Showreel",
-			"thumb": "/Highlights/Worldclass-358.jpg",
-			"duration": "00:45",
-			"video": "/Featured Films/CORPRATE.mp4",
-			"visible": true
-		},
-		{
-			"id": 2,
-			"title": "Short Films Compilation",
-			"thumb": "/Highlights/cf.jpg",
-			"duration": "02:30",
-			"video": "/Featured Films/short films.mp4",
-			"visible": true
-		},
-		{
-			"id": 3,
-			"title": "Wedding Highlight",
-			"thumb": "/Highlights/0U8A4373.jpg",
-			"duration": "01:20",
-			"video": "/Featured Films/WEDDING.mp4",
-			"visible": true
-		}
-	],
-	"portfolio": [
-		{
-			"id": 101,
-			"title": "CF Portrait",
-			"eventType": "Artist",
-			"mediaType": "photo",
-			"thumb": "/Highlights/cf.jpg",
-			"description": "Artist portrait from CF set.",
-			"instagramUrl": "https://instagram.com/chitrahaarfilms",
-			"youtubeUrl": "https://youtube.com/@chitrahaarfilms",
-			"visible": true
-		},
-		{
-			"id": 102,
-			"title": "Worldclass Series",
-			"eventType": "Corporate & Events",
-			"mediaType": "photo",
-			"thumb": "/Highlights/Worldclass-183.jpg",
-			"description": "Corporate still from Worldclass series.",
-			"instagramUrl": "https://instagram.com/chitrahaarfilms",
-			"youtubeUrl": "https://youtube.com/@chitrahaarfilms",
-			"visible": true
-		},
-		{
-			"id": 201,
-			"title": "Intro - Wedding",
-			"eventType": "Wedding",
-			"mediaType": "video",
-			"thumb": "/Intro videos/WEDDING.mp4",
-			"description": "Intro video used on the site.",
-			"videoUrl": "/Intro videos/WEDDING.mp4",
-			"instagramUrl": "https://instagram.com/chitrahaarfilms",
-			"youtubeUrl": "https://youtube.com/@chitrahaarfilms",
-			"visible": true
-		}
-	]
+    "featured":  [
+                     {
+                         "id":  1,
+                         "title":  "Corporate Showreel",
+                         "thumb":  "/Highlights/Worldclass-379.jpg",
+                         "duration":  "00:45",
+                         "video":  "/Featured Films/CORPRATE.mp4",
+                         "visible":  true
+                     },
+                     {
+                         "id":  2,
+                         "title":  "Short Films Compilation",
+                         "thumb":  "/Highlights/cf.jpg",
+                         "duration":  "02:30",
+                         "video":  "/Featured Films/short films.mp4",
+                         "visible":  true
+                     },
+                     {
+                         "id":  3,
+                         "title":  "Wedding Highlight",
+                         "thumb":  "/Highlights/DSC04511.jpg",
+                         "duration":  "01:20",
+                         "video":  "/Featured Films/WEDDING.mp4",
+                         "visible":  true
+                     }
+                 ],
+    "portfolio":  [
+                      {
+                          "id":  101,
+                          "title":  "CF Portrait",
+                          "eventType":  "Artist",
+                          "mediaType":  "photo",
+                          "thumb":  "/Highlights/cf.jpg",
+                          "description":  "Artist portrait from CF set.",
+                          "instagramUrl":  "https://instagram.com/chitrahaarfilms",
+                          "youtubeUrl":  "https://youtube.com/@chitrahaarfilms",
+                          "visible":  true
+                      },
+                      {
+                          "id":  102,
+                          "title":  "Worldclass Series",
+                          "eventType":  "Corporate \u0026 Events",
+                          "mediaType":  "photo",
+                          "thumb":  "/Highlights/Worldclass-183.jpg",
+                          "description":  "Corporate still from Worldclass series.",
+                          "instagramUrl":  "https://instagram.com/chitrahaarfilms",
+                          "youtubeUrl":  "https://youtube.com/@chitrahaarfilms",
+                          "visible":  true
+                      },
+                      {
+                          "id":  103,
+                          "title":  "Worldclass Event",
+                          "eventType":  "Corporate \u0026 Events",
+                          "mediaType":  "photo",
+                          "thumb":  "/Highlights/Worldclass-342.jpg",
+                          "description":  "Premium event production.",
+                          "instagramUrl":  "https://instagram.com/chitrahaarfilms",
+                          "youtubeUrl":  "https://youtube.com/@chitrahaarfilms",
+                          "visible":  true
+                      },
+                      {
+                          "id":  104,
+                          "title":  "Worldclass Moments",
+                          "eventType":  "Corporate \u0026 Events",
+                          "mediaType":  "photo",
+                          "thumb":  "/Highlights/Worldclass-355.jpg",
+                          "description":  "Captured moments from corporate events.",
+                          "instagramUrl":  "https://instagram.com/chitrahaarfilms",
+                          "youtubeUrl":  "https://youtube.com/@chitrahaarfilms",
+                          "visible":  true
+                      },
+                      {
+                          "id":  105,
+                          "title":  "CF Studio",
+                          "eventType":  "Corporate \u0026 Events",
+                          "mediaType":  "photo",
+                          "thumb":  "/Highlights/CF-27.jpg",
+                          "description":  "Professional studio production.",
+                          "instagramUrl":  "https://instagram.com/chitrahaarfilms",
+                          "youtubeUrl":  "https://youtube.com/@chitrahaarfilms",
+                          "visible":  true
+                      },
+                      {
+                          "id":  106,
+                          "title":  "CF Session",
+                          "eventType":  "Artist",
+                          "mediaType":  "photo",
+                          "thumb":  "/Highlights/CF008434.jpg",
+                          "description":  "Artist session and collaboration.",
+                          "instagramUrl":  "https://instagram.com/chitrahaarfilms",
+                          "youtubeUrl":  "https://youtube.com/@chitrahaarfilms",
+                          "visible":  true
+                      },
+                      {
+                          "id":  201,
+                          "title":  "Intro - Wedding",
+                          "eventType":  "Wedding",
+                          "mediaType":  "video",
+                          "thumb":  "/Highlights/DSC04511.jpg",
+                          "description":  "Intro video used on the site.",
+                          "videoUrl":  "/Intro videos/WEDDING.mp4",
+                          "instagramUrl":  "https://instagram.com/chitrahaarfilms",
+                          "youtubeUrl":  "https://youtube.com/@chitrahaarfilms",
+                          "visible":  true
+                      }
+                  ]
 }
