@@ -11,10 +11,10 @@ const nextConfig = {
     ],
   },
   experimental: {
-    outputFileTracingExcludes: {
-      'public/Our Works Gallery': ['**/*'],
-      'public/Highlights': ['**/*'],
-    },
+    outputFileTracingExcludes: [
+      'public/Our Works Gallery/**',
+      'public/Highlights/**',
+    ],
   },
   headers: async () => {
     return [
