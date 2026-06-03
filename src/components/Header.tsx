@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Logo from './Logo';
 import { NAV_LINKS } from '@/constants';
-import { useScrollPosition, useIsMobile } from '@/hooks';
+import { useIsMobile } from '@/hooks';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { useTheme } from '@/hooks/useTheme';
 import ThemeToggleButton from './ThemeToggleButton';
@@ -13,18 +13,34 @@ const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const headerRef = useRef<HTMLElement | null>(null);
   const { theme, toggleTheme } = useTheme();
-  const scrollPosition = useScrollPosition();
   const isMobile = useIsMobile();
   const prevScrolledRef = useRef(false);
+  const isTickingRef = useRef(false);
 
   useEffect(() => {
-    // Only update state if threshold crossed to avoid unnecessary renders
-    const scrolled = scrollPosition > 50;
-    if (scrolled !== prevScrolledRef.current) {
-      prevScrolledRef.current = scrolled;
-      setIsScrolled(scrolled);
-    }
-  }, [scrollPosition]);
+    const threshold = 50;
+
+    const updateScrollState = () => {
+      const scrolled = window.scrollY > threshold;
+      if (scrolled !== prevScrolledRef.current) {
+        prevScrolledRef.current = scrolled;
+        setIsScrolled(scrolled);
+      }
+      isTickingRef.current = false;
+    };
+
+    const handleScroll = () => {
+      if (!isTickingRef.current) {
+        isTickingRef.current = true;
+        window.requestAnimationFrame(updateScrollState);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    updateScrollState();
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Keep CSS variable --site-header-height in sync with actual header height.
   useEffect(() => {
@@ -52,7 +68,7 @@ const Header: React.FC = () => {
   }, [isMobileMenuOpen, isScrolled]);
 
   const headerClasses = `fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
-    isScrolled ? 'bg-[rgba(11,11,11,0.75)] backdrop-blur-lg border-b border-transparent shadow-lg' : 'sticky-navbar'
+    isScrolled ? 'bg-[rgba(11,11,11,0.85)] border-b border-transparent shadow-lg' : 'sticky-navbar'
   }`;
 
   const navVariants = {
