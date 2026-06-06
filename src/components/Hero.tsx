@@ -6,6 +6,7 @@ import { slideUpVariants, slideLeftVariants, slideRightVariants } from '@/utils/
 import { encodeMediaUrl, getGalleryThumbAvif, getGalleryThumbWebp } from '@/utils/imagePaths';
 import Button from './Button';
 import BackgroundShowcase from './BackgroundShowcase';
+import VideoPlayer from './VideoPlayer';
 
 interface HeroProps {
   title: string;
@@ -236,7 +237,7 @@ const Hero: React.FC<HeroProps> = ({
             <div className="relative w-full aspect-video rounded-xl overflow-hidden border border-border glass-effect group glow-effect-lg">
               {hasVideo && !showIntro ? (
                 <>
-                  <video
+                  <VideoPlayer
                     src="https://videos.pexels.com/video-files/4476151/4476151-sd_640_360_30fps.mp4"
                     autoPlay
                     muted

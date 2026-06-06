@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { getGalleryThumbAvif, getGalleryThumbWebp } from '@/utils/imagePaths';
+import VideoPlayer from './VideoPlayer';
 
 type MediaItem =
   | { type: 'video'; src: string; poster?: string }
@@ -92,9 +93,8 @@ export default function BackgroundShowcase({
 
         if (item.type === 'video') {
           return (
-            <video
+            <VideoPlayer
               key={i}
-              ref={active ? videoRef : undefined}
               src={item.src}
               poster={item.poster}
               autoPlay={active}
@@ -102,7 +102,6 @@ export default function BackgroundShowcase({
               playsInline
               onEnded={handleVideoEnded}
               onError={() => {
-                // if a remote video fails to load, advance to the next item to avoid console spam
                 handleVideoEnded();
               }}
               className={commonClass + ' object-cover bg-showcase-video'}

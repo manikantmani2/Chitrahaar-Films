@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { FaInstagram, FaYoutube, FaHeart, FaShareAlt } from 'react-icons/fa';
 import { containerVariants, itemVariants } from '@/utils/animations';
 import { encodeMediaUrl, getGalleryPosterWebp } from '@/utils/imagePaths';
+import VideoPlayer from './VideoPlayer';
 import { normalizeGalleryGroup, ALLOWED_GALLERY_GROUPS } from '@/utils/gallerySuggestions';
 import Section from './Section';
 import Card from './Card';
@@ -615,7 +616,7 @@ const MediaLibrary: React.FC = () => {
                         </div>
                       ) : (
                         <div className="relative w-full aspect-[9/16] bg-black cursor-pointer" onClick={() => openItem(item)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openItem(item); } }} role="button" tabIndex={0}>
-                          <video
+                          <VideoPlayer
                             src={encodeMediaUrl(item.videoUrl || '')}
                             muted
                             playsInline
@@ -683,7 +684,7 @@ const MediaLibrary: React.FC = () => {
                         </div>
                       ) : (
                         <div className="relative w-full aspect-[9/16] bg-black cursor-pointer" onClick={() => openItem(item)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openItem(item); } }} role="button" tabIndex={0}>
-                          <video
+                          <VideoPlayer
                             src={encodeMediaUrl(item.videoUrl || '')}
                             muted
                             playsInline
@@ -763,10 +764,13 @@ const MediaLibrary: React.FC = () => {
               {activeItem.mediaType === 'photo' ? (
                 <Image src={encodeMediaUrl(activeItem.thumb)} alt="Media preview" fill sizes="100vw" className="object-contain" priority />
               ) : (
-                <video controls autoPlay playsInline className="h-full w-full object-contain" preload="metadata">
-                  <source src={encodeMediaUrl(activeItem.videoUrl || '')} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
+                <VideoPlayer
+                  src={encodeMediaUrl(activeItem.videoUrl || '')}
+                  controls
+                  autoPlay
+                  playsInline
+                  className="h-full w-full object-contain"
+                />
               )}
             </div>
 

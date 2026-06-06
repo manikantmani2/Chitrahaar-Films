@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import ThemeToggleButton from '@/components/ThemeToggleButton';
 import { useTheme } from '@/hooks/useTheme';
+import VideoPlayer from '@/components/VideoPlayer';
 
 export default function LandingPage() {
   const { theme, toggleTheme } = useTheme();
@@ -119,7 +120,7 @@ export default function LandingPage() {
               <div className="absolute -inset-4 rounded-[2rem] bg-[radial-gradient(circle,rgba(212,175,55,0.2),transparent_70%)] blur-2xl" />
               <div className="relative overflow-hidden rounded-[2rem] border border-border bg-secondary/70 shadow-[0_30px_80px_rgba(0,0,0,0.32)] backdrop-blur-sm">
                 <div className="aspect-[16/9] md:aspect-[16/9]">
-                  <video
+                  <VideoPlayer
                     src="/Intro%20videos/WEDDING.mp4"
                     poster="/Highlights/0U8A4373.jpg"
                     preload="metadata"

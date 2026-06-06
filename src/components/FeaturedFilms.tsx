@@ -12,6 +12,7 @@ import {
   getGalleryThumbAvif,
   getGalleryThumbWebp,
 } from '@/utils/imagePaths';
+import VideoPlayer from './VideoPlayer';
 import { normalizeGalleryGroup } from '@/utils/gallerySuggestions';
 
 type ViewerItem = {
@@ -308,7 +309,7 @@ const FeaturedFilms: React.FC = () => {
 
                       {/* Only the centered item plays; the rest stay as still frames */}
                       {item.kind === 'video' && idx === current ? (
-                        <video
+                        <VideoPlayer
                           src={item.src}
                           poster={item.poster}
                           preload="metadata"

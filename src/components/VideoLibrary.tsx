@@ -4,6 +4,7 @@ import { MEDIA_LIBRARY } from '@/constants';
 import { motion } from 'framer-motion';
 import { imageHover } from '@/utils/animations';
 import { FaInstagram, FaYoutube } from 'react-icons/fa';
+import VideoPlayer from './VideoPlayer';
 
 const VideoLibrary: React.FC = () => {
   const videos = MEDIA_LIBRARY.filter((m) => m.type === 'video');
@@ -17,10 +18,7 @@ const VideoLibrary: React.FC = () => {
         {videos.map((v) => (
           <Card key={v.id} variant="hover" className="h-full">
             <motion.div className="w-full aspect-video rounded-lg overflow-hidden mb-4 bg-secondary border border-border" whileHover="hover" initial="rest" variants={imageHover}>
-              <video controls className="w-full h-full object-cover">
-                <source src={fallback} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
+              <VideoPlayer src={fallback} controls className="w-full h-full object-cover" />
             </motion.div>
             <h3 className="text-heading-2 font-bold mb-2">{v.title}</h3>
             <p className="text-text-secondary text-sm mb-4">{v.description}</p>

@@ -7,6 +7,7 @@ import {
   getGalleryThumbAvif,
   getGalleryThumbWebp,
 } from '@/utils/imagePaths';
+import VideoPlayer from './VideoPlayer';
 
 export type MediaKind = 'photo' | 'video';
 
@@ -235,16 +236,14 @@ const MediaDetailModal: React.FC<MediaDetailModalProps> = ({
                     priority
                   />
                 ) : (
-                  <video
+                  <VideoPlayer
+                    src={src}
+                    poster={poster || getGalleryPosterWebp(src, 'large')}
                     controls
                     autoPlay
                     playsInline
-                    poster={poster || getGalleryPosterWebp(src, 'large')}
                     className="h-full w-full object-contain p-3 md:p-5"
-                  >
-                    <source src={src} type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
+                  />
                 )}
               </div>
             </div>
