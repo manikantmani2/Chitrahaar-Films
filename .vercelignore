@@ -9,12 +9,6 @@ yarn-error.log*
 package-lock.json
 pnpm-lock.yaml
 public/Highlights/**
-# Keep images but ignore large video files (so gallery thumbnails still deploy)
-public/**/**/*.mp4
-public/**/**/*.mov
-public/**/**/*.MOV
-public/**/**/*.MP4
-public/Our Works Gallery/**/WEDDING.mp4
-public/Our Works Gallery/**/Tejas & Taniya.mov Preweding.mov
+# Video files are now Git LFS pointers (small text files), safe to deploy
 public/**/._*
 media-archive/**
