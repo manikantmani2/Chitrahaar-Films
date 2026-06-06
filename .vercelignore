@@ -8,11 +8,13 @@ npm-debug.log*
 yarn-error.log*
 package-lock.json
 pnpm-lock.yaml
-public/Our Works Gallery/**
 public/Highlights/**
-public/Featured Films/**
-public/Intro videos/**
-public/Our Works Gallery/Wedding/WEDDING.mp4
-public/Our Works Gallery/Wedding/Tejas & Taniya.mov Preweding.mov
+# Keep images but ignore large video files (so gallery thumbnails still deploy)
+public/**/**/*.mp4
+public/**/**/*.mov
+public/**/**/*.MOV
+public/**/**/*.MP4
+public/Our Works Gallery/**/WEDDING.mp4
+public/Our Works Gallery/**/Tejas & Taniya.mov Preweding.mov
 public/**/._*
 media-archive/**
