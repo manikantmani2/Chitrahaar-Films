@@ -1,8 +1,18 @@
+# Ignore local build artifacts and large media files
+.git
+.gitignore
+.gitmodules
+node_modules
+.next
+npm-debug.log*
+yarn-error.log*
+package-lock.json
+pnpm-lock.yaml
 public/Our Works Gallery/**
 public/Highlights/**
+public/Featured Films/**
+public/Intro videos/**
 public/Our Works Gallery/Wedding/WEDDING.mp4
 public/Our Works Gallery/Wedding/Tejas & Taniya.mov Preweding.mov
 public/**/._*
-public/Featured Films/**
-public/Intro videos/**
-public/**/WEDDING.mp4
+media-archive/**

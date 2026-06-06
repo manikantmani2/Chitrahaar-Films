@@ -172,7 +172,7 @@ export const STATS = [
 export const CONTACT_INFO = {
   email: 'chitahaarfilms@gmail.com',
   phone: '8860171546',
-  address: 'Mumbai, India',
+  address: 'Delhi, India',
   hours: 'Mon - Fri, 10 AM - 6 PM IST',
 };
 

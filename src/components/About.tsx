@@ -88,14 +88,14 @@ const About: React.FC = () => {
         </motion.div>
 
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+          className="flex gap-4 md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-6 overflow-x-auto scrollbar-hide snap-carousel py-4 px-4 md:px-0"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
           variants={containerVariants}
         >
           {TEAM_MEMBERS.map((member, index) => (
-            <motion.div key={member.id} variants={itemVariants} custom={index * 0.1}>
+            <motion.div key={member.id} variants={itemVariants} custom={index * 0.1} className="snap-item min-w-[80%] sm:min-w-[60%] md:min-w-0">
               <Card variant="glass" className="text-center group">
                 <div className="relative mb-4 overflow-hidden rounded-lg bg-black/20 aspect-[4/5]">
                   <Image
