@@ -13,7 +13,20 @@ const FALLBACK_CONTENT: SiteContentData = {
 
 async function readContent(): Promise<SiteContentData> {
   try {
-    const raw = await fs.readFile(CONTENT_FILE, 'utf8');
+    // Try root data/content.json first
+    let raw: string | undefined;
+    try {
+      raw = await fs.readFile(CONTENT_FILE, 'utf8');
+    } catch (err) {
+      // Fallback: some deployments use the `chitrahaar-website` subfolder as project root
+      const altPath = path.join(process.cwd(), 'chitrahaar-website', 'data', 'content.json');
+      try {
+        raw = await fs.readFile(altPath, 'utf8');
+      } catch (err2) {
+        raw = undefined;
+      }
+    }
+
     return JSON.parse(raw || '{}') as SiteContentData;
   } catch {
     return FALLBACK_CONTENT;
