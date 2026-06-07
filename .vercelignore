@@ -10,3 +10,13 @@ public/testimonials/**
 media-archive/**
 removed-media-backup-2026-06-07/**
 public/**/WEDDING.mp4
+
+# allow .gitkeep placeholders through Vercel (keep empty media folders present)
+!public/Featured Films/.gitkeep
+!public/Highlights/.gitkeep
+!public/Intro videos/.gitkeep
+!public/Our Works Gallery/.gitkeep
+!public/team/.gitkeep
+!public/testimonials/.gitkeep
+!media-archive/.gitkeep
+!removed-media-backup-2026-06-07/.gitkeep
