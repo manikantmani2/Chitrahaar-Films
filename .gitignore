@@ -49,3 +49,13 @@ public/team/
 public/testimonials/
 media-archive/
 removed-media-backup-2026-06-07/
+
+# allow .gitkeep placeholders in ignored media folders
+!public/Featured Films/.gitkeep
+!public/Highlights/.gitkeep
+!public/Intro videos/.gitkeep
+!public/Our Works Gallery/.gitkeep
+!public/team/.gitkeep
+!public/testimonials/.gitkeep
+!media-archive/.gitkeep
+!removed-media-backup-2026-06-07/.gitkeep
